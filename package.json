@@ -1,0 +1,17 @@
+{
+  "name": "smart-kirana",
+  "version": "1.0.0",
+  "description": "AI-Powered Business Management for Small Retailers",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd backend && npm run dev",
+    "client": "cd frontend && npm start"
+  },
+  "keywords": ["retail", "ai", "business", "management"],
+  "author": "Smart Kirana Team",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
