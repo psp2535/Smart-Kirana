@@ -358,7 +358,7 @@ const RegisterNew = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-blue-50 dark:from-black dark:to-gray-900 py-6 sm:py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-neutral-50 to-neutral-200 dark:from-black dark:to-neutral-900 py-6 sm:py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-2xl w-full space-y-6 sm:space-y-8">
         {/* Header */}
         <div className="text-center">
@@ -458,11 +458,11 @@ const RegisterNew = () => {
             </div>
 
             {/* GPS Location Section - Common for both */}
-            <div className="md:col-span-2 bg-blue-50 dark:bg-gray-800 p-4 rounded-lg border border-blue-200 dark:border-gray-700">
+            <div className="md:col-span-2 bg-neutral-100 dark:bg-neutral-800 p-4 rounded-lg border border-neutral-300 dark:border-neutral-700">
               <div className="flex items-center justify-between mb-3">
                 <div>
                   <h3 className="text-sm font-medium text-gray-900 dark:text-white flex items-center">
-                    <MapPin className="h-4 w-4 mr-2 text-blue-600" />
+                    <MapPin className="h-4 w-4 mr-2 text-black dark:text-white" />
                     {userType === 'retailer' ? 'Store Location' : 'Your Location'}
                   </h3>
                   <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
@@ -478,8 +478,8 @@ const RegisterNew = () => {
                   className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${gpsStatus === 'success'
                     ? 'bg-green-100 text-green-700 border border-green-300'
                     : gpsStatus === 'loading'
-                      ? 'bg-gray-100 text-gray-500 cursor-wait'
-                      : 'bg-blue-600 text-white hover:bg-blue-700'
+                      ? 'bg-neutral-200 text-neutral-500 cursor-wait'
+                      : 'bg-black text-white hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200'
                     }`}
                 >
                   {gpsStatus === 'loading' ? '📍 Capturing...' : gpsStatus === 'success' ? '✅ GPS Set' : '📍 Capture GPS'}

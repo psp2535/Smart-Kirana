@@ -452,7 +452,7 @@ const Inventory = () => {
                 <div className="flex gap-3">
                     <button
                         onClick={() => setShowBillScanModal(true)}
-                        className="bg-gradient-to-r from-green-600 to-teal-600 text-white px-4 py-2 rounded-lg hover:from-green-700 hover:to-teal-700 transition-all flex items-center gap-2 shadow-md"
+                        className="bg-black dark:bg-white text-white dark:text-black text-white px-4 py-2 rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200  transition-all flex items-center gap-2 shadow-md"
                     >
                         <FileText className="h-4 w-4" />
                         Scan Bill
@@ -475,8 +475,8 @@ const Inventory = () => {
                             <p className="text-sm font-medium text-gray-600 dark:text-gray-400">{t('inventory.totalItems')}</p>
                             <p className="text-2xl font-bold text-gray-900 dark:text-white">{inventory.length}</p>
                         </div>
-                        <div className="p-2 bg-blue-100 rounded-lg">
-                            <Package className="h-6 w-6 text-blue-600" />
+                        <div className="p-2 bg-neutral-200 dark:bg-neutral-700 rounded-lg">
+                            <Package className="h-6 w-6 text-black dark:text-white" />
                         </div>
                     </div>
                 </div>
@@ -512,8 +512,8 @@ const Inventory = () => {
                                 {new Set(inventory.map(item => item.category)).size}
                             </p>
                         </div>
-                        <div className="p-2 bg-purple-100 rounded-lg">
-                            <Package className="h-6 w-6 text-purple-600" />
+                        <div className="p-2 bg-neutral-200 dark:bg-neutral-700 rounded-lg">
+                            <Package className="h-6 w-6 text-black dark:text-white" />
                         </div>
                     </div>
                 </div>
@@ -626,7 +626,7 @@ const Inventory = () => {
                                             </p>
                                             <button
                                                 onClick={() => navigate('/dashboard/discount-campaigns')}
-                                                className="ml-4 px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-all flex items-center gap-2 text-sm font-semibold shadow-md"
+                                                className="ml-4 px-4 py-2 bg-black dark:bg-white text-white dark:text-black text-white rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200  transition-all flex items-center gap-2 text-sm font-semibold shadow-md"
                                             >
                                                 <TrendingDown className="h-4 w-4" />
                                                 Apply AI Discounts
@@ -652,7 +652,7 @@ const Inventory = () => {
                             <Filter className="h-4 w-4" />
                             {t('common.filter')}
                             {(filters.category !== 'All' || filters.status !== 'All') && (
-                                <span className="ml-1 px-2 py-0.5 text-xs bg-indigo-100 text-indigo-800 rounded-full">
+                                <span className="ml-1 px-2 py-0.5 text-xs bg-neutral-200 dark:bg-neutral-700 text-black dark:text-white rounded-full">
                                     {t('common.active')}
                                 </span>
                             )}
@@ -797,7 +797,7 @@ const Inventory = () => {
                                                         });
                                                         setShowModal(true);
                                                     }}
-                                                    className="text-indigo-600 hover:text-indigo-900"
+                                                    className="text-black dark:text-white hover:text-indigo-900"
                                                     title={t('inventory.editItem')}
                                                 >
                                                     <Edit className="h-4 w-4" />
@@ -835,7 +835,7 @@ const Inventory = () => {
                         <div className="mt-2 text-center">
                             <button
                                 onClick={() => setItemsToShow(filteredInventory.length)}
-                                className="text-sm text-indigo-600 hover:text-indigo-800"
+                                className="text-sm text-black dark:text-white hover:text-black dark:text-white"
                             >
                                 Show All {filteredInventory.length} Items
                             </button>
@@ -941,7 +941,7 @@ const Inventory = () => {
                                     <button
                                         onClick={handleBillScan}
                                         disabled={!selectedImage || uploadingImage}
-                                        className="px-6 py-2 bg-gradient-to-r from-green-600 to-teal-600 text-white rounded-lg hover:from-green-700 hover:to-teal-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center gap-2"
+                                        className="px-6 py-2 bg-black dark:bg-white text-white dark:text-black text-white rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200  disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center gap-2"
                                     >
                                         {uploadingImage ? (
                                             <>
@@ -960,11 +960,11 @@ const Inventory = () => {
                         ) : (
                             /* Step 2: Review & Confirm Extracted Items */
                             <div className="space-y-6">
-                                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                                <div className="bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-lg p-4">
                                     <div className="flex items-center justify-between">
                                         <div>
                                             <h4 className="font-semibold text-blue-900">✅ Extracted {parsedBillItems.length} item(s) from bill</h4>
-                                            <p className="text-sm text-blue-700 mt-1">
+                                            <p className="text-sm text-black dark:text-white mt-1">
                                                 Confidence: {(billConfidence * 100).toFixed(0)}% 
                                                 {billConfidence < 0.7 && ' - Please review carefully'}
                                             </p>
@@ -1097,7 +1097,7 @@ const Inventory = () => {
                                     <button
                                         onClick={handleBillConfirm}
                                         disabled={uploadingImage || parsedBillItems.length === 0}
-                                        className="px-6 py-2 bg-gradient-to-r from-green-600 to-teal-600 text-white rounded-lg hover:from-green-700 hover:to-teal-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center gap-2"
+                                        className="px-6 py-2 bg-black dark:bg-white text-white dark:text-black text-white rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200  disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center gap-2"
                                     >
                                         {uploadingImage ? (
                                             <>
@@ -1125,7 +1125,7 @@ const Inventory = () => {
                         <div className="flex justify-between items-center mb-6">
                             <div>
                                 <h3 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-                                    <Image className="h-6 w-6 text-purple-600" />
+                                    <Image className="h-6 w-6 text-black dark:text-white" />
                                     Upload Inventory Image
                                 </h3>
                                 <p className="text-sm text-gray-600 mt-1">
@@ -1146,7 +1146,7 @@ const Inventory = () => {
 
                         <div className="space-y-6">
                             {/* Image Upload Area */}
-                            <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-purple-500 transition-colors">
+                            <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-black dark:border-white transition-colors">
                                 {imagePreview ? (
                                     <div className="space-y-4">
                                         <img 
@@ -1178,7 +1178,7 @@ const Inventory = () => {
                                         />
                                         <label
                                             htmlFor="image-upload"
-                                            className="mt-4 inline-block bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 cursor-pointer transition-colors"
+                                            className="mt-4 inline-block bg-black dark:bg-white text-white dark:text-black px-6 py-2 rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200 cursor-pointer transition-colors"
                                         >
                                             Select Image
                                         </label>
@@ -1187,9 +1187,9 @@ const Inventory = () => {
                             </div>
 
                             {/* Info Box */}
-                            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                            <div className="bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-lg p-4">
                                 <h4 className="font-semibold text-blue-900 mb-2">📋 Image Requirements:</h4>
-                                <ul className="text-sm text-blue-800 space-y-1">
+                                <ul className="text-sm text-black dark:text-white space-y-1">
                                     <li>• Product name clearly visible</li>
                                     <li>• Quantity/Stock information</li>
                                     <li>• Cost Price (CP) - what you paid</li>
@@ -1214,7 +1214,7 @@ const Inventory = () => {
                                 <button
                                     onClick={handleImageUpload}
                                     disabled={!selectedImage || uploadingImage}
-                                    className="px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:from-purple-700 hover:to-pink-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center gap-2"
+                                    className="px-6 py-2 bg-black dark:bg-white text-white dark:text-black text-white rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200  disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center gap-2"
                                 >
                                     {uploadingImage ? (
                                         <>
@@ -1344,7 +1344,7 @@ const Inventory = () => {
                                                         toast.success(`${grams}g = ${(grams / 1000).toFixed(3)}kg`);
                                                     }
                                                 }}
-                                                className="px-3 py-2 text-xs bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors whitespace-nowrap"
+                                                className="px-3 py-2 text-xs bg-neutral-200 dark:bg-neutral-700 text-black dark:text-white rounded-lg hover:bg-blue-200 transition-colors whitespace-nowrap"
                                                 title="Convert grams to kg"
                                             >
                                                 g→kg
@@ -1360,7 +1360,7 @@ const Inventory = () => {
                                                         toast.success(`${ml}ml = ${(ml / 1000).toFixed(3)}L`);
                                                     }
                                                 }}
-                                                className="px-3 py-2 text-xs bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors whitespace-nowrap"
+                                                className="px-3 py-2 text-xs bg-neutral-200 dark:bg-neutral-700 text-black dark:text-white rounded-lg hover:bg-blue-200 transition-colors whitespace-nowrap"
                                                 title="Convert ml to litres"
                                             >
                                                 ml→L
@@ -1535,7 +1535,7 @@ const Inventory = () => {
                                     <select
                                         value={filters.category}
                                         onChange={(e) => setFilters({ ...filters, category: e.target.value })}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black dark:focus:ring-white focus:border-transparent"
                                     >
                                         <option value="All">All Categories</option>
                                         {categories.map((cat) => (
@@ -1552,7 +1552,7 @@ const Inventory = () => {
                                     <select
                                         value={filters.status}
                                         onChange={(e) => setFilters({ ...filters, status: e.target.value })}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black dark:focus:ring-white focus:border-transparent"
                                     >
                                         <option value="All">All Status</option>
                                         <option value="In Stock">In Stock</option>

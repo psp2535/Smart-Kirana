@@ -36,11 +36,12 @@ const Sidebar = ({ isOpen, onClose }) => {
 
   return (
     <div
-      className={`fixed inset-y-0 left-0 z-40 w-64 bg-white dark:bg-black border-r border-gray-200 dark:border-gray-800 flex flex-col transform transition-transform duration-300 ease-in-out lg:translate-x-0 ${isOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}
+      className={`fixed inset-y-0 left-0 z-40 w-64 bg-white dark:bg-black border-r border-gray-200 dark:border-gray-800 flex flex-col transform transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}
     >
       {/* Sidebar header */}
-      <div className="p-5 text-2xl font-bold text-indigo-600 dark:text-indigo-400 border-b border-gray-200 dark:border-gray-800">{t('nav.appName')}</div>
+      <NavLink to="/dashboard" className="p-5 text-2xl font-bold text-black dark:text-white border-b border-gray-200 dark:border-gray-800 block hover:opacity-80 transition-opacity">
+        {t('nav.appName')}
+      </NavLink>
 
       {/* Navigation */}
       <nav className="flex-1 space-y-1 p-3">
@@ -54,11 +55,15 @@ const Sidebar = ({ isOpen, onClose }) => {
               key={item.name}
               to={item.href}
               end={isExactMatch}
-              onClick={onClose}
+              onClick={() => {
+                if (window.innerWidth < 1024) {
+                  onClose();
+                }
+              }}
               className={({ isActive }) =>
                 `w-full flex items-center gap-3 px-4 py-2.5 rounded-xl font-medium transition-colors text-left ${isActive
-                  ? 'bg-indigo-50 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-400'
-                  : 'text-gray-600 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900 hover:text-gray-900 dark:hover:text-white'
+                  ? 'bg-neutral-100 dark:bg-neutral-800 text-black dark:text-white font-bold'
+                  : 'text-gray-600 dark:text-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black'
                 }`
               }
             >

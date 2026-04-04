@@ -95,8 +95,8 @@ const WholesalerDashboard = () => {
 
     const getStatusColor = (status) => {
         const colors = {
-            'REQUESTED': 'bg-yellow-100 text-yellow-800', 'ACCEPTED': 'bg-blue-100 text-blue-800',
-            'PACKED': 'bg-purple-100 text-purple-800', 'DISPATCHED': 'bg-indigo-100 text-indigo-800',
+            'REQUESTED': 'bg-yellow-100 text-yellow-800', 'ACCEPTED': 'bg-neutral-200 dark:bg-neutral-700 text-black dark:text-white',
+            'PACKED': 'bg-neutral-200 dark:bg-neutral-700 text-black dark:text-white', 'DISPATCHED': 'bg-neutral-200 dark:bg-neutral-700 text-black dark:text-white',
             'DELIVERED': 'bg-green-100 text-green-800', 'CANCELLED': 'bg-red-100 text-red-800'
         };
         return colors[status] || 'bg-gray-100 text-gray-800';
@@ -128,7 +128,7 @@ const WholesalerDashboard = () => {
                     <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
                         <div className="flex items-center justify-between">
                             <div><p className="text-sm text-gray-600 dark:text-gray-400">Total Orders</p><p className="text-3xl font-bold text-gray-900 dark:text-white mt-2">{stats.totalOrders}</p></div>
-                            <ShoppingCart className="h-12 w-12 text-blue-600" />
+                            <ShoppingCart className="h-12 w-12 text-black dark:text-white" />
                         </div>
                     </div>
                     <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
@@ -137,7 +137,7 @@ const WholesalerDashboard = () => {
                             <Package className="h-12 w-12 text-yellow-600" />
                         </div>
                     </div>
-                    <div className="bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg shadow-lg p-6 text-white">
+                    <div className="bg-black dark:bg-white text-white dark:text-black rounded-lg shadow-lg p-6 text-white">
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="text-sm text-green-100">Net Profit 💰</p>
@@ -154,13 +154,13 @@ const WholesalerDashboard = () => {
                                 <p className="text-3xl font-bold text-gray-900 dark:text-white mt-2">₹{stats.totalRevenue.toLocaleString()}</p>
                                 <p className="text-xs text-gray-500 mt-1">Cost: ₹{stats.totalCost.toLocaleString()}</p>
                             </div>
-                            <Users className="h-12 w-12 text-purple-600" />
+                            <Users className="h-12 w-12 text-black dark:text-white" />
                         </div>
                     </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                    <button onClick={() => navigate('/wholesaler/ai-insights')} className="bg-gradient-to-r from-purple-600 to-indigo-600 rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow text-white">
+                    <button onClick={() => navigate('/wholesaler/ai-insights')} className="bg-black dark:bg-white text-white dark:text-black rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow text-white">
                         <Brain className="h-12 w-12 mb-3" />
                         <h3 className="text-xl font-bold mb-2">AI Business Insights</h3>
                         <p className="text-sm text-purple-100">Get AI-powered recommendations for slow-moving products, pricing, and personalized offers</p>

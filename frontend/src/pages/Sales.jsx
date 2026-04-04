@@ -543,8 +543,8 @@ const Sales = () => {
                             <p className="text-2xl font-bold text-gray-900 dark:text-white">₹{todaysSales.totalRevenue?.toLocaleString() || 0}</p>
                             <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{todaysSales.salesCount || 0} {t('sales.transactions')}</p>
                         </div>
-                        <div className="p-2 bg-blue-100 rounded-lg">
-                            <Plus className="h-6 w-6 text-blue-600" />
+                        <div className="p-2 bg-neutral-200 dark:bg-neutral-700 rounded-lg">
+                            <Plus className="h-6 w-6 text-black dark:text-white" />
                         </div>
                     </div>
                 </div>
@@ -554,8 +554,8 @@ const Sales = () => {
                             <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Orders</p>
                             <p className="text-2xl font-bold text-gray-900 dark:text-white">{sales.length}</p>
                         </div>
-                        <div className="p-2 bg-purple-100 rounded-lg">
-                            <Plus className="h-6 w-6 text-purple-600" />
+                        <div className="p-2 bg-neutral-200 dark:bg-neutral-700 rounded-lg">
+                            <Plus className="h-6 w-6 text-black dark:text-white" />
                         </div>
                     </div>
                 </div>
@@ -584,7 +584,7 @@ const Sales = () => {
                             <Filter className="h-4 w-4" />
                             Filter
                             {(paymentFilter !== 'All' || dateFilter !== 'All') && (
-                                <span className="ml-1 px-2 py-0.5 text-xs bg-indigo-100 text-indigo-800 rounded-full">
+                                <span className="ml-1 px-2 py-0.5 text-xs bg-neutral-200 dark:bg-neutral-700 text-black dark:text-white rounded-full">
                                     Active
                                 </span>
                             )}
@@ -650,7 +650,7 @@ const Sales = () => {
                                             <div className="flex gap-2">
                                                 <button 
                                                     onClick={() => handleView(sale)}
-                                                    className="text-blue-600 hover:text-blue-900"
+                                                    className="text-black dark:text-white hover:text-blue-900"
                                                     title="View Details"
                                                 >
                                                     <Eye className="h-4 w-4" />
@@ -664,7 +664,7 @@ const Sales = () => {
                                                 </button>
                                                 <button
                                                     onClick={() => handleEdit(sale)}
-                                                    className="text-indigo-600 hover:text-indigo-900"
+                                                    className="text-black dark:text-white hover:text-indigo-900"
                                                     title="Edit Sale"
                                                 >
                                                     <Edit className="h-4 w-4" />
@@ -702,7 +702,7 @@ const Sales = () => {
                         <div className="mt-2 text-center">
                             <button
                                 onClick={() => setItemsToShow(filteredSales.length)}
-                                className="text-sm text-indigo-600 hover:text-indigo-800"
+                                className="text-sm text-black dark:text-white hover:text-black dark:text-white"
                             >
                                 Show All {filteredSales.length} Items
                             </button>
@@ -871,7 +871,7 @@ const Sales = () => {
                                 </div>
 
                                 {/* Total Summary */}
-                                <div className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 p-4 rounded-lg border border-green-200 dark:border-green-800">
+                                <div className="bg-black dark:bg-white text-white dark:text-black   p-4 rounded-lg border border-green-200 dark:border-green-800">
                                     <div className="flex justify-between items-center">
                                         <span className="text-lg font-medium text-gray-900 dark:text-gray-100">Total Amount:</span>
                                         <span className="text-2xl font-bold text-green-600 dark:text-green-400">₹{calculateTotal().toLocaleString()}</span>
@@ -923,7 +923,7 @@ const Sales = () => {
                                     <select
                                         value={dateFilter}
                                         onChange={(e) => setDateFilter(e.target.value)}
-                                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-black dark:focus:ring-white focus:border-transparent"
                                     >
                                         <option value="All">All Time</option>
                                         <option value="Today">Today</option>
@@ -968,7 +968,7 @@ const Sales = () => {
                                     <select
                                         value={paymentFilter}
                                         onChange={(e) => setPaymentFilter(e.target.value)}
-                                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-black dark:focus:ring-white focus:border-transparent"
                                     >
                                         <option value="All">All Payment Methods</option>
                                         <option value="Cash">Cash</option>
@@ -1090,7 +1090,7 @@ const Sales = () => {
                                     </div>
                                     <div className="flex justify-between items-center">
                                         <span className="text-base font-bold text-gray-900">Gross Profit:</span>
-                                        <span className="text-lg font-bold text-blue-600">₹{viewingSale.gross_profit?.toLocaleString() || 0}</span>
+                                        <span className="text-lg font-bold text-black dark:text-white">₹{viewingSale.gross_profit?.toLocaleString() || 0}</span>
                                     </div>
                                 </div>
 

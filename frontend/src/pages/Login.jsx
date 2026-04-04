@@ -47,7 +47,7 @@ const Login = () => {
       const result = await login(formData);
 
       if (result.success) {
-        toast.success('Welcome back to BizNova!');
+        toast.success('Welcome back to Smart Kirana!');
         navigate('/');
       } else {
         toast.error(result.message || 'Login failed. Please try again.');
@@ -67,7 +67,7 @@ const Login = () => {
         <div className="text-center">
           
           <h2 className="mt-6 text-3xl font-bold text-gray-900">
-            Welcome to BizNova
+            Welcome to Smart Kirana
           </h2>
           <p className="mt-2 text-sm text-gray-600">
             Sign in to your AI-powered business assistant

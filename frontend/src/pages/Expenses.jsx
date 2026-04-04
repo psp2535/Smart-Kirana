@@ -253,8 +253,8 @@ const Expenses = () => {
                             <p className="text-sm font-medium text-gray-600 dark:text-gray-400">{t('expenses.totalEntries')}</p>
                             <p className="text-2xl font-bold text-gray-900 dark:text-white">{expenses.length}</p>
                         </div>
-                        <div className="p-2 bg-blue-100 rounded-lg">
-                            <DollarSign className="h-6 w-6 text-blue-600" />
+                        <div className="p-2 bg-neutral-200 dark:bg-neutral-700 rounded-lg">
+                            <DollarSign className="h-6 w-6 text-black dark:text-white" />
                         </div>
                     </div>
                 </div>
@@ -285,7 +285,7 @@ const Expenses = () => {
                             <Filter className="h-4 w-4" />
                             Filter
                             {categoryFilter !== 'All' && (
-                                <span className="ml-1 px-2 py-0.5 text-xs bg-indigo-100 text-indigo-800 rounded-full">
+                                <span className="ml-1 px-2 py-0.5 text-xs bg-neutral-200 dark:bg-neutral-700 text-black dark:text-white rounded-full">
                                     Active
                                 </span>
                             )}
@@ -345,11 +345,11 @@ const Expenses = () => {
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm">
                                             {expense.is_sales_expense ? (
-                                                <span className="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full flex items-center gap-1 w-fit">
+                                                <span className="px-2 py-1 text-xs font-medium bg-neutral-200 dark:bg-neutral-700 text-black dark:text-white rounded-full flex items-center gap-1 w-fit">
                                                     🎯 Sales
                                                 </span>
                                             ) : (
-                                                <span className="px-2 py-1 text-xs font-medium bg-purple-100 text-purple-800 rounded-full flex items-center gap-1 w-fit">
+                                                <span className="px-2 py-1 text-xs font-medium bg-neutral-200 dark:bg-neutral-700 text-black dark:text-white rounded-full flex items-center gap-1 w-fit">
                                                     🏢 Operating
                                                 </span>
                                             )}
@@ -371,7 +371,7 @@ const Expenses = () => {
                                                         });
                                                         setShowModal(true);
                                                     }}
-                                                    className="text-indigo-600 hover:text-indigo-900"
+                                                    className="text-black dark:text-white hover:text-indigo-900"
                                                     title="Edit Expense"
                                                 >
                                                     <Edit className="h-4 w-4" />
@@ -409,7 +409,7 @@ const Expenses = () => {
                         <div className="mt-2 text-center">
                             <button
                                 onClick={() => setItemsToShow(filteredExpenses.length)}
-                                className="text-sm text-indigo-600 hover:text-indigo-800"
+                                className="text-sm text-black dark:text-white hover:text-black dark:text-white"
                             >
                                 Show All {filteredExpenses.length} Items
                             </button>
@@ -501,7 +501,7 @@ const Expenses = () => {
                                 </div>
 
                                 {/* Sales Expense Checkbox - Enhanced */}
-                                <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                                <div className="p-4 bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-lg">
                                     <div className="flex items-start">
                                         <div className="flex items-center h-5 mt-1">
                                             <input
@@ -509,7 +509,7 @@ const Expenses = () => {
                                                 type="checkbox"
                                                 checked={formData.is_sales_expense}
                                                 onChange={(e) => setFormData({ ...formData, is_sales_expense: e.target.checked })}
-                                                className="w-5 h-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 cursor-pointer"
+                                                className="w-5 h-5 text-black dark:text-white border-gray-300 rounded focus:ring-black dark:focus:ring-white cursor-pointer"
                                             />
                                         </div>
                                         <div className="ml-3">
@@ -522,7 +522,7 @@ const Expenses = () => {
                                             <p className="text-xs text-gray-600 mt-1">
                                                 <strong>Leave unchecked for:</strong> Rent, Utilities, Salaries, Insurance, Maintenance
                                             </p>
-                                            <p className="text-xs text-blue-700 font-medium mt-2">
+                                            <p className="text-xs text-black dark:text-white font-medium mt-2">
                                                 This helps calculate accurate profit margins in Analytics
                                             </p>
                                         </div>
@@ -573,7 +573,7 @@ const Expenses = () => {
                                     <select
                                         value={categoryFilter}
                                         onChange={(e) => setCategoryFilter(e.target.value)}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black dark:focus:ring-white focus:border-transparent"
                                     >
                                         <option value="All">All Categories</option>
                                         {categories.map((category) => (

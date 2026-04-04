@@ -43,13 +43,13 @@ const Header = ({ onMenuClick }) => {
     <header className="sticky top-0 bg-white dark:bg-black shadow-sm border-b border-gray-200 dark:border-gray-800 z-20 transition-colors duration-200">
       <div className="px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-14 sm:h-16">
-          {/* Left section - Mobile menu button */}
+          {/* Left section - Mobile & Desktop menu button */}
           <div className="flex items-center">
             <button
               onClick={onMenuClick}
-              className="lg:hidden p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100"
+              className="p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100"
             >
-              <span className="sr-only">Open sidebar</span>
+              <span className="sr-only">Toggle sidebar</span>
               <Menu className="h-6 w-6" />
             </button>
           </div>
@@ -95,8 +95,8 @@ const Header = ({ onMenuClick }) => {
                     <button
                       key={lang.code}
                       onClick={() => changeLanguage(lang.code)}
-                      className={`block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-800 ${
-                        i18n.language === lang.code ? 'bg-indigo-50 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-400 font-medium' : 'text-gray-700 dark:text-white'
+                      className={`block w-full text-left px-4 py-2 text-sm transition-colors ${
+                        i18n.language === lang.code ? 'bg-black text-white dark:bg-white dark:text-black font-bold' : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'
                       }`}
                     >
                       {lang.name}
@@ -111,33 +111,33 @@ const Header = ({ onMenuClick }) => {
 
             {/* Profile dropdown */}
             <div className="relative">
-              <div className="flex items-center space-x-2 sm:space-x-3 cursor-pointer" onClick={() => setShowUserMenu(!showUserMenu)}>
-                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-sm sm:text-base">
+              <div className="flex items-center space-x-2 sm:space-x-3 cursor-pointer group" onClick={() => setShowUserMenu(!showUserMenu)}>
+                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-black dark:bg-white text-white dark:text-black flex items-center justify-center font-bold text-sm sm:text-base group-hover:scale-105 transition-transform">
                   {user?.name?.charAt(0) || 'U'}
                 </div>
                 <div className="hidden sm:block text-right">
-                  <p className="text-sm font-medium text-gray-900 dark:text-white">{user?.name || 'Business Owner'}</p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">{user?.phone || 'Phone'}</p>
+                  <p className="text-sm font-bold text-black dark:text-white group-hover:text-neutral-600 transition-colors">{user?.name || 'Business Owner'}</p>
+                  <p className="text-xs text-neutral-500 font-medium">{user?.phone || 'Phone'}</p>
                 </div>
               </div>
 
               {/* Dropdown menu */}
               {showUserMenu && (
-                <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-gray-900 rounded-md shadow-lg py-1 z-50 border border-gray-200 dark:border-gray-800">
-                  <div className="px-4 py-3 border-b border-gray-100 dark:border-gray-800">
-                    <p className="text-sm font-medium text-gray-900 dark:text-white">{user?.name || 'Business Owner'}</p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{user?.shop_name || 'BizNova Shop'}</p>
+                <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-neutral-900 rounded-xl shadow-2xl py-1 z-50 border border-neutral-200 dark:border-neutral-800 overflow-hidden">
+                  <div className="px-4 py-3 border-b border-neutral-100 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900/50">
+                    <p className="text-sm font-bold text-black dark:text-white">{user?.name || 'Business Owner'}</p>
+                    <p className="text-[10px] uppercase font-bold tracking-widest text-neutral-500 mt-1">{user?.shop_name || 'Smart Kirana Shop'}</p>
                   </div>
                   <button
                     onClick={handleProfileSettings}
-                    className="flex items-center w-full px-4 py-2 text-sm text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
+                    className="flex items-center w-full px-4 py-3 text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors"
                   >
                     <Settings className="h-4 w-4 mr-2" />
                     {t('common.profileSettings', 'Profile Settings')}
                   </button>
                   <button
                     onClick={handleLogout}
-                    className="flex items-center w-full px-4 py-2 text-sm text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
+                    className="flex items-center w-full px-4 py-3 text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors"
                   >
                     <LogOut className="h-4 w-4 mr-2" />
                     {t('common.signOut')}

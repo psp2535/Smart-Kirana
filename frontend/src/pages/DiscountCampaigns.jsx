@@ -139,14 +139,14 @@ const DiscountCampaigns = () => {
       case 'critical': return 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300 border-red-300 dark:border-red-700';
       case 'high': return 'bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300 border-orange-300 dark:border-orange-700';
       case 'medium': return 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300 border-yellow-300 dark:border-yellow-700';
-      default: return 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 border-blue-300 dark:border-blue-700';
+      default: return 'bg-neutral-200 dark:bg-neutral-700 dark:bg-blue-900/30 text-black dark:text-white dark:text-blue-300 border-neutral-200 dark:border-neutral-700 dark:border-blue-700';
     }
   };
 
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black dark:border-white"></div>
       </div>
     );
   }
@@ -164,7 +164,7 @@ const DiscountCampaigns = () => {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-            <TrendingDown className="h-7 w-7 text-indigo-600" />
+            <TrendingDown className="h-7 w-7 text-black dark:text-white" />
             Smart Discount Campaigns
           </h1>
           <p className="text-gray-600 dark:text-gray-400">AI-powered discounts for expiring & slow-moving items</p>
@@ -176,7 +176,7 @@ const DiscountCampaigns = () => {
         <button
           onClick={() => setActiveTab('recommendations')}
           className={`px-4 py-2 font-medium transition-colors ${activeTab === 'recommendations'
-            ? 'text-indigo-600 border-b-2 border-indigo-600'
+            ? 'text-black dark:text-white border-b-2 border-black dark:border-white'
             : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
             }`}
         >
@@ -188,7 +188,7 @@ const DiscountCampaigns = () => {
         <button
           onClick={() => setActiveTab('campaigns')}
           className={`px-4 py-2 font-medium transition-colors ${activeTab === 'campaigns'
-            ? 'text-indigo-600 border-b-2 border-indigo-600'
+            ? 'text-black dark:text-white border-b-2 border-black dark:border-white'
             : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
             }`}
         >
@@ -200,7 +200,7 @@ const DiscountCampaigns = () => {
         <button
           onClick={() => setActiveTab('analytics')}
           className={`px-4 py-2 font-medium transition-colors ${activeTab === 'analytics'
-            ? 'text-indigo-600 border-b-2 border-indigo-600'
+            ? 'text-black dark:text-white border-b-2 border-black dark:border-white'
             : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
             }`}
         >
@@ -226,14 +226,14 @@ const DiscountCampaigns = () => {
             </div>
           ) : (
             <>
-              <div className="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 border border-indigo-200 dark:border-indigo-800 rounded-lg p-4">
+              <div className="bg-black dark:bg-white text-white dark:text-black   border border-neutral-200 dark:border-neutral-700 dark:border-neutral-200 dark:border-neutral-700 rounded-lg p-4">
                 <div className="flex items-start gap-3">
-                  <Zap className="h-6 w-6 text-indigo-600 dark:text-indigo-400 flex-shrink-0 mt-1" />
+                  <Zap className="h-6 w-6 text-black dark:text-white dark:text-white flex-shrink-0 mt-1" />
                   <div>
-                    <h3 className="font-semibold text-indigo-900 dark:text-indigo-300 mb-1">
+                    <h3 className="font-semibold text-indigo-900 dark:text-white mb-1">
                       🤖 AI Discount Recommendations
                     </h3>
-                    <p className="text-sm text-indigo-700 dark:text-indigo-400">
+                    <p className="text-sm text-black dark:text-white dark:text-white">
                       Our AI analyzed your inventory and found {recommendations.length} items that need discounts.
                       Apply with 1-click or customize the discount percentage.
                     </p>
@@ -255,7 +255,7 @@ const DiscountCampaigns = () => {
                         <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase ${item.urgency === 'critical' ? 'bg-red-600 text-white' :
                           item.urgency === 'high' ? 'bg-orange-600 text-white' :
                             item.urgency === 'medium' ? 'bg-yellow-600 text-white' :
-                              'bg-blue-600 text-white'
+                              'bg-black dark:bg-white text-white dark:text-black'
                           }`}>
                           {item.urgency} Priority
                         </span>
@@ -272,7 +272,7 @@ const DiscountCampaigns = () => {
                         </div>
                         <div>
                           <p className="text-xs text-gray-600 dark:text-gray-400">AI Discount</p>
-                          <p className="font-bold text-indigo-600 dark:text-indigo-400">{item.discount}% OFF</p>
+                          <p className="font-bold text-black dark:text-white dark:text-white">{item.discount}% OFF</p>
                         </div>
                         <div>
                           <p className="text-xs text-gray-600 dark:text-gray-400">New Price</p>
@@ -303,7 +303,7 @@ const DiscountCampaigns = () => {
                       <div className="flex gap-2">
                         <button
                           onClick={() => handleApplyDiscount(item, true)}
-                          className="flex-1 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-2 rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-all flex items-center justify-center gap-2 font-semibold"
+                          className="flex-1 bg-black dark:bg-white text-white dark:text-black text-white px-4 py-2 rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200  transition-all flex items-center justify-center gap-2 font-semibold"
                         >
                           <Zap className="h-4 w-4" />
                           Apply {item.discount}% Discount
@@ -314,7 +314,7 @@ const DiscountCampaigns = () => {
                             setCustomDiscount(item.discount);
                             setShowCustomizeModal(true);
                           }}
-                          className="px-4 py-2 border-2 border-indigo-600 text-indigo-600 dark:text-indigo-400 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/20 transition-colors font-semibold"
+                          className="px-4 py-2 border-2 border-black dark:border-white text-black dark:text-white dark:text-white rounded-lg hover:bg-neutral-100 dark:bg-neutral-800 dark:hover:bg-neutral-800 dark:hover:bg-neutral-200/20 transition-colors font-semibold"
                         >
                           Customize
                         </button>
@@ -365,7 +365,7 @@ const DiscountCampaigns = () => {
                     <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-3">
                       <div>
                         <p className="text-xs text-gray-600 dark:text-gray-400">Discount</p>
-                        <p className="font-bold text-indigo-600">{campaign.discount_percentage}%</p>
+                        <p className="font-bold text-black dark:text-white">{campaign.discount_percentage}%</p>
                       </div>
                       <div>
                         <p className="text-xs text-gray-600 dark:text-gray-400">Original</p>
@@ -433,17 +433,17 @@ const DiscountCampaigns = () => {
         <div className="space-y-6">
           {/* Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div className="card bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20">
+            <div className="card bg-black dark:bg-white text-white dark:text-black  dark:to-blue-800/20">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-blue-600 dark:text-blue-400">Total Campaigns</p>
+                  <p className="text-sm font-medium text-black dark:text-white dark:text-blue-400">Total Campaigns</p>
                   <p className="text-3xl font-bold text-blue-900 dark:text-blue-300">{analytics.total_campaigns}</p>
                 </div>
-                <BarChart3 className="h-12 w-12 text-blue-600 dark:text-blue-400 opacity-50" />
+                <BarChart3 className="h-12 w-12 text-black dark:text-white dark:text-blue-400 opacity-50" />
               </div>
             </div>
 
-            <div className="card bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20">
+            <div className="card bg-black dark:bg-white text-white dark:text-black  dark:to-green-800/20">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-green-600 dark:text-green-400">Total Revenue</p>
@@ -453,17 +453,17 @@ const DiscountCampaigns = () => {
               </div>
             </div>
 
-            <div className="card bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20">
+            <div className="card bg-black dark:bg-white text-white dark:text-black  dark:to-purple-800/20">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-purple-600 dark:text-purple-400">Total Views</p>
+                  <p className="text-sm font-medium text-black dark:text-white dark:text-purple-400">Total Views</p>
                   <p className="text-3xl font-bold text-purple-900 dark:text-purple-300">{analytics.total_views}</p>
                 </div>
-                <Eye className="h-12 w-12 text-purple-600 dark:text-purple-400 opacity-50" />
+                <Eye className="h-12 w-12 text-black dark:text-white dark:text-purple-400 opacity-50" />
               </div>
             </div>
 
-            <div className="card bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20">
+            <div className="card bg-black dark:bg-white text-white dark:text-black  dark:to-orange-800/20">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-orange-600 dark:text-orange-400">Total Sales</p>
@@ -495,7 +495,7 @@ const DiscountCampaigns = () => {
             <div className="space-y-4">
               <div className="flex justify-between items-center">
                 <span className="text-gray-700 dark:text-gray-300">Average Effectiveness</span>
-                <span className="font-bold text-indigo-600">{analytics.avg_effectiveness}%</span>
+                <span className="font-bold text-black dark:text-white">{analytics.avg_effectiveness}%</span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-gray-700 dark:text-gray-300">Active Campaigns</span>
@@ -541,7 +541,7 @@ const DiscountCampaigns = () => {
                 />
                 <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400 mt-1">
                   <span>5%</span>
-                  <span className="font-bold text-indigo-600 text-lg">{customDiscount}%</span>
+                  <span className="font-bold text-black dark:text-white text-lg">{customDiscount}%</span>
                   <span>75%</span>
                 </div>
               </div>
@@ -575,7 +575,7 @@ const DiscountCampaigns = () => {
                   </div>
                   <div>
                     <span className="text-gray-600 dark:text-gray-400">Savings:</span>
-                    <span className="ml-2 font-semibold text-indigo-600">
+                    <span className="ml-2 font-semibold text-black dark:text-white">
                       ₹{(selectedItem.originalPrice * (customDiscount / 100)).toFixed(2)}
                     </span>
                   </div>
@@ -595,7 +595,7 @@ const DiscountCampaigns = () => {
                 </button>
                 <button
                   onClick={() => handleApplyDiscount(selectedItem, false)}
-                  className="flex-1 px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-all font-semibold"
+                  className="flex-1 px-6 py-3 bg-black dark:bg-white text-white dark:text-black text-white rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200  transition-all font-semibold"
                 >
                   Apply Custom Discount
                 </button>

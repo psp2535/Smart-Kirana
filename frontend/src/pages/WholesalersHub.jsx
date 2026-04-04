@@ -30,7 +30,7 @@ const WholesalersHub = () => {
             </div>
 
             {/* Enhanced Tabs */}
-            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900 rounded-xl shadow-lg border border-blue-100 dark:border-gray-700">
+            <div className="bg-black dark:bg-white text-white dark:text-black dark:from-gray-800 dark:to-gray-900 rounded-xl shadow-lg border border-neutral-200 dark:border-neutral-700 dark:border-gray-700">
                 <div className="p-2">
                     <nav className="flex gap-2 overflow-x-auto">
                         {tabs.map((tab) => {

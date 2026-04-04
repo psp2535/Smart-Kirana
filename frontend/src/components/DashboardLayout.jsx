@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import Header from './Header';
 import Sidebar from './Sidebar';
@@ -8,10 +8,17 @@ import Sidebar from './Sidebar';
  * Main layout wrapper with header, sidebar, and content area for dashboard pages
  */
 const DashboardLayout = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+
+  // Set initial state based on window width
+  useEffect(() => {
+    if (window.innerWidth < 1024) {
+      setSidebarOpen(false);
+    }
+  }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-black">
+    <div className="min-h-screen bg-transparent transition-colors duration-500 overflow-x-hidden">
       {/* Overlay for mobile when sidebar is open */}
       {sidebarOpen && (
         <div
@@ -25,9 +32,9 @@ const DashboardLayout = () => {
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
       
       {/* Main content area */}
-      <div className="flex flex-col flex-1 lg:pl-64">
+      <div className={`flex flex-col flex-1 transition-all duration-300 ease-in-out ${sidebarOpen ? 'lg:pl-64' : 'lg:pl-0'}`}>
         {/* Header */}
-        <Header onMenuClick={() => setSidebarOpen(true)} />
+        <Header onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
         
         {/* Page content with scrolling */}
         <main className="flex-1 py-4">
