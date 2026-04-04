@@ -10,8 +10,21 @@ const Expense = require('../models/Expense');
 const CustomerRequest = require('../models/CustomerRequest');
 const User = require('../models/User');
 const festivalForecast = require('./festivalForecastService');
+const healthScore = require('./healthScoreService');
 
 class BusinessToolsService {
+  /**
+   * Get business health score and actionable tips
+   */
+  async getBusinessHealthScore(userId) {
+    try {
+      return await healthScore.calculateHealthScore(userId);
+    } catch (error) {
+      console.error('getBusinessHealthScore error:', error);
+      throw error;
+    }
+  }
+
   /**
    * Get today's profit (revenue - COGS - expenses)
    */
@@ -352,7 +365,6 @@ class BusinessToolsService {
 
   /**
    * Get festival demand forecast (context-aware)
-   * Server-side processing - NO raw data sent to LLM
    */
   async getFestivalDemandForecast(userId) {
     try {
