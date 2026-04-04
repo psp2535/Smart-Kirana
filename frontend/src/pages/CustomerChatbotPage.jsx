@@ -53,7 +53,7 @@ const CustomerChatbotPage = () => {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black dark:border-white mx-auto mb-4"></div>
           <p className="text-gray-600">Loading stores...</p>
         </div>
       </div>
@@ -106,12 +106,12 @@ const CustomerChatbotPage = () => {
                 onClick={() => handleStoreSelect(retailer)}
                 className={`p-3 sm:p-4 border rounded-lg cursor-pointer transition-all hover:shadow-md ${
                   selectedRetailer?._id === retailer._id
-                    ? 'border-primary-500 bg-primary-50'
+                    ? 'border-black dark:border-white bg-neutral-100 dark:bg-neutral-800'
                     : 'border-gray-200 hover:border-primary-300'
                 }`}
               >
                 <div className="flex items-start space-x-2 sm:space-x-3">
-                  <Store className="h-5 w-5 sm:h-6 sm:w-6 text-primary-600 flex-shrink-0 mt-1" />
+                  <Store className="h-5 w-5 sm:h-6 sm:w-6 text-black dark:text-white flex-shrink-0 mt-1" />
                   <div className="flex-1 min-w-0">
                     <h3 className="text-sm sm:text-base font-medium text-gray-900 truncate">{retailer.shop_name || retailer.name}</h3>
                     <p className="text-xs sm:text-sm text-gray-600">{retailer.phone}</p>
@@ -143,7 +143,7 @@ const CustomerChatbotPage = () => {
               </div>
               <div className="text-right">
                 <p className="text-sm text-gray-600">{selectedRetailer.phone}</p>
-                <p className="text-xs text-green-600">✓ Available</p>
+                <p className="text-xs text-black dark:text-white">✓ Available</p>
               </div>
             </div>
           </div>

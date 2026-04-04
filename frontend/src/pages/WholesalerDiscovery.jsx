@@ -112,7 +112,7 @@ const WholesalerDiscovery = () => {
     };
 
     if (isLoading) {
-        return <div className="min-h-screen flex items-center justify-center"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary-600"></div></div>;
+        return <div className="min-h-screen flex items-center justify-center"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-black dark:border-white"></div></div>;
     }
 
     return (
@@ -123,15 +123,15 @@ const WholesalerDiscovery = () => {
                     <div className="flex space-x-4">
                         <div className="flex-1 relative">
                             <Search className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
-                            <input type="text" placeholder="Search wholesalers..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} onKeyPress={(e) => e.key === 'Enter' && fetchWholesalers()} className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 dark:bg-gray-800 dark:border-gray-700 dark:text-white" />
+                            <input type="text" placeholder="Search wholesalers..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} onKeyPress={(e) => e.key === 'Enter' && fetchWholesalers()} className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black dark:ring-white dark:bg-gray-800 dark:border-gray-700 dark:text-white" />
                         </div>
-                        <select value={range} onChange={(e) => setRange(e.target.value)} className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 dark:bg-gray-800 dark:border-gray-700 dark:text-white">
+                        <select value={range} onChange={(e) => setRange(e.target.value)} className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black dark:ring-white dark:bg-gray-800 dark:border-gray-700 dark:text-white">
                             <option value="10">Within 10 km</option>
                             <option value="20">Within 20 km</option>
                             <option value="50">Within 50 km</option>
                             <option value="100">Within 100 km</option>
                         </select>
-                        <button onClick={fetchWholesalers} className="px-6 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700">Search</button>
+                        <button onClick={fetchWholesalers} className="px-6 py-2 bg-black dark:bg-white text-white dark:text-black dark:text-black rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200">Search</button>
                     </div>
                 </div>
 
@@ -142,17 +142,17 @@ const WholesalerDiscovery = () => {
                                 <div className="flex justify-between items-start mb-4">
                                     <div><h3 className="text-xl font-bold text-gray-900 dark:text-white">{wholesaler.wholesalerProfile?.businessName || wholesaler.name}</h3><p className="text-sm text-gray-600 dark:text-gray-400">{wholesaler.wholesalerProfile?.contactPerson}</p></div>
                                     {wholesaler.overallScore > 0 && (
-                                        <div className="flex items-center space-x-1 bg-yellow-100 dark:bg-yellow-900 px-2 py-1 rounded"><Star className="h-4 w-4 text-yellow-600" /><span className="text-sm font-semibold text-yellow-800 dark:text-yellow-200">{wholesaler.overallScore.toFixed(1)}</span></div>
+                                        <div className="flex items-center space-x-1 bg-neutral-200 dark:bg-neutral-700 dark:bg-neutral-900 dark:bg-neutral-100 px-2 py-1 rounded"><Star className="h-4 w-4 text-black dark:text-white" /><span className="text-sm font-semibold text-neutral-800 dark:text-neutral-200 dark:text-yellow-200">{wholesaler.overallScore.toFixed(1)}</span></div>
                                     )}
                                 </div>
                                 <div className="space-y-2 text-sm">
-                                    <div className="flex items-center text-gray-600 dark:text-gray-400"><MapPin className="h-4 w-4 mr-2" /><span>{wholesaler.locality || wholesaler.address?.city}</span>{wholesaler.distance_km && <span className="ml-2 text-primary-600 font-semibold">({wholesaler.distance_km} km)</span>}</div>
+                                    <div className="flex items-center text-gray-600 dark:text-gray-400"><MapPin className="h-4 w-4 mr-2" /><span>{wholesaler.locality || wholesaler.address?.city}</span>{wholesaler.distance_km && <span className="ml-2 text-black dark:text-white font-semibold">({wholesaler.distance_km} km)</span>}</div>
                                     <div className="flex items-center text-gray-600 dark:text-gray-400"><DollarSign className="h-4 w-4 mr-2" /><span>Min Order: ₹{wholesaler.wholesalerProfile?.minOrderValue?.toLocaleString()}</span></div>
                                     <div className="flex items-center text-gray-600 dark:text-gray-400"><Truck className="h-4 w-4 mr-2" /><span>Delivery: {wholesaler.wholesalerProfile?.avgDeliveryTime}</span></div>
                                     <div className="flex items-center text-gray-600 dark:text-gray-400"><Phone className="h-4 w-4 mr-2" /><span>{wholesaler.phone}</span></div>
                                 </div>
                                 <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700"><p className="text-xs text-gray-500 dark:text-gray-400">Payment: {wholesaler.wholesalerProfile?.paymentModes?.join(', ')}</p></div>
-                                <button className="mt-4 w-full px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 flex items-center justify-center space-x-2"><Package className="h-5 w-5" /><span>View Products</span></button>
+                                <button className="mt-4 w-full px-4 py-2 bg-black dark:bg-white text-white dark:text-black dark:text-black rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200 flex items-center justify-center space-x-2"><Package className="h-5 w-5" /><span>View Products</span></button>
                             </div>
                         ))}
                     </div>
@@ -160,7 +160,7 @@ const WholesalerDiscovery = () => {
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                         <div className="lg:col-span-2">
                             <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 mb-6">
-                                <button onClick={() => { setSelectedWholesaler(null); setCart([]); }} className="text-primary-600 hover:text-primary-700 mb-4">← Back to Wholesalers</button>
+                                <button onClick={() => { setSelectedWholesaler(null); setCart([]); }} className="text-black dark:text-white hover:text-black dark:text-white mb-4">← Back to Wholesalers</button>
                                 <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">{selectedWholesaler.wholesalerProfile?.businessName}</h2>
                                 <p className="text-gray-600 dark:text-gray-400 mb-4">{selectedWholesaler.locality}</p>
                             </div>
@@ -172,14 +172,14 @@ const WholesalerDiscovery = () => {
                                         <div className="space-y-1 text-sm mb-3">
                                             <div className="flex justify-between"><span className="text-gray-600 dark:text-gray-400">Price:</span><span className="font-semibold text-gray-900 dark:text-white">₹{product.pricePerUnit}/{product.unit}</span></div>
                                             <div className="flex justify-between"><span className="text-gray-600 dark:text-gray-400">Min Order:</span><span className="font-semibold text-gray-900 dark:text-white">{product.minOrderQty} {product.unit}</span></div>
-                                            <div className="flex justify-between"><span className="text-gray-600 dark:text-gray-400">Available:</span><span className="font-semibold text-green-600">{product.availableQty} {product.unit}</span></div>
+                                            <div className="flex justify-between"><span className="text-gray-600 dark:text-gray-400">Available:</span><span className="font-semibold text-black dark:text-white">{product.availableQty} {product.unit}</span></div>
                                         </div>
                                         {product.bulkDiscounts && product.bulkDiscounts.length > 0 && (
-                                            <div className="bg-green-50 dark:bg-green-900/20 rounded p-2 mb-3"><p className="text-xs font-medium text-green-800 dark:text-green-200 mb-1">Bulk Discounts:</p>
-                                                {product.bulkDiscounts.map((d, i) => (<p key={i} className="text-xs text-green-700 dark:text-green-300">≥{d.minQty}: ₹{d.price}/{product.unit}</p>))}
+                                            <div className="bg-neutral-100 dark:bg-neutral-800 dark:bg-neutral-900 dark:bg-neutral-100/20 rounded p-2 mb-3"><p className="text-xs font-medium text-neutral-800 dark:text-neutral-200 dark:text-green-200 mb-1">Bulk Discounts:</p>
+                                                {product.bulkDiscounts.map((d, i) => (<p key={i} className="text-xs text-black dark:text-white dark:text-green-300">≥{d.minQty}: ₹{d.price}/{product.unit}</p>))}
                                             </div>
                                         )}
-                                        <button onClick={() => addToCart(product)} className="w-full px-4 py-2 bg-primary-600 text-white rounded hover:bg-primary-700 flex items-center justify-center space-x-2"><ShoppingCart className="h-4 w-4" /><span>Add to Cart</span></button>
+                                        <button onClick={() => addToCart(product)} className="w-full px-4 py-2 bg-black dark:bg-white text-white dark:text-black dark:text-black rounded hover:bg-neutral-800 dark:hover:bg-neutral-200 flex items-center justify-center space-x-2"><ShoppingCart className="h-4 w-4" /><span>Add to Cart</span></button>
                                     </div>
                                 ))}
                             </div>
@@ -209,7 +209,7 @@ const WholesalerDiscovery = () => {
                                         <div className="border-t border-gray-200 dark:border-gray-700 pt-4 mb-4">
                                             <div className="mb-3">
                                                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Payment Mode</label>
-                                                <select value={paymentMode} onChange={(e) => setPaymentMode(e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                                <select value={paymentMode} onChange={(e) => setPaymentMode(e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black dark:ring-white dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                                                     <option value="Cash">Cash</option>
                                                     <option value="UPI">UPI</option>
                                                     <option value="Credit">Credit</option>
@@ -218,7 +218,7 @@ const WholesalerDiscovery = () => {
                                             </div>
                                             <div className="flex justify-between text-lg font-bold text-gray-900 dark:text-white"><span>Total:</span><span>₹{cart.reduce((sum, item) => sum + (item.pricePerUnit * item.quantity), 0).toFixed(2)}</span></div>
                                         </div>
-                                        <button onClick={() => setShowOrderConfirm(true)} className="w-full px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 font-semibold">Review & Place Order</button>
+                                        <button onClick={() => setShowOrderConfirm(true)} className="w-full px-4 py-3 bg-black dark:bg-white text-white dark:text-black dark:text-black rounded-lg hover:bg-green-700 font-semibold">Review & Place Order</button>
                                     </>
                                 )}
                             </div>
@@ -232,11 +232,11 @@ const WholesalerDiscovery = () => {
                         <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
                             <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Confirm Your Order</h3>
 
-                            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6">
-                                <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-2">Wholesaler Details</h4>
-                                <p className="text-sm text-blue-800 dark:text-blue-300"><strong>Name:</strong> {selectedWholesaler?.wholesalerProfile?.businessName || selectedWholesaler?.name}</p>
-                                <p className="text-sm text-blue-800 dark:text-blue-300"><strong>Location:</strong> {selectedWholesaler?.locality}</p>
-                                <p className="text-sm text-blue-800 dark:text-blue-300"><strong>Phone:</strong> {selectedWholesaler?.phone}</p>
+                            <div className="bg-neutral-100 dark:bg-neutral-800 dark:bg-neutral-900 dark:bg-neutral-100/20 border border-neutral-200 dark:border-neutral-700 dark:border-blue-800 rounded-lg p-4 mb-6">
+                                <h4 className="font-semibold text-black dark:text-white dark:text-blue-200 mb-2">Wholesaler Details</h4>
+                                <p className="text-sm text-neutral-800 dark:text-neutral-200 dark:text-blue-300"><strong>Name:</strong> {selectedWholesaler?.wholesalerProfile?.businessName || selectedWholesaler?.name}</p>
+                                <p className="text-sm text-neutral-800 dark:text-neutral-200 dark:text-blue-300"><strong>Location:</strong> {selectedWholesaler?.locality}</p>
+                                <p className="text-sm text-neutral-800 dark:text-neutral-200 dark:text-blue-300"><strong>Phone:</strong> {selectedWholesaler?.phone}</p>
                             </div>
 
                             <div className="mb-6">
@@ -254,7 +254,7 @@ const WholesalerDiscovery = () => {
                                             <div className="text-right">
                                                 <p className="text-lg font-bold text-gray-900 dark:text-white">₹{(item.pricePerUnit * item.quantity).toFixed(2)}</p>
                                                 {item.bulkDiscounts && item.bulkDiscounts.some(d => item.quantity >= d.minQty) && (
-                                                    <span className="text-xs text-green-600 dark:text-green-400">Bulk discount applied</span>
+                                                    <span className="text-xs text-black dark:text-white dark:text-black dark:text-white">Bulk discount applied</span>
                                                 )}
                                             </div>
                                         </div>
@@ -273,12 +273,12 @@ const WholesalerDiscovery = () => {
                                 </div>
                                 <div className="flex justify-between text-xl font-bold text-gray-900 dark:text-white pt-2 border-t border-gray-200 dark:border-gray-700">
                                     <span>Total Amount:</span>
-                                    <span className="text-green-600">₹{cart.reduce((sum, item) => sum + (item.pricePerUnit * item.quantity), 0).toFixed(2)}</span>
+                                    <span className="text-black dark:text-white">₹{cart.reduce((sum, item) => sum + (item.pricePerUnit * item.quantity), 0).toFixed(2)}</span>
                                 </div>
                             </div>
 
-                            <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4 mb-6">
-                                <p className="text-sm text-yellow-800 dark:text-yellow-200">
+                            <div className="bg-neutral-100 dark:bg-neutral-800 dark:bg-neutral-900 dark:bg-neutral-100/20 border border-neutral-200 dark:border-neutral-700 dark:border-yellow-800 rounded-lg p-4 mb-6">
+                                <p className="text-sm text-neutral-800 dark:text-neutral-200 dark:text-yellow-200">
                                     <strong>Note:</strong> This order will be sent to {selectedWholesaler?.wholesalerProfile?.businessName || selectedWholesaler?.name} as a single order.
                                     All {cart.length} items will be processed together. The wholesaler will review and confirm your order.
                                 </p>
@@ -295,7 +295,7 @@ const WholesalerDiscovery = () => {
                                 <button
                                     onClick={placeOrder}
                                     disabled={isPlacingOrder}
-                                    className="flex-1 px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className="flex-1 px-4 py-3 bg-black dark:bg-white text-white dark:text-black dark:text-black rounded-lg hover:bg-green-700 font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     {isPlacingOrder ? 'Placing Order...' : 'Confirm & Place Order'}
                                 </button>

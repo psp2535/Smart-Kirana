@@ -62,8 +62,8 @@ const Sidebar = ({ isOpen, onClose }) => {
               }}
               className={({ isActive }) =>
                 `w-full flex items-center gap-3 px-4 py-2.5 rounded-xl font-medium transition-colors text-left ${isActive
-                  ? 'bg-neutral-100 dark:bg-neutral-800 text-black dark:text-white font-bold'
-                  : 'text-gray-600 dark:text-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black'
+                  ? 'bg-black dark:bg-white text-white dark:text-black font-bold shadow-md'
+                  : 'text-gray-600 dark:text-white hover:bg-neutral-200 dark:hover:bg-neutral-700 hover:text-black dark:hover:text-white'
                 }`
               }
             >

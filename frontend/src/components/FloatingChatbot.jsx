@@ -366,7 +366,7 @@ const FloatingChatbot = ({ isCustomerMode = false, retailerId = null, retailerNa
                 >
                     <div className="relative">
                         <MessageCircle className="h-6 w-6" />
-                        <Sparkles className="h-3 w-3 absolute -top-1 -right-1 text-yellow-300 animate-spin" />
+                        <Sparkles className="h-3 w-3 absolute -top-1 -right-1 text-black dark:text-white animate-spin" />
                     </div>
                     
                     {/* Tooltip */}
@@ -384,7 +384,7 @@ const FloatingChatbot = ({ isCustomerMode = false, retailerId = null, retailerNa
                         <div className="flex items-center space-x-2 min-w-0 flex-shrink">
                             <div className="relative flex-shrink-0">
                                 <MessageCircle className="h-5 w-5 sm:h-6 sm:w-6" />
-                                <div className="absolute -top-1 -right-1 w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                                <div className="absolute -top-1 -right-1 w-2 h-2 bg-black dark:bg-white rounded-full animate-pulse"></div>
                             </div>
                             <div className="min-w-0">
                                 <h3 className="font-semibold text-sm sm:text-base truncate">
@@ -447,19 +447,19 @@ const FloatingChatbot = ({ isCustomerMode = false, retailerId = null, retailerNa
                                         message.type === 'user'
                                             ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white'
                                             : message.isStockError
-                                            ? 'bg-red-50 border border-red-300 text-red-900'
+                                            ? 'bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-black dark:text-white'
                                             : message.isError
-                                            ? 'bg-orange-50 border border-orange-300 text-orange-900'
+                                            ? 'bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-black dark:text-white'
                                             : message.isSuccess
-                                            ? 'bg-green-50 border border-green-300 text-green-900'
+                                            ? 'bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-black dark:text-white'
                                             : message.isConfirmation
-                                            ? 'bg-yellow-50 border border-yellow-300 text-yellow-900'
+                                            ? 'bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-black dark:text-white'
                                             : 'bg-white border border-gray-200 text-gray-800'
                                     }`}
                                 >
                                     <p className="text-xs sm:text-sm whitespace-pre-wrap break-words">{message.content}</p>
                                     <p className={`text-xs mt-1 ${
-                                        message.type === 'user' ? 'text-purple-200' : 'text-gray-400'
+                                        message.type === 'user' ? 'text-black dark:text-white' : 'text-gray-400'
                                     }`}>
                                         {new Date(message.timestamp).toLocaleTimeString('en-IN', {
                                             hour: '2-digit',
@@ -474,7 +474,7 @@ const FloatingChatbot = ({ isCustomerMode = false, retailerId = null, retailerNa
                             <div className="flex justify-start">
                                 <div className="bg-white border border-gray-200 rounded-2xl px-3 py-2 sm:px-4 sm:py-3">
                                     <div className="flex items-center space-x-2">
-                                        <Loader2 className="h-3.5 w-3.5 sm:h-4 sm:w-4 animate-spin text-purple-600" />
+                                        <Loader2 className="h-3.5 w-3.5 sm:h-4 sm:w-4 animate-spin text-black dark:text-white" />
                                         <span className="text-xs sm:text-sm text-gray-600">Thinking...</span>
                                     </div>
                                 </div>
@@ -483,10 +483,10 @@ const FloatingChatbot = ({ isCustomerMode = false, retailerId = null, retailerNa
 
                         {isSpeaking && (
                             <div className="flex justify-start">
-                                <div className="bg-purple-50 border border-purple-200 rounded-2xl px-3 py-2 sm:px-4">
+                                <div className="bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-2xl px-3 py-2 sm:px-4">
                                     <div className="flex items-center space-x-2">
-                                        <Volume2 className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-purple-600 animate-pulse" />
-                                        <span className="text-xs sm:text-sm text-purple-700">Speaking...</span>
+                                        <Volume2 className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-black dark:text-white animate-pulse" />
+                                        <span className="text-xs sm:text-sm text-black dark:text-white">Speaking...</span>
                                     </div>
                                 </div>
                             </div>
@@ -497,12 +497,12 @@ const FloatingChatbot = ({ isCustomerMode = false, retailerId = null, retailerNa
 
                     {/* Confirmation Buttons */}
                     {pendingConfirmation && (
-                        <div className="p-2.5 sm:p-3 border-t border-yellow-200 bg-yellow-50">
+                        <div className="p-2.5 sm:p-3 border-t border-neutral-200 dark:border-neutral-700 bg-neutral-100 dark:bg-neutral-800">
                             <div className="flex items-center justify-center space-x-2 sm:space-x-3">
                                 <button
                                     onClick={() => handleConfirmation(true)}
                                     disabled={isLoading}
-                                    className="flex-1 bg-green-600 text-white px-3 py-2 sm:px-4 text-sm sm:text-base rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 font-medium"
+                                    className="flex-1 bg-black dark:bg-white text-white dark:text-black px-3 py-2 sm:px-4 text-sm sm:text-base rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200 transition-colors disabled:opacity-50 font-medium"
                                 >
                                     {language === 'hi' ? '✅ हाँ' : 
                                      language === 'te' ? '✅ అవును' : 
@@ -511,7 +511,7 @@ const FloatingChatbot = ({ isCustomerMode = false, retailerId = null, retailerNa
                                 <button
                                     onClick={() => handleConfirmation(false)}
                                     disabled={isLoading}
-                                    className="flex-1 bg-red-600 text-white px-3 py-2 sm:px-4 text-sm sm:text-base rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50 font-medium"
+                                    className="flex-1 bg-black dark:bg-white text-white dark:text-black px-3 py-2 sm:px-4 text-sm sm:text-base rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200 transition-colors disabled:opacity-50 font-medium"
                                 >
                                     {language === 'hi' ? '❌ नहीं' : 
                                      language === 'te' ? '❌ కాదు' : 
@@ -529,7 +529,7 @@ const FloatingChatbot = ({ isCustomerMode = false, retailerId = null, retailerNa
                                 disabled={isLoading}
                                 className={`p-1.5 sm:p-2 rounded-lg transition-all flex-shrink-0 ${
                                     isListening
-                                        ? 'bg-red-500 text-white animate-pulse'
+                                        ? 'bg-black dark:bg-white text-white dark:text-black animate-pulse'
                                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                                 } disabled:opacity-50`}
                                 title={isListening ? "Stop listening" : "Start voice input"}

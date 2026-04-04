@@ -416,7 +416,7 @@ const CustomerRequests = () => {
               key={filterOption.value}
               onClick={() => setFilter(filterOption.value)}
               className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-medium transition-all whitespace-nowrap ${filter === filterOption.value
-                  ? 'bg-primary-600 text-white shadow-md scale-105'
+                  ? 'bg-black dark:bg-white text-white dark:text-black shadow-md scale-105'
                   : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 hover:shadow'
                 }`}
             >
@@ -429,19 +429,19 @@ const CustomerRequests = () => {
       {/* Requests List */}
       <div className="space-y-3">
         {requests.map((request) => (
-          <div key={request._id} className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-3 sm:p-4 hover:shadow-lg transition-all border-l-4 border-primary-500 dark:border-primary-600">
+          <div key={request._id} className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-3 sm:p-4 hover:shadow-lg transition-all border-l-4 border-black dark:border-white dark:border-black dark:border-white">
             {/* Header */}
             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 mb-3">
               <div className="flex items-start gap-3">
                 <div className="bg-gradient-to-br from-primary-100 to-primary-200 dark:from-primary-900/30 dark:to-primary-800/30 p-2 rounded-lg flex-shrink-0 shadow-sm">
-                  <User className="h-5 w-5 text-primary-600 dark:text-primary-400" />
+                  <User className="h-5 w-5 text-black dark:text-white dark:text-black dark:text-white" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="font-bold text-lg text-gray-900 dark:text-gray-100 mb-2">{request.customer_id?.name || 'Customer'}</h3>
                   <div className="flex flex-col gap-2 text-sm text-gray-600 dark:text-gray-400">
                     {request.customer_id?.phone && (
                       <div className="flex items-center gap-2">
-                        <Phone className="h-4 w-4 flex-shrink-0 text-primary-500" />
+                        <Phone className="h-4 w-4 flex-shrink-0 text-black dark:text-white" />
                         <span className="font-medium">{request.customer_id.phone}</span>
                       </div>
                     )}
@@ -456,7 +456,7 @@ const CustomerRequests = () => {
                   </div>
                   {request.customer_id?.address && Object.values(request.customer_id.address).some(val => val && val.trim()) && (
                     <div className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400 mt-2 p-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
-                      <MapPin className="h-4 w-4 flex-shrink-0 mt-0.5 text-primary-500" />
+                      <MapPin className="h-4 w-4 flex-shrink-0 mt-0.5 text-black dark:text-white" />
                       <span className="line-clamp-2">
                         {[
                           request.customer_id.address.street,
@@ -486,7 +486,7 @@ const CustomerRequests = () => {
             {/* Items */}
             <div className="mb-3">
               <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2">
-                <Package className="h-4 w-4 text-primary-500" />
+                <Package className="h-4 w-4 text-black dark:text-white" />
                 Requested Items
               </h4>
               <div className="space-y-2">
@@ -496,7 +496,7 @@ const CustomerRequests = () => {
                     <span className="text-gray-600 dark:text-gray-400 whitespace-nowrap">
                       Qty: <span className="font-bold text-gray-900 dark:text-gray-100">{item.quantity}</span>
                       {item.price_per_unit > 0 && (
-                        <span className="ml-3 font-semibold text-primary-600 dark:text-primary-400">
+                        <span className="ml-3 font-semibold text-black dark:text-white dark:text-black dark:text-white">
                           × ₹{item.price_per_unit} = ₹{item.total_price}
                         </span>
                       )}
@@ -535,7 +535,7 @@ const CustomerRequests = () => {
                   )}
                   <div className="flex justify-between pt-2 border-t border-green-300">
                     <span className="font-semibold text-gray-900">Total:</span>
-                    <span className="font-bold text-base sm:text-lg text-primary-600">
+                    <span className="font-bold text-base sm:text-lg text-black dark:text-white">
                       ₹{request.bill_details.total?.toFixed(2)}
                     </span>
                   </div>
@@ -667,7 +667,7 @@ const CustomerRequests = () => {
                               min="0"
                               value={item.price_per_unit}
                               onChange={(e) => handlePriceChange(index, e.target.value)}
-                              className="w-20 sm:w-24 px-2 py-1.5 sm:px-3 sm:py-2 text-xs sm:text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                              className="w-20 sm:w-24 px-2 py-1.5 sm:px-3 sm:py-2 text-xs sm:text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black dark:ring-white"
                               placeholder="Price"
                             />
                           </div>
@@ -693,7 +693,7 @@ const CustomerRequests = () => {
                     max="100"
                     value={billForm.taxRate}
                     onChange={(e) => setBillForm({ ...billForm, taxRate: parseFloat(e.target.value) || 0 })}
-                    className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                    className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black dark:ring-white"
                     placeholder="0.00"
                   />
                 </div>
@@ -712,7 +712,7 @@ const CustomerRequests = () => {
                   )}
                   <div className="flex justify-between pt-2 border-t border-gray-300">
                     <span className="font-semibold text-sm sm:text-base text-gray-900">Total:</span>
-                    <span className="font-bold text-base sm:text-lg text-primary-600">
+                    <span className="font-bold text-base sm:text-lg text-black dark:text-white">
                       ₹{calculateTotal().total.toFixed(2)}
                     </span>
                   </div>
@@ -733,7 +733,7 @@ const CustomerRequests = () => {
                   <button
                     type="submit"
                     disabled={isLoading}
-                    className="flex-1 sm:flex-auto py-2 px-4 text-sm bg-primary-600 text-white rounded-md hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+                    className="flex-1 sm:flex-auto py-2 px-4 text-sm bg-black dark:bg-white text-white dark:text-black rounded-md hover:bg-neutral-800 dark:hover:bg-neutral-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
                   >
                     {isLoading ? 'Generating...' : 'Generate Bill'}
                   </button>

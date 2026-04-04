@@ -452,7 +452,7 @@ const Inventory = () => {
                 <div className="flex gap-3">
                     <button
                         onClick={() => setShowBillScanModal(true)}
-                        className="bg-black dark:bg-white text-white dark:text-black text-white px-4 py-2 rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200  transition-all flex items-center gap-2 shadow-md"
+                        className="bg-black dark:bg-white text-white dark:text-black dark:text-black text-white px-4 py-2 rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200  transition-all flex items-center gap-2 shadow-md"
                     >
                         <FileText className="h-4 w-4" />
                         Scan Bill
@@ -626,7 +626,7 @@ const Inventory = () => {
                                             </p>
                                             <button
                                                 onClick={() => navigate('/dashboard/discount-campaigns')}
-                                                className="ml-4 px-4 py-2 bg-black dark:bg-white text-white dark:text-black text-white rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200  transition-all flex items-center gap-2 text-sm font-semibold shadow-md"
+                                                className="ml-4 px-4 py-2 bg-black dark:bg-white text-white dark:text-black dark:text-black text-white rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200  transition-all flex items-center gap-2 text-sm font-semibold shadow-md"
                                             >
                                                 <TrendingDown className="h-4 w-4" />
                                                 Apply AI Discounts
@@ -669,7 +669,7 @@ const Inventory = () => {
 
                 {loading ? (
                     <div className="text-center py-8">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600 mx-auto"></div>
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-black dark:border-white mx-auto"></div>
                         <p className="mt-2 text-gray-600">{t('common.loading')}</p>
                     </div>
                 ) : inventory.length === 0 ? (
@@ -941,7 +941,7 @@ const Inventory = () => {
                                     <button
                                         onClick={handleBillScan}
                                         disabled={!selectedImage || uploadingImage}
-                                        className="px-6 py-2 bg-black dark:bg-white text-white dark:text-black text-white rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200  disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center gap-2"
+                                        className="px-6 py-2 bg-black dark:bg-white text-white dark:text-black dark:text-black text-white rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200  disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center gap-2"
                                     >
                                         {uploadingImage ? (
                                             <>
@@ -1097,7 +1097,7 @@ const Inventory = () => {
                                     <button
                                         onClick={handleBillConfirm}
                                         disabled={uploadingImage || parsedBillItems.length === 0}
-                                        className="px-6 py-2 bg-black dark:bg-white text-white dark:text-black text-white rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200  disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center gap-2"
+                                        className="px-6 py-2 bg-black dark:bg-white text-white dark:text-black dark:text-black text-white rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200  disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center gap-2"
                                     >
                                         {uploadingImage ? (
                                             <>
@@ -1178,7 +1178,7 @@ const Inventory = () => {
                                         />
                                         <label
                                             htmlFor="image-upload"
-                                            className="mt-4 inline-block bg-black dark:bg-white text-white dark:text-black px-6 py-2 rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200 cursor-pointer transition-colors"
+                                            className="mt-4 inline-block bg-black dark:bg-white text-white dark:text-black dark:text-black px-6 py-2 rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200 cursor-pointer transition-colors"
                                         >
                                             Select Image
                                         </label>
@@ -1214,7 +1214,7 @@ const Inventory = () => {
                                 <button
                                     onClick={handleImageUpload}
                                     disabled={!selectedImage || uploadingImage}
-                                    className="px-6 py-2 bg-black dark:bg-white text-white dark:text-black text-white rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200  disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center gap-2"
+                                    className="px-6 py-2 bg-black dark:bg-white text-white dark:text-black dark:text-black text-white rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200  disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center gap-2"
                                 >
                                     {uploadingImage ? (
                                         <>

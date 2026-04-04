@@ -26,12 +26,12 @@ const AIInsights = () => {
 
     // Chart colors
     const CHART_COLORS = {
-        blue: ['#3b82f6', '#60a5fa', '#93c5fd', '#bfdbfe', '#dbeafe', '#eff6ff'],
-        green: ['#10b981', '#34d399', '#6ee7b7', '#a7f3d0', '#d1fae5', '#ecfdf5'],
-        purple: ['#8b5cf6', '#a78bfa', '#c4b5fd', '#ddd6fe', '#ede9fe', '#f5f3ff'],
-        orange: ['#f59e0b', '#fbbf24', '#fcd34d', '#fde68a', '#fef3c7', '#fffbeb'],
-        red: ['#ef4444', '#f87171', '#fca5a5', '#fecaca', '#fee2e2', '#fef2f2'],
-        pink: ['#ec4899', '#f472b6', '#f9a8d4', '#fbcfe8', '#fce7f3', '#fdf2f8']
+        blue: ['#171717', '#60a5fa', '#93c5fd', '#bfdbfe', '#dbeafe', '#eff6ff'],
+        green: ['#171717', '#34d399', '#6ee7b7', '#a7f3d0', '#d1fae5', '#ecfdf5'],
+        purple: ['#171717', '#a78bfa', '#c4b5fd', '#ddd6fe', '#ede9fe', '#f5f3ff'],
+        orange: ['#171717', '#fbbf24', '#fcd34d', '#fde68a', '#fef3c7', '#fffbeb'],
+        red: ['#171717', '#f87171', '#fca5a5', '#fecaca', '#fee2e2', '#fef2f2'],
+        pink: ['#171717', '#f472b6', '#f9a8d4', '#fbcfe8', '#fce7f3', '#fdf2f8']
     };
 
     const [activeTab, setActiveTab] = useState('demand');
@@ -386,19 +386,19 @@ const AIInsights = () => {
                 {metadata.salesAnalyzed !== undefined && (
                     <div className="bg-neutral-100 dark:bg-neutral-800 p-3 rounded-lg">
                         <p className="text-xs text-black dark:text-white font-medium">{t('ai.metadata.salesAnalyzed')}</p>
-                        <p className="text-lg font-bold text-blue-900">{metadata.salesAnalyzed}</p>
+                        <p className="text-lg font-bold text-black dark:text-white">{metadata.salesAnalyzed}</p>
                     </div>
                 )}
                 {metadata.inventoryItems !== undefined && (
-                    <div className="bg-green-50 p-3 rounded-lg">
-                        <p className="text-xs text-green-600 font-medium">{t('ai.metadata.inventoryItems')}</p>
-                        <p className="text-lg font-bold text-green-900">{metadata.inventoryItems}</p>
+                    <div className="bg-neutral-100 dark:bg-neutral-800 p-3 rounded-lg">
+                        <p className="text-xs text-black dark:text-white font-medium">{t('ai.metadata.inventoryItems')}</p>
+                        <p className="text-lg font-bold text-black dark:text-white">{metadata.inventoryItems}</p>
                     </div>
                 )}
                 {metadata.expensesAnalyzed !== undefined && (
                     <div className="bg-neutral-100 dark:bg-neutral-800 p-3 rounded-lg">
                         <p className="text-xs text-black dark:text-white font-medium">{t('ai.metadata.expensesAnalyzed')}</p>
-                        <p className="text-lg font-bold text-purple-900">{metadata.expensesAnalyzed}</p>
+                        <p className="text-lg font-bold text-black dark:text-white">{metadata.expensesAnalyzed}</p>
                     </div>
                 )}
                 {metadata.periodDays !== undefined && (
@@ -408,27 +408,27 @@ const AIInsights = () => {
                     </div>
                 )}
                 {metadata.totalRevenue !== undefined && (
-                    <div className="bg-green-50 p-3 rounded-lg">
-                        <p className="text-xs text-green-600 font-medium">{t('ai.metadata.totalRevenue')}</p>
-                        <p className="text-lg font-bold text-green-900">₹{metadata.totalRevenue.toLocaleString()}</p>
+                    <div className="bg-neutral-100 dark:bg-neutral-800 p-3 rounded-lg">
+                        <p className="text-xs text-black dark:text-white font-medium">{t('ai.metadata.totalRevenue')}</p>
+                        <p className="text-lg font-bold text-black dark:text-white">₹{metadata.totalRevenue.toLocaleString()}</p>
                     </div>
                 )}
                 {metadata.avgOrderValue !== undefined && (
                     <div className="bg-neutral-100 dark:bg-neutral-800 p-3 rounded-lg">
                         <p className="text-xs text-black dark:text-white font-medium">{t('ai.metadata.avgOrderValue')}</p>
-                        <p className="text-lg font-bold text-blue-900">₹{metadata.avgOrderValue.toLocaleString()}</p>
+                        <p className="text-lg font-bold text-black dark:text-white">₹{metadata.avgOrderValue.toLocaleString()}</p>
                     </div>
                 )}
                 {metadata.totalExpenses !== undefined && (
-                    <div className="bg-red-50 p-3 rounded-lg">
-                        <p className="text-xs text-red-600 font-medium">{t('ai.metadata.totalExpenses')}</p>
-                        <p className="text-lg font-bold text-red-900">₹{metadata.totalExpenses.toLocaleString()}</p>
+                    <div className="bg-neutral-100 dark:bg-neutral-800 p-3 rounded-lg">
+                        <p className="text-xs text-black dark:text-white font-medium">{t('ai.metadata.totalExpenses')}</p>
+                        <p className="text-lg font-bold text-black dark:text-white">₹{metadata.totalExpenses.toLocaleString()}</p>
                     </div>
                 )}
                 {metadata.currentSeason && (
-                    <div className="bg-orange-50 p-3 rounded-lg col-span-2">
-                        <p className="text-xs text-orange-600 font-medium">{t('ai.metadata.currentSeason')}</p>
-                        <p className="text-sm font-bold text-orange-900">{metadata.currentSeason}</p>
+                    <div className="bg-neutral-100 dark:bg-neutral-800 p-3 rounded-lg col-span-2">
+                        <p className="text-xs text-black dark:text-white font-medium">{t('ai.metadata.currentSeason')}</p>
+                        <p className="text-sm font-bold text-black dark:text-white">{metadata.currentSeason}</p>
                     </div>
                 )}
             </div>
@@ -443,7 +443,7 @@ const AIInsights = () => {
         if (isLoading) {
             return (
                 <div className="flex flex-col items-center justify-center py-20">
-                    <Loader2 className="h-12 w-12 text-orange-600 animate-spin mb-4" />
+                    <Loader2 className="h-12 w-12 text-black dark:text-white animate-spin mb-4" />
                     <p className="text-gray-600">Analyzing festival demand...</p>
                     <p className="text-sm text-gray-500 mt-2">Checking upcoming festivals and your inventory</p>
                 </div>
@@ -452,12 +452,12 @@ const AIInsights = () => {
 
         if (errorMsg) {
             return (
-                <div className="bg-red-50 border border-red-200 rounded-lg p-6">
+                <div className="bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-lg p-6">
                     <div className="flex items-start">
-                        <AlertCircle className="h-6 w-6 text-red-600 mt-0.5 mr-3" />
+                        <AlertCircle className="h-6 w-6 text-black dark:text-white mt-0.5 mr-3" />
                         <div>
-                            <h3 className="text-red-900 font-semibold mb-2">Error</h3>
-                            <p className="text-red-700 text-sm">{errorMsg}</p>
+                            <h3 className="text-black dark:text-white font-semibold mb-2">Error</h3>
+                            <p className="text-black dark:text-white text-sm">{errorMsg}</p>
                             <button
                                 onClick={() => generateInsight('festival')}
                                 className="mt-4 btn-primary"
@@ -474,7 +474,7 @@ const AIInsights = () => {
         if (!festivalData) {
             return (
                 <div className="text-center py-20">
-                    <PartyPopper className="h-16 w-16 text-orange-400 mx-auto mb-4" />
+                    <PartyPopper className="h-16 w-16 text-black dark:text-white mx-auto mb-4" />
                     <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                         Festival Demand Forecasting
                     </h3>
@@ -515,8 +515,8 @@ const AIInsights = () => {
 
         const getConfidenceBadge = (confidence) => {
             const badges = {
-                'High': { bg: 'bg-green-100', text: 'text-green-800', icon: '✅' },
-                'Medium': { bg: 'bg-yellow-100', text: 'text-yellow-800', icon: '⚠️' },
+                'High': { bg: 'bg-neutral-200 dark:bg-neutral-700', text: 'text-neutral-800 dark:text-neutral-200', icon: '✅' },
+                'Medium': { bg: 'bg-neutral-200 dark:bg-neutral-700', text: 'text-neutral-800 dark:text-neutral-200', icon: '⚠️' },
                 'Low': { bg: 'bg-gray-100', text: 'text-gray-800', icon: 'ℹ️' }
             };
             return badges[confidence] || badges['Low'];
@@ -525,7 +525,7 @@ const AIInsights = () => {
         return (
             <div className="space-y-6">
                 {/* Festival Header Card */}
-                <div className="bg-black dark:bg-white text-white dark:text-black rounded-lg p-6 text-white">
+                <div className="bg-black dark:bg-white text-white dark:text-black dark:text-black rounded-lg p-6 text-white">
                     <div className="flex items-start justify-between">
                         <div className="flex-1">
                             <div className="flex items-center mb-2">
@@ -560,22 +560,22 @@ const AIInsights = () => {
 
                 {/* Summary Stats */}
                 <div className="grid grid-cols-3 gap-4">
-                    <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                    <div className="bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-lg p-4">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-sm text-green-600 font-medium">High Confidence</p>
-                                <p className="text-2xl font-bold text-green-900">{summary.high_confidence}</p>
+                                <p className="text-sm text-black dark:text-white font-medium">High Confidence</p>
+                                <p className="text-2xl font-bold text-black dark:text-white">{summary.high_confidence}</p>
                             </div>
-                            <CheckCircle className="h-8 w-8 text-green-500" />
+                            <CheckCircle className="h-8 w-8 text-black dark:text-white" />
                         </div>
                     </div>
-                    <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                    <div className="bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-lg p-4">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-sm text-yellow-600 font-medium">Medium Confidence</p>
-                                <p className="text-2xl font-bold text-yellow-900">{summary.medium_confidence}</p>
+                                <p className="text-sm text-black dark:text-white font-medium">Medium Confidence</p>
+                                <p className="text-2xl font-bold text-black dark:text-white">{summary.medium_confidence}</p>
                             </div>
-                            <AlertCircle className="h-8 w-8 text-yellow-500" />
+                            <AlertCircle className="h-8 w-8 text-black dark:text-white" />
                         </div>
                     </div>
                     <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
@@ -592,7 +592,7 @@ const AIInsights = () => {
                 {/* Recommended Items */}
                 <div>
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
-                        <Package className="h-5 w-5 mr-2 text-orange-600" />
+                        <Package className="h-5 w-5 mr-2 text-black dark:text-white" />
                         Recommended Items to Stock
                     </h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -620,7 +620,7 @@ const AIInsights = () => {
                                                 {item.reasoning}
                                             </p>
                                             <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${item.action.includes('Restock')
-                                                ? 'bg-red-100 text-red-800'
+                                                ? 'bg-neutral-200 dark:bg-neutral-700 text-neutral-800 dark:text-neutral-200'
                                                 : 'bg-neutral-200 dark:bg-neutral-700 text-black dark:text-white'
                                                 }`}>
                                                 {item.action}
@@ -636,7 +636,7 @@ const AIInsights = () => {
                 {/* AI Response */}
                 {festivalData.message && (
                     <div className="bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-lg p-6">
-                        <h3 className="text-lg font-semibold text-blue-900 mb-3 flex items-center">
+                        <h3 className="text-lg font-semibold text-black dark:text-white mb-3 flex items-center">
                             <Brain className="h-5 w-5 mr-2" />
                             AI Recommendations
                         </h3>
@@ -646,7 +646,7 @@ const AIInsights = () => {
                                     p: ({ node, ...props }) => <p className="text-black dark:text-white mb-2" {...props} />,
                                     ul: ({ node, ...props }) => <ul className="list-disc list-inside space-y-1 text-black dark:text-white" {...props} />,
                                     li: ({ node, ...props }) => <li className="text-black dark:text-white" {...props} />,
-                                    strong: ({ node, ...props }) => <strong className="font-semibold text-blue-900" {...props} />,
+                                    strong: ({ node, ...props }) => <strong className="font-semibold text-black dark:text-white" {...props} />,
                                 }}
                             >
                                 {festivalData.message}
@@ -671,7 +671,7 @@ const AIInsights = () => {
         if (isLoading) {
             return (
                 <div className="flex flex-col items-center justify-center py-20">
-                    <Loader2 className="h-12 w-12 text-primary-600 animate-spin mb-4" />
+                    <Loader2 className="h-12 w-12 text-black dark:text-white animate-spin mb-4" />
                     <p className="text-gray-600">{t('ai.analyzing')}</p>
                     <p className="text-sm text-gray-500 mt-2">{t('ai.analyzingTime')}</p>
                 </div>
@@ -680,12 +680,12 @@ const AIInsights = () => {
 
         if (errorMsg) {
             return (
-                <div className="bg-red-50 border border-red-200 rounded-lg p-6">
+                <div className="bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-lg p-6">
                     <div className="flex items-start">
-                        <AlertCircle className="h-6 w-6 text-red-600 mt-0.5 mr-3" />
+                        <AlertCircle className="h-6 w-6 text-black dark:text-white mt-0.5 mr-3" />
                         <div>
-                            <h3 className="text-red-900 font-semibold mb-2">{t('ai.error')}</h3>
-                            <p className="text-red-700 text-sm">{errorMsg}</p>
+                            <h3 className="text-black dark:text-white font-semibold mb-2">{t('ai.error')}</h3>
+                            <p className="text-black dark:text-white text-sm">{errorMsg}</p>
                             <button
                                 onClick={() => generateInsight(type)}
                                 className="mt-4 btn-primary"
@@ -740,14 +740,14 @@ const AIInsights = () => {
             <div className="space-y-6" ref={contentRef}>
                 {/* PDF Header - Hidden on screen, shown in PDF */}
                 <div className="pdf-header" style={{ display: 'none' }}>
-                    <div style={{ textAlign: 'center', marginBottom: '20px', borderBottom: '2px solid #4F46E5', paddingBottom: '15px' }}>
-                        <h1 style={{ fontSize: '28px', fontWeight: 'bold', color: '#4F46E5', marginBottom: '5px' }}>
+                    <div style={{ textAlign: 'center', marginBottom: '20px', borderBottom: '2px solid #171717', paddingBottom: '15px' }}>
+                        <h1 style={{ fontSize: '28px', fontWeight: 'bold', color: '#171717', marginBottom: '5px' }}>
                             {tabs.find(t => t.id === type)?.name}
                         </h1>
-                        <p style={{ fontSize: '16px', color: '#6B7280', marginBottom: '5px' }}>
+                        <p style={{ fontSize: '16px', color: '#171717', marginBottom: '5px' }}>
                             Powered by OpenAI API - Smart Kirana
                         </p>
-                        <p style={{ fontSize: '12px', color: '#9CA3AF' }}>
+                        <p style={{ fontSize: '12px', color: '#171717' }}>
                             Generated on: {new Date(insight.metadata?.generatedAt).toLocaleString('en-IN')}
                         </p>
                     </div>
@@ -773,7 +773,7 @@ const AIInsights = () => {
                                         contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px' }}
                                         formatter={(value) => [`₹${value}`, 'Revenue']}
                                     />
-                                    <Line type="monotone" dataKey="revenue" stroke="#3b82f6" strokeWidth={2} dot={{ fill: '#3b82f6', r: 3 }} />
+                                    <Line type="monotone" dataKey="revenue" stroke="#171717" strokeWidth={2} dot={{ fill: '#171717', r: 3 }} />
                                 </LineChart>
                             </ResponsiveContainer>
                         </div>
@@ -794,7 +794,7 @@ const AIInsights = () => {
                                             contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px' }}
                                             formatter={(value) => [value, 'Quantity']}
                                         />
-                                        <Bar dataKey="quantity" fill="#3b82f6" radius={[0, 4, 4, 0]} />
+                                        <Bar dataKey="quantity" fill="#171717" radius={[0, 4, 4, 0]} />
                                     </BarChart>
                                 </ResponsiveContainer>
                             ) : (
@@ -814,7 +814,7 @@ const AIInsights = () => {
                         {/* Revenue Trend Chart */}
                         <div className="bg-white border border-gray-200 rounded-lg p-4">
                             <h4 className="text-sm font-semibold text-gray-700 mb-3 flex items-center">
-                                <TrendingUp className="h-4 w-4 mr-2 text-green-600" />
+                                <TrendingUp className="h-4 w-4 mr-2 text-black dark:text-white" />
                                 Revenue Trend (Last 60 Days)
                             </h4>
                             <ResponsiveContainer width="100%" height={250}>
@@ -826,7 +826,7 @@ const AIInsights = () => {
                                         contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px' }}
                                         formatter={(value) => [`₹${value}`, 'Revenue']}
                                     />
-                                    <Line type="monotone" dataKey="revenue" stroke="#10b981" strokeWidth={2} dot={{ fill: '#10b981', r: 3 }} />
+                                    <Line type="monotone" dataKey="revenue" stroke="#171717" strokeWidth={2} dot={{ fill: '#171717', r: 3 }} />
                                 </LineChart>
                             </ResponsiveContainer>
                         </div>
@@ -834,7 +834,7 @@ const AIInsights = () => {
                         {/* Revenue by Category Chart */}
                         <div className="bg-white border border-gray-200 rounded-lg p-4">
                             <h4 className="text-sm font-semibold text-gray-700 mb-3 flex items-center">
-                                <DollarSign className="h-4 w-4 mr-2 text-green-600" />
+                                <DollarSign className="h-4 w-4 mr-2 text-black dark:text-white" />
                                 Revenue by Category
                             </h4>
                             <ResponsiveContainer width="100%" height={250}>
@@ -846,11 +846,11 @@ const AIInsights = () => {
                                         labelLine={false}
                                         label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
                                         outerRadius={80}
-                                        fill="#8884d8"
+                                        fill="#171717"
                                         dataKey="value"
                                     >
                                         {chartData.revenueByCategory.map((entry, index) => (
-                                            <Cell key={`cell-${index}`} fill={['#10b981', '#3b82f6', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'][index % 6]} />
+                                            <Cell key={`cell-${index}`} fill={['#171717', '#171717', '#171717', '#171717', '#171717', '#171717'][index % 6]} />
                                         ))}
                                     </Pie>
                                     <Tooltip formatter={(value) => `₹${value}`} />
@@ -877,7 +877,7 @@ const AIInsights = () => {
                                         contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px' }}
                                         formatter={(value) => [`₹${value}`, 'Expense']}
                                     />
-                                    <Line type="monotone" dataKey="amount" stroke="#8b5cf6" strokeWidth={2} dot={{ fill: '#8b5cf6', r: 3 }} />
+                                    <Line type="monotone" dataKey="amount" stroke="#171717" strokeWidth={2} dot={{ fill: '#171717', r: 3 }} />
                                 </LineChart>
                             </ResponsiveContainer>
                         </div>
@@ -897,11 +897,11 @@ const AIInsights = () => {
                                         labelLine={false}
                                         label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
                                         outerRadius={80}
-                                        fill="#8884d8"
+                                        fill="#171717"
                                         dataKey="value"
                                     >
                                         {chartData.expenseByCategory.map((entry, index) => (
-                                            <Cell key={`cell-${index}`} fill={['#8b5cf6', '#ec4899', '#f59e0b', '#ef4444', '#3b82f6', '#10b981'][index % 6]} />
+                                            <Cell key={`cell-${index}`} fill={['#171717', '#171717', '#171717', '#171717', '#171717', '#171717'][index % 6]} />
                                         ))}
                                     </Pie>
                                     <Tooltip formatter={(value) => `₹${value}`} />
@@ -914,14 +914,14 @@ const AIInsights = () => {
                 <div className="bg-white border border-gray-200 rounded-lg p-6">
                     <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center">
-                            <CheckCircle className="h-6 w-6 text-green-500 mr-2" />
+                            <CheckCircle className="h-6 w-6 text-black dark:text-white mr-2" />
                             <h3 className="text-lg font-semibold text-gray-900 dark:text-white">AI Analysis</h3>
                         </div>
                         <div className="flex items-center space-x-3">
                             <button
                                 onClick={() => exportToPDF(type)}
                                 disabled={exportingPDF}
-                                className="text-sm bg-green-600 text-white px-3 py-1.5 rounded-lg hover:bg-green-700 flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="text-sm bg-black dark:bg-white text-white dark:text-black px-3 py-1.5 rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200 flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 {exportingPDF ? (
                                     <>
@@ -937,7 +937,7 @@ const AIInsights = () => {
                             </button>
                             <button
                                 onClick={() => generateInsight(type)}
-                                className="text-sm text-primary-600 hover:text-primary-700 flex items-center"
+                                className="text-sm text-black dark:text-white hover:text-black dark:text-white flex items-center"
                             >
                                 <RefreshCw className="h-4 w-4 mr-1" />
                                 Regenerate
@@ -957,17 +957,17 @@ const AIInsights = () => {
 
                             if (actions.length > 0) {
                                 return (
-                                    <div className="mb-6 bg-black dark:bg-white text-white dark:text-black dark:from-green-900/30 dark:to-emerald-900/30 border-2 border-green-400 dark:border-green-600 rounded-xl p-6 shadow-lg animate-slideInLeft">
+                                    <div className="mb-6 bg-black dark:bg-white text-white dark:text-black dark:text-black dark:from-green-900/30 dark:to-emerald-900/30 border-2 border-green-400 dark:border-green-600 rounded-xl p-6 shadow-lg animate-slideInLeft">
                                         <div className="flex items-center mb-4">
-                                            <div className="p-2 bg-green-500 rounded-lg mr-3">
+                                            <div className="p-2 bg-black dark:bg-white rounded-lg mr-3">
                                                 <Sparkles className="h-6 w-6 text-white" />
                                             </div>
-                                            <h3 className="text-xl font-bold text-green-900 dark:text-green-100">🎯 Quick Actions - Do This Today!</h3>
+                                            <h3 className="text-xl font-bold text-black dark:text-white dark:text-green-100">🎯 Quick Actions - Do This Today!</h3>
                                         </div>
                                         <div className="space-y-3">
                                             {actions.map((action, idx) => (
-                                                <div key={idx} className="flex items-start bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm border border-green-200 dark:border-green-700">
-                                                    <div className="flex-shrink-0 w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center font-bold mr-3">
+                                                <div key={idx} className="flex items-start bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm border border-neutral-200 dark:border-neutral-700 dark:border-green-700">
+                                                    <div className="flex-shrink-0 w-8 h-8 bg-black dark:bg-white text-white dark:text-black rounded-full flex items-center justify-center font-bold mr-3">
                                                         {idx + 1}
                                                     </div>
                                                     <p className="text-gray-900 dark:text-gray-100 font-medium flex-1">{action}</p>
@@ -991,21 +991,21 @@ const AIInsights = () => {
                                     let bgClass = 'bg-gray-100 dark:bg-gray-700/40';
 
                                     if (text.includes('🎯')) {
-                                        colorClass = 'text-green-700 dark:text-green-300';
-                                        bgClass = 'bg-green-100 dark:bg-green-900/40';
+                                        colorClass = 'text-black dark:text-white dark:text-green-300';
+                                        bgClass = 'bg-neutral-200 dark:bg-neutral-700 dark:bg-neutral-900 dark:bg-neutral-100/40';
                                     } else if (text.includes('💰')) {
-                                        colorClass = 'text-yellow-700 dark:text-yellow-300';
-                                        bgClass = 'bg-yellow-100 dark:bg-yellow-900/40';
+                                        colorClass = 'text-black dark:text-white dark:text-yellow-300';
+                                        bgClass = 'bg-neutral-200 dark:bg-neutral-700 dark:bg-neutral-900 dark:bg-neutral-100/40';
                                     } else if (text.includes('💡')) {
                                         colorClass = 'text-black dark:text-white dark:text-purple-300';
-                                        bgClass = 'bg-neutral-200 dark:bg-neutral-700 dark:bg-purple-900/40';
+                                        bgClass = 'bg-neutral-200 dark:bg-neutral-700 dark:bg-neutral-900 dark:bg-neutral-100/40';
                                     } else if (text.includes('📊')) {
                                         colorClass = 'text-black dark:text-white dark:text-white';
                                         bgClass = 'bg-neutral-200 dark:bg-neutral-700 dark:bg-neutral-800';
                                     }
 
                                     return (
-                                        <h2 className={`text-xl font-bold ${colorClass} ${bgClass} mt-6 mb-3 p-3 rounded-lg border-l-4 ${text.includes('🎯') ? 'border-green-500' : text.includes('💰') ? 'border-yellow-500' : text.includes('💡') ? 'border-black dark:border-white' : 'border-black dark:border-white'}`} {...props}>
+                                        <h2 className={`text-xl font-bold ${colorClass} ${bgClass} mt-6 mb-3 p-3 rounded-lg border-l-4 ${text.includes('🎯') ? 'border-black dark:border-white' : text.includes('💰') ? 'border-black dark:border-white' : text.includes('💡') ? 'border-black dark:border-white' : 'border-black dark:border-white'}`} {...props}>
                                             {children}
                                         </h2>
                                     );
@@ -1020,9 +1020,9 @@ const AIInsights = () => {
                                     let boxClass = '';
 
                                     if (text.toLowerCase().includes('action') || text.toLowerCase().includes('restock') || text.toLowerCase().includes('order')) {
-                                        boxClass = 'bg-green-50 dark:bg-green-900/30 border-l-4 border-green-500 pl-3 py-1 my-1 rounded';
+                                        boxClass = 'bg-neutral-100 dark:bg-neutral-800 dark:bg-neutral-900 dark:bg-neutral-100/30 border-l-4 border-black dark:border-white pl-3 py-1 my-1 rounded';
                                     } else if (text.toLowerCase().includes('urgent') || text.toLowerCase().includes('critical') || text.toLowerCase().includes('alert')) {
-                                        boxClass = 'bg-red-50 dark:bg-red-900/30 border-l-4 border-red-500 pl-3 py-1 my-1 rounded';
+                                        boxClass = 'bg-neutral-100 dark:bg-neutral-800 dark:bg-neutral-900 dark:bg-neutral-100/30 border-l-4 border-black dark:border-white pl-3 py-1 my-1 rounded';
                                     }
 
                                     return <li className={`${className} ${boxClass}`} {...props}>{children}</li>;
@@ -1032,11 +1032,11 @@ const AIInsights = () => {
                                     let highlightClass = 'font-semibold text-gray-900 dark:text-white';
 
                                     if (text.match(/₹[\d,]+/)) {
-                                        highlightClass = 'font-bold text-green-600 dark:text-green-400 bg-green-100 dark:bg-green-900/40 px-1 rounded';
+                                        highlightClass = 'font-bold text-black dark:text-white dark:text-black dark:text-white bg-neutral-200 dark:bg-neutral-700 dark:bg-neutral-900 dark:bg-neutral-100/40 px-1 rounded';
                                     } else if (text.match(/\d+%/)) {
-                                        highlightClass = 'font-bold text-black dark:text-white dark:text-blue-400 bg-neutral-200 dark:bg-neutral-700 dark:bg-blue-900/40 px-1 rounded';
+                                        highlightClass = 'font-bold text-black dark:text-white dark:text-black dark:text-white bg-neutral-200 dark:bg-neutral-700 dark:bg-neutral-900 dark:bg-neutral-100/40 px-1 rounded';
                                     } else if (text.toLowerCase().includes('high') || text.toLowerCase().includes('top')) {
-                                        highlightClass = 'font-bold text-black dark:text-white dark:text-purple-400 bg-neutral-200 dark:bg-neutral-700 dark:bg-purple-900/40 px-1 rounded';
+                                        highlightClass = 'font-bold text-black dark:text-white dark:text-black dark:text-white bg-neutral-200 dark:bg-neutral-700 dark:bg-neutral-900 dark:bg-neutral-100/40 px-1 rounded';
                                     }
 
                                     return <strong className={highlightClass} {...props}>{children}</strong>;
@@ -1069,7 +1069,7 @@ const AIInsights = () => {
             <div className="flex items-center justify-between">
                 <div>
                     <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center">
-                        <Brain className="h-8 w-8 mr-3 text-primary-600" />
+                        <Brain className="h-8 w-8 mr-3 text-black dark:text-white" />
                         {t('ai.title')}
                     </h1>
                     <p className="text-gray-600 mt-1">
@@ -1099,7 +1099,7 @@ const AIInsights = () => {
                                     <h3 className="font-semibold text-gray-900 dark:text-white">{tab.name}</h3>
                                     <p className="text-sm text-gray-600 mt-1">{tab.description}</p>
                                     {insights[tab.id] && (
-                                        <div className="mt-2 flex items-center text-xs text-green-600">
+                                        <div className="mt-2 flex items-center text-xs text-black dark:text-white">
                                             <CheckCircle className="h-3 w-3 mr-1" />
                                             {t('ai.generated')}
                                         </div>

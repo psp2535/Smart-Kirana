@@ -94,7 +94,7 @@ const Analytics = () => {
     if (loading) {
         return (
             <div className="flex items-center justify-center h-64">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-black dark:border-white"></div>
             </div>
         );
     }
@@ -205,14 +205,14 @@ const Analytics = () => {
                 </div>
 
                 {/* Remaining Inventory Value */}
-                <div className="card bg-black dark:bg-white text-white dark:text-black">
+                <div className="card bg-black dark:bg-white text-white dark:text-black dark:text-black">
                     <div className="flex items-center justify-between">
                         <div className="w-full">
                             <p className="text-sm font-medium text-gray-600 dark:text-gray-400 flex items-center">
                                 <Package className="h-4 w-4 mr-1" />
                                 Remaining Inventory Value
                             </p>
-                            <p className="text-xl font-bold text-indigo-900 dark:text-white">₹{profitData?.inventoryValue?.toLocaleString() || 0}</p>
+                            <p className="text-xl font-bold text-white">₹{profitData?.inventoryValue?.toLocaleString() || 0}</p>
                             <p className="text-xs text-black dark:text-white mt-1">{inventoryStatus?.totalItems || 0} items in stock</p>
                         </div>
                     </div>
@@ -230,8 +230,8 @@ const Analytics = () => {
                             <XAxis dataKey="name" />
                             <YAxis />
                             <Tooltip />
-                            <Bar dataKey="sales" fill="#10b981" name="Sales" />
-                            <Bar dataKey="expenses" fill="#ef4444" name="Expenses" />
+                            <Bar dataKey="sales" fill="#171717" name="Sales" />
+                            <Bar dataKey="expenses" fill="#a3a3a3" name="Expenses" />
                         </BarChart>
                     </ResponsiveContainer>
                 </div>
@@ -245,7 +245,7 @@ const Analytics = () => {
                             <XAxis dataKey="name" />
                             <YAxis />
                             <Tooltip />
-                            <Line type="monotone" dataKey="sales" stroke="#3b82f6" strokeWidth={2} />
+                            <Line type="monotone" dataKey="sales" stroke="#171717" strokeWidth={2} />
                         </LineChart>
                     </ResponsiveContainer>
                 </div>
@@ -270,7 +270,7 @@ const Analytics = () => {
                                     dataKey="value"
                                 >
                                     {categoryData.map((entry, index) => (
-                                        <Cell key={`cell-${index}`} fill={entry.color} />
+                                        <Cell key={`cell-${index}`} fill={['#171717', '#525252', '#a3a3a3', '#e5e5e5'][index % 4]} />
                                     ))}
                                 </Pie>
                                 <Tooltip />
@@ -322,7 +322,7 @@ const Analytics = () => {
                             {/* Sales Change */}
                             <div className="flex items-start">
                                 <div className="flex-shrink-0">
-                                    <div className={`w-2 h-2 ${insights.salesChange.direction === 'up' ? 'bg-green-500' : 'bg-red-500'} rounded-full mt-2`}></div>
+                                    <div className={`w-2 h-2 ${insights.salesChange.direction === 'up' ? 'bg-black dark:bg-white' : 'bg-neutral-400'} rounded-full mt-2`}></div>
                                 </div>
                                 <div className="ml-3">
                                     <p className="text-sm text-gray-900 dark:text-white">
@@ -345,7 +345,7 @@ const Analytics = () => {
                             {/* Average Order Value */}
                             <div className="flex items-start">
                                 <div className="flex-shrink-0">
-                                    <div className={`w-2 h-2 ${insights.avgOrderValue.direction === 'up' ? 'bg-green-500' : insights.avgOrderValue.direction === 'down' ? 'bg-yellow-500' : 'bg-gray-500'} rounded-full mt-2`}></div>
+                                    <div className={`w-2 h-2 ${insights.avgOrderValue.direction === 'up' ? 'bg-black dark:bg-white' : insights.avgOrderValue.direction === 'down' ? 'bg-neutral-500' : 'bg-neutral-300'} rounded-full mt-2`}></div>
                                 </div>
                                 <div className="ml-3">
                                     <p className="text-sm text-gray-900 dark:text-white">
@@ -361,7 +361,7 @@ const Analytics = () => {
                             {/* Customer Acquisition */}
                             <div className="flex items-start">
                                 <div className="flex-shrink-0">
-                                    <div className={`w-2 h-2 ${insights.newCustomers > 0 ? 'bg-blue-500' : 'bg-gray-500'} rounded-full mt-2`}></div>
+                                    <div className={`w-2 h-2 ${insights.newCustomers > 0 ? 'bg-black dark:bg-white' : 'bg-neutral-300'} rounded-full mt-2`}></div>
                                 </div>
                                 <div className="ml-3">
                                     <p className="text-sm text-gray-900 dark:text-white">
@@ -377,7 +377,7 @@ const Analytics = () => {
                             {insights.lowStockItems > 0 && (
                                 <div className="flex items-start">
                                     <div className="flex-shrink-0">
-                                        <div className="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+                                        <div className="w-2 h-2 bg-neutral-600 rounded-full mt-2"></div>
                                     </div>
                                     <div className="ml-3">
                                         <p className="text-sm text-gray-900 dark:text-white">
@@ -399,28 +399,28 @@ const Analytics = () => {
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Quick Actions</h3>
                     <div className="space-y-3">
                         <button 
-                            onClick={() => navigate('/sales')}
+                            onClick={() => navigate('/dashboard/sales')}
                             className="w-full text-left p-3 rounded-lg border border-gray-200 hover:bg-neutral-100 dark:bg-neutral-800 hover:border-neutral-200 dark:border-neutral-700 transition-colors"
                         >
                             <p className="text-sm font-medium text-gray-900 dark:text-white">View Sales Dashboard</p>
                             <p className="text-xs text-gray-500 dark:text-gray-400">Access detailed sales data & reports</p>
                         </button>
                         <button 
-                            onClick={() => navigate('/customers')}
+                            onClick={() => navigate('/dashboard/customers')}
                             className="w-full text-left p-3 rounded-lg border border-gray-200 hover:bg-neutral-100 dark:bg-neutral-800 hover:border-neutral-200 dark:border-neutral-700 transition-colors"
                         >
                             <p className="text-sm font-medium text-gray-900 dark:text-white">Customer Management</p>
                             <p className="text-xs text-gray-500 dark:text-gray-400">View & manage customer database</p>
                         </button>
                         <button 
-                            onClick={() => navigate('/inventory')}
+                            onClick={() => navigate('/dashboard/inventory')}
                             className="w-full text-left p-3 rounded-lg border border-gray-200 hover:bg-neutral-100 dark:bg-neutral-800 hover:border-neutral-200 dark:border-neutral-700 transition-colors"
                         >
                             <p className="text-sm font-medium text-gray-900 dark:text-white">Inventory Management</p>
                             <p className="text-xs text-gray-500 dark:text-gray-400">Stock levels & performance metrics</p>
                         </button>
                         <button 
-                            onClick={() => navigate('/expenses')}
+                            onClick={() => navigate('/dashboard/expenses')}
                             className="w-full text-left p-3 rounded-lg border border-gray-200 hover:bg-neutral-100 dark:bg-neutral-800 hover:border-neutral-200 dark:border-neutral-700 transition-colors"
                         >
                             <p className="text-sm font-medium text-gray-900 dark:text-white">Expense Tracking</p>
@@ -443,7 +443,7 @@ const Analytics = () => {
                                 </div>
                                 <div className="w-full bg-gray-200 rounded-full h-2">
                                     <div 
-                                        className="bg-green-500 h-2 rounded-full transition-all" 
+                                        className="bg-black dark:bg-white h-2 rounded-full transition-all" 
                                         style={{ width: `${Math.min((insights.salesChange.currentMonth / (insights.salesChange.currentMonth * 1.2)) * 100, 100)}%` }}
                                     ></div>
                                 </div>
@@ -462,7 +462,7 @@ const Analytics = () => {
                                 </div>
                                 <div className="w-full bg-gray-200 rounded-full h-2">
                                     <div 
-                                        className="bg-blue-500 h-2 rounded-full transition-all" 
+                                        className="bg-black dark:bg-white h-2 rounded-full transition-all" 
                                         style={{ width: `${Math.min((insights.currentMonthOrders / Math.max(insights.currentMonthOrders * 1.3, 50)) * 100, 100)}%` }}
                                     ></div>
                                 </div>
@@ -478,7 +478,7 @@ const Analytics = () => {
                                 </div>
                                 <div className="w-full bg-gray-200 rounded-full h-2">
                                     <div 
-                                        className={`h-2 rounded-full transition-all ${profitData.netProfitMargin >= 20 ? 'bg-green-500' : profitData.netProfitMargin >= 10 ? 'bg-yellow-500' : 'bg-red-500'}`}
+                                        className={`h-2 rounded-full transition-all ${profitData.netProfitMargin >= 20 ? 'bg-black dark:bg-white' : profitData.netProfitMargin >= 10 ? 'bg-neutral-500' : 'bg-neutral-300'}`}
                                         style={{ width: `${Math.min((profitData.netProfitMargin / 20) * 100, 100)}%` }}
                                     ></div>
                                 </div>

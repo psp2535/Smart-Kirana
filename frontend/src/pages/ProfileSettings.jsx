@@ -303,7 +303,7 @@ const ProfileSettings = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black dark:border-white"></div>
       </div>
     );
   }
@@ -335,7 +335,7 @@ const ProfileSettings = () => {
         {/* Personal Information Card */}
         <div className="bg-white rounded-lg shadow-md p-6">
           <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
-            <User className="h-5 w-5 text-primary-600" />
+            <User className="h-5 w-5 text-black dark:text-white" />
             Personal Information
           </h2>
 
@@ -350,7 +350,7 @@ const ProfileSettings = () => {
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black dark:ring-white"
                 required
               />
             </div>
@@ -367,7 +367,7 @@ const ProfileSettings = () => {
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black dark:ring-white"
                   readOnly={userType === 'customer'}
                 />
               </div>
@@ -388,7 +388,7 @@ const ProfileSettings = () => {
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
-                  className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black dark:ring-white"
                   maxLength={10}
                   required
                 />
@@ -405,7 +405,7 @@ const ProfileSettings = () => {
                   name="language"
                   value={formData.language}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black dark:ring-white"
                 >
                   <option value="Hindi">Hindi</option>
                   <option value="English">English</option>
@@ -426,7 +426,7 @@ const ProfileSettings = () => {
         {/* Address Information Card */}
         <div className="bg-white rounded-lg shadow-md p-6">
           <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
-            <MapPin className="h-5 w-5 text-primary-600" />
+            <MapPin className="h-5 w-5 text-black dark:text-white" />
             Address Information
           </h2>
 
@@ -441,7 +441,7 @@ const ProfileSettings = () => {
                 name="address.street"
                 value={formData.address.street}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black dark:ring-white"
                 placeholder="Enter street address"
               />
             </div>
@@ -456,7 +456,7 @@ const ProfileSettings = () => {
                 name="address.city"
                 value={formData.address.city}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black dark:ring-white"
                 placeholder="Enter city"
               />
             </div>
@@ -471,7 +471,7 @@ const ProfileSettings = () => {
                 name="address.state"
                 value={formData.address.state}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black dark:ring-white"
                 placeholder="Enter state"
               />
             </div>
@@ -486,7 +486,7 @@ const ProfileSettings = () => {
                 name="address.pincode"
                 value={formData.address.pincode}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black dark:ring-white"
                 placeholder="6-digit pincode"
                 maxLength={6}
               />
@@ -497,7 +497,7 @@ const ProfileSettings = () => {
         {/* Location Information Card */}
         <div className="bg-white rounded-lg shadow-md p-6">
           <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
-            <Navigation className="h-5 w-5 text-primary-600" />
+            <Navigation className="h-5 w-5 text-black dark:text-white" />
             Location Information
           </h2>
 
@@ -541,7 +541,7 @@ const ProfileSettings = () => {
                   type="button"
                   onClick={handleUpdateLocation}
                   disabled={updatingLocation}
-                  className="flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex items-center gap-2 px-4 py-2 bg-black dark:bg-white text-white dark:text-black rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {updatingLocation ? (
                     <>
@@ -589,7 +589,7 @@ const ProfileSettings = () => {
                   type="button"
                   onClick={handleUpdateLocation}
                   disabled={updatingLocation}
-                  className="flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex items-center gap-2 px-4 py-2 bg-black dark:bg-white text-white dark:text-black rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {updatingLocation ? (
                     <>
@@ -612,7 +612,7 @@ const ProfileSettings = () => {
         {userType === 'retailer' && authUser?.role !== 'wholesaler' && (
           <div className="bg-white rounded-lg shadow-md p-6">
             <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
-              <Building2 className="h-5 w-5 text-primary-600" />
+              <Building2 className="h-5 w-5 text-black dark:text-white" />
               Business Information
             </h2>
 
@@ -627,7 +627,7 @@ const ProfileSettings = () => {
                   name="shop_name"
                   value={formData.shop_name}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black dark:ring-white"
                   placeholder="Enter shop name"
                 />
               </div>
@@ -642,7 +642,7 @@ const ProfileSettings = () => {
                   name="business_type"
                   value={formData.business_type}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black dark:ring-white"
                 >
                   <option value="Retail">Retail</option>
                   <option value="Wholesale">Wholesale</option>
@@ -662,7 +662,7 @@ const ProfileSettings = () => {
                   value={formData.shop_description}
                   onChange={handleChange}
                   rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black dark:ring-white"
                   placeholder="Describe your business..."
                   maxLength={500}
                 />
@@ -682,7 +682,7 @@ const ProfileSettings = () => {
                   name="gst_number"
                   value={formData.gst_number}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 uppercase"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black dark:ring-white uppercase"
                   placeholder="22AAAAA0000A1Z5"
                   maxLength={15}
                 />
@@ -698,7 +698,7 @@ const ProfileSettings = () => {
                   name="upi_id"
                   value={formData.upi_id}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black dark:ring-white"
                   placeholder="yourname@upi"
                 />
               </div>
@@ -710,7 +710,7 @@ const ProfileSettings = () => {
         {(userType === 'wholesaler' || (userType === 'retailer' && authUser?.role === 'wholesaler')) && (
           <div className="bg-white rounded-lg shadow-md p-6">
             <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
-              <Building2 className="h-5 w-5 text-primary-600" />
+              <Building2 className="h-5 w-5 text-black dark:text-white" />
               Wholesaler Business Information
             </h2>
 
@@ -725,7 +725,7 @@ const ProfileSettings = () => {
                   name="wholesalerProfile.businessName"
                   value={formData.wholesalerProfile.businessName}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black dark:ring-white"
                   placeholder="Enter business name"
                   required
                 />
@@ -741,7 +741,7 @@ const ProfileSettings = () => {
                   name="wholesalerProfile.businessType"
                   value={formData.wholesalerProfile.businessType}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black dark:ring-white"
                 >
                   <option value="">Select type</option>
                   <option value="Distributor">Distributor</option>
@@ -763,7 +763,7 @@ const ProfileSettings = () => {
                   name="wholesalerProfile.gstNumber"
                   value={formData.wholesalerProfile.gstNumber}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 uppercase"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black dark:ring-white uppercase"
                   placeholder="22AAAAA0000A1Z5"
                   maxLength={15}
                 />
@@ -779,7 +779,7 @@ const ProfileSettings = () => {
                   name="wholesalerProfile.minOrderValue"
                   value={formData.wholesalerProfile.minOrderValue}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black dark:ring-white"
                   placeholder="e.g., 5000"
                   min="0"
                 />
@@ -795,7 +795,7 @@ const ProfileSettings = () => {
                   name="wholesalerProfile.deliveryRadiusKm"
                   value={formData.wholesalerProfile.deliveryRadiusKm || formData.wholesalerProfile.deliveryRadius}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black dark:ring-white"
                   placeholder="e.g., 50"
                   min="0"
                 />
@@ -811,7 +811,7 @@ const ProfileSettings = () => {
                   name="wholesalerProfile.avgDeliveryTime"
                   value={formData.wholesalerProfile.avgDeliveryTime}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black dark:ring-white"
                   placeholder="e.g., 2-3 days"
                 />
               </div>
@@ -830,7 +830,7 @@ const ProfileSettings = () => {
                         value={mode}
                         checked={formData.wholesalerProfile.paymentModes.includes(mode)}
                         onChange={handleChange}
-                        className="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
+                        className="w-4 h-4 text-black dark:text-white border-gray-300 rounded focus:ring-black dark:ring-white"
                       />
                       <span className="text-sm text-gray-700">{mode}</span>
                     </label>
@@ -849,7 +849,7 @@ const ProfileSettings = () => {
                   value={formData.wholesalerProfile.description}
                   onChange={handleChange}
                   rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black dark:ring-white"
                   placeholder="Describe your wholesale business, products, and services..."
                   maxLength={500}
                 />

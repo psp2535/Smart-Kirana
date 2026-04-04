@@ -123,7 +123,7 @@ const NearbyShops = () => {
             <ArrowLeft className="h-6 w-6 text-gray-600" />
           </button>
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 flex items-center gap-2">
-            <MapPin className="h-8 w-8 text-primary-600" />
+            <MapPin className="h-8 w-8 text-black dark:text-white" />
             Nearby Shops
           </h1>
         </div>
@@ -138,7 +138,7 @@ const NearbyShops = () => {
           </p>
           <button
             onClick={getUserLocation}
-            className="flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-black dark:bg-white text-white dark:text-black rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200 transition-colors"
           >
             <Navigation className="h-4 w-4" />
             <span>Get My Location</span>
@@ -168,7 +168,7 @@ const NearbyShops = () => {
                   disabled={loading}
                   className={`py-3 px-4 rounded-lg font-medium transition-all ${
                     selectedRadius === radius
-                      ? 'bg-primary-600 text-white shadow-md'
+                      ? 'bg-black dark:bg-white text-white dark:text-black shadow-md'
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   } disabled:opacity-50 disabled:cursor-not-allowed`}
                 >
@@ -182,7 +182,7 @@ const NearbyShops = () => {
           {loading && (
             <div className="flex items-center justify-center py-12">
               <div className="text-center">
-                <Loader2 className="h-12 w-12 text-primary-600 animate-spin mx-auto mb-4" />
+                <Loader2 className="h-12 w-12 text-black dark:text-white animate-spin mx-auto mb-4" />
                 <p className="text-gray-600">Searching for shops...</p>
               </div>
             </div>
@@ -203,8 +203,8 @@ const NearbyShops = () => {
                     {/* Shop Header */}
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex items-center gap-3">
-                        <div className="bg-primary-100 p-3 rounded-full">
-                          <Store className="h-6 w-6 text-primary-600" />
+                        <div className="bg-neutral-200 dark:bg-neutral-700 p-3 rounded-full">
+                          <Store className="h-6 w-6 text-black dark:text-white" />
                         </div>
                         <div>
                           <h3 className="text-lg font-semibold text-gray-900">
@@ -262,7 +262,7 @@ const NearbyShops = () => {
                     <div className="flex gap-2">
                       <button
                         onClick={() => getDirections(shop)}
-                        className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
+                        className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-black dark:bg-white text-white dark:text-black rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200 transition-colors"
                       >
                         <Navigation className="h-4 w-4" />
                         <span>Directions</span>

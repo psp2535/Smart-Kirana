@@ -363,7 +363,7 @@ const RegisterNew = () => {
         {/* Header */}
         <div className="text-center">
           <div className="flex justify-center">
-            <div className="bg-primary-600 p-2 sm:p-3 rounded-full shadow-lg">
+            <div className="bg-black dark:bg-white p-2 sm:p-3 rounded-full shadow-lg">
               <Brain className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
             </div>
           </div>
@@ -381,7 +381,7 @@ const RegisterNew = () => {
             type="button"
             onClick={() => handleTabChange('retailer')}
             className={`flex flex-col items-center justify-center space-y-1 py-2 px-2 rounded-md text-xs font-medium transition-all duration-200 ${userType === 'retailer'
-              ? 'bg-primary-600 text-white shadow-md'
+              ? 'bg-black dark:bg-white text-white dark:text-black shadow-md'
               : 'text-gray-600 dark:text-white hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800'
               }`}
           >
@@ -392,7 +392,7 @@ const RegisterNew = () => {
             type="button"
             onClick={() => handleTabChange('wholesaler')}
             className={`flex flex-col items-center justify-center space-y-1 py-2 px-2 rounded-md text-xs font-medium transition-all duration-200 ${userType === 'wholesaler'
-              ? 'bg-primary-600 text-white shadow-md'
+              ? 'bg-black dark:bg-white text-white dark:text-black shadow-md'
               : 'text-gray-600 dark:text-white hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800'
               }`}
           >
@@ -403,7 +403,7 @@ const RegisterNew = () => {
             type="button"
             onClick={() => handleTabChange('customer')}
             className={`flex flex-col items-center justify-center space-y-1 py-2 px-2 rounded-md text-xs font-medium transition-all duration-200 ${userType === 'customer'
-              ? 'bg-primary-600 text-white shadow-md'
+              ? 'bg-black dark:bg-white text-white dark:text-black shadow-md'
               : 'text-gray-600 dark:text-white hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800'
               }`}
           >
@@ -745,7 +745,7 @@ const RegisterNew = () => {
                               });
                             }
                           }}
-                          className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                          className="h-4 w-4 text-black dark:text-white focus:ring-black dark:ring-white border-gray-300 rounded"
                         />
                         <span className="text-sm text-gray-700 dark:text-gray-300">{mode}</span>
                       </label>
@@ -916,15 +916,15 @@ const RegisterNew = () => {
               type="checkbox"
               checked={agreedToTerms}
               onChange={(e) => setAgreedToTerms(e.target.checked)}
-              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+              className="h-4 w-4 text-black dark:text-white focus:ring-black dark:ring-white border-gray-300 rounded"
             />
             <label htmlFor="terms" className="ml-2 block text-xs sm:text-sm text-gray-900 dark:text-gray-300">
               I agree to the{' '}
-              <button type="button" className="text-primary-600 hover:text-primary-500">
+              <button type="button" className="text-black dark:text-white hover:text-black dark:text-white">
                 Terms and Conditions
               </button>{' '}
               and{' '}
-              <button type="button" className="text-primary-600 hover:text-primary-500">
+              <button type="button" className="text-black dark:text-white hover:text-black dark:text-white">
                 Privacy Policy
               </button>
             </label>
@@ -938,7 +938,7 @@ const RegisterNew = () => {
               type="checkbox"
               checked={rememberMe}
               onChange={(e) => setRememberMe(e.target.checked)}
-              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+              className="h-4 w-4 text-black dark:text-white focus:ring-black dark:ring-white border-gray-300 rounded"
             />
             <label htmlFor="remember-me" className="ml-2 block text-xs sm:text-sm text-gray-900 dark:text-gray-300">
               Remember me
@@ -950,7 +950,7 @@ const RegisterNew = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="group relative w-full flex justify-center py-2 sm:py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-md hover:shadow-lg"
+              className="group relative w-full flex justify-center py-2 sm:py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-black dark:bg-white hover:bg-neutral-800 dark:hover:bg-neutral-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black dark:ring-white disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-md hover:shadow-lg"
             >
               {isLoading ? t('auth.register.creatingAccount') : t('auth.register.createAccountButton')}
             </button>
@@ -960,7 +960,7 @@ const RegisterNew = () => {
           <div className="text-center">
             <span className="text-xs sm:text-sm text-gray-600">
               {t('auth.register.haveAccount')}{' '}
-              <Link to="/login" className="font-medium text-primary-600 hover:text-primary-500">
+              <Link to="/login" className="font-medium text-black dark:text-white hover:text-black dark:text-white">
                 {t('auth.register.signInLink')}
               </Link>
             </span>

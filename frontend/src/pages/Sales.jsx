@@ -601,7 +601,7 @@ const Sales = () => {
 
                 {loading ? (
                     <div className="text-center py-8">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600 mx-auto"></div>
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-black dark:border-white mx-auto"></div>
                         <p className="mt-2 text-gray-600 dark:text-gray-400">{t('common.loading')}</p>
                     </div>
                 ) : sales.length === 0 ? (
@@ -770,7 +770,7 @@ const Sales = () => {
                                         <button
                                             type="button"
                                             onClick={addItem}
-                                            className="text-sm text-primary-600 hover:text-primary-500"
+                                            className="text-sm text-black dark:text-white hover:text-black dark:text-white"
                                         >
                                             + Add Item
                                         </button>
@@ -871,7 +871,7 @@ const Sales = () => {
                                 </div>
 
                                 {/* Total Summary */}
-                                <div className="bg-black dark:bg-white text-white dark:text-black   p-4 rounded-lg border border-green-200 dark:border-green-800">
+                                <div className="bg-black dark:bg-white text-white dark:text-black dark:text-black   p-4 rounded-lg border border-green-200 dark:border-green-800">
                                     <div className="flex justify-between items-center">
                                         <span className="text-lg font-medium text-gray-900 dark:text-gray-100">Total Amount:</span>
                                         <span className="text-2xl font-bold text-green-600 dark:text-green-400">₹{calculateTotal().toLocaleString()}</span>

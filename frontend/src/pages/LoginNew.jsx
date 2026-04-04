@@ -229,7 +229,7 @@ const LoginNew = () => {
             type="button"
             onClick={() => handleTabChange('retailer')}
             className={`flex flex-col items-center justify-center space-y-1 py-2 px-2 rounded-md text-xs font-medium transition-all duration-200 ${userType === 'retailer'
-              ? 'bg-primary-600 text-white shadow-md'
+              ? 'bg-black dark:bg-white text-white dark:text-black shadow-md'
               : 'text-gray-600 dark:text-white hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800'
               }`}
           >
@@ -240,7 +240,7 @@ const LoginNew = () => {
             type="button"
             onClick={() => handleTabChange('wholesaler')}
             className={`flex flex-col items-center justify-center space-y-1 py-2 px-2 rounded-md text-xs font-medium transition-all duration-200 ${userType === 'wholesaler'
-              ? 'bg-primary-600 text-white shadow-md'
+              ? 'bg-black dark:bg-white text-white dark:text-black shadow-md'
               : 'text-gray-600 dark:text-white hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800'
               }`}
           >
@@ -251,7 +251,7 @@ const LoginNew = () => {
             type="button"
             onClick={() => handleTabChange('customer')}
             className={`flex flex-col items-center justify-center space-y-1 py-2 px-2 rounded-md text-xs font-medium transition-all duration-200 ${userType === 'customer'
-              ? 'bg-primary-600 text-white shadow-md'
+              ? 'bg-black dark:bg-white text-white dark:text-black shadow-md'
               : 'text-gray-600 dark:text-white hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800'
               }`}
           >
@@ -345,7 +345,7 @@ const LoginNew = () => {
                 id="remember-me"
                 name="remember-me"
                 type="checkbox"
-                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                className="h-4 w-4 text-black dark:text-white focus:ring-black dark:ring-white border-gray-300 rounded"
               />
               <label htmlFor="remember-me" className="ml-2 block text-xs sm:text-sm text-gray-900 dark:text-white">
                 {t('common.rememberMe')}
@@ -355,7 +355,7 @@ const LoginNew = () => {
               <button
                 type="button"
                 onClick={() => setShowForgotPassword(true)}
-                className="font-medium text-primary-600 hover:text-primary-500"
+                className="font-medium text-black dark:text-white hover:text-black dark:text-white"
               >
                 {t('common.forgotPassword')}
               </button>
@@ -367,7 +367,7 @@ const LoginNew = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="group relative w-full flex justify-center py-2 sm:py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-md hover:shadow-lg"
+              className="group relative w-full flex justify-center py-2 sm:py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-black dark:bg-white hover:bg-neutral-800 dark:hover:bg-neutral-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black dark:ring-white disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-md hover:shadow-lg"
             >
               {isLoading ? t('auth.login.signingIn') : t('auth.login.signInButton')}
             </button>
@@ -394,7 +394,7 @@ const LoginNew = () => {
                   type="button"
                   onClick={handleGoogleSignIn}
                   disabled={isGoogleLoading || isLoading}
-                  className="w-full flex items-center justify-center gap-3 py-2 sm:py-3 px-4 border-2 border-gray-300 dark:border-gray-700 rounded-md text-sm font-medium text-gray-700 dark:text-white bg-white dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-sm hover:shadow-md"
+                  className="w-full flex items-center justify-center gap-3 py-2 sm:py-3 px-4 border-2 border-gray-300 dark:border-gray-700 rounded-md text-sm font-medium text-gray-700 dark:text-white bg-white dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black dark:ring-white disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-sm hover:shadow-md"
                 >
                   {isGoogleLoading ? (
                     <>
@@ -424,7 +424,7 @@ const LoginNew = () => {
           <div className="text-center">
             <span className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
               {t('auth.login.noAccount')}{' '}
-              <Link to="/register" className="font-medium text-primary-600 hover:text-primary-500">
+              <Link to="/register" className="font-medium text-black dark:text-white hover:text-black dark:text-white">
                 {t('auth.login.signUpLink')}
               </Link>
             </span>

@@ -141,7 +141,7 @@ const RetailerWholesalerOrders = () => {
                 <div className="space-y-3">
                     {order.statusHistory?.map((history, idx) => (
                         <div key={idx} className="flex items-start space-x-3">
-                            <div className={`w-3 h-3 rounded-full mt-1 flex-shrink-0 ${idx === order.statusHistory.length - 1 ? 'bg-primary-600 ring-4 ring-primary-100' : 'bg-gray-400'}`}></div>
+                            <div className={`w-3 h-3 rounded-full mt-1 flex-shrink-0 ${idx === order.statusHistory.length - 1 ? 'bg-black dark:bg-white ring-4 ring-primary-100' : 'bg-gray-400'}`}></div>
                             <div className="flex-1">
                                 <div className="flex justify-between items-start">
                                     <div>
@@ -242,7 +242,7 @@ const RetailerWholesalerOrders = () => {
     );
 
     if (isLoading) {
-        return <div className="min-h-screen flex items-center justify-center"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary-600"></div></div>;
+        return <div className="min-h-screen flex items-center justify-center"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-black dark:border-white"></div></div>;
     }
 
     return (
@@ -338,7 +338,7 @@ const RetailerWholesalerOrders = () => {
                                 <button onClick={() => { setSelectedOrder(null); setEditingItems({}); }} className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700">
                                     Cancel
                                 </button>
-                                <button onClick={addToInventory} className="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 flex items-center space-x-2">
+                                <button onClick={addToInventory} className="px-4 py-2 bg-black dark:bg-white text-white dark:text-black rounded-md hover:bg-neutral-800 dark:hover:bg-neutral-200 flex items-center space-x-2">
                                     <Save className="h-5 w-5" /><span>Add to My Inventory</span>
                                 </button>
                             </div>

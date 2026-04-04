@@ -302,7 +302,7 @@ const Expenses = () => {
 
                 {loading ? (
                     <div className="text-center py-8">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600 mx-auto"></div>
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-black dark:border-white mx-auto"></div>
                         <p className="mt-2 text-gray-600 dark:text-gray-400">Loading expenses...</p>
                     </div>
                 ) : expenses.length === 0 ? (

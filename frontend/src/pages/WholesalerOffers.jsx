@@ -98,7 +98,7 @@ const WholesalerOffers = () => {
         return (
             <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
                 <div className="text-center">
-                    <div className="animate-spin rounded-full h-16 w-16 border-4 border-primary-600 border-t-transparent mx-auto mb-4"></div>
+                    <div className="animate-spin rounded-full h-16 w-16 border-4 border-black dark:border-white border-t-transparent mx-auto mb-4"></div>
                     <p className="text-gray-600 dark:text-gray-400">Loading offers...</p>
                 </div>
             </div>
@@ -119,7 +119,7 @@ const WholesalerOffers = () => {
                             <p className="text-sm text-gray-600 dark:text-gray-400">Exclusive deals from nearby wholesalers</p>
                         </div>
                     </div>
-                    <button onClick={fetchOffers} className="flex items-center space-x-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">
+                    <button onClick={fetchOffers} className="flex items-center space-x-2 px-4 py-2 bg-black dark:bg-white text-white dark:text-black dark:text-black rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200 transition-colors">
                         <RefreshCw className="h-5 w-5" />
                         <span>Refresh</span>
                     </button>
@@ -151,13 +151,13 @@ const WholesalerOffers = () => {
                                         {offer.discountApplied?.originalPrice && (
                                             <span className="text-lg text-gray-500 line-through">₹{offer.discountApplied.originalPrice}</span>
                                         )}
-                                        <span className="text-2xl font-bold text-green-600 dark:text-green-400">₹{offer.pricePerUnit}</span>
+                                        <span className="text-2xl font-bold text-black dark:text-white dark:text-black dark:text-white">₹{offer.pricePerUnit}</span>
                                         <span className="text-sm text-gray-600 dark:text-gray-400">/{offer.unit}</span>
                                     </div>
 
                                     {/* Expiry Alert */}
                                     {offer.daysUntilExpiry && (
-                                        <div className="flex items-center space-x-2 mb-3 text-orange-600 dark:text-orange-400">
+                                        <div className="flex items-center space-x-2 mb-3 text-black dark:text-white dark:text-black dark:text-white">
                                             <Clock className="h-4 w-4" />
                                             <span className="text-xs font-medium">Expires in {offer.daysUntilExpiry} days</span>
                                         </div>
@@ -170,7 +170,7 @@ const WholesalerOffers = () => {
                                             <MapPin className="h-3 w-3" />
                                             <span>{offer.wholesalerInfo.location}</span>
                                             {offer.wholesalerInfo.distance_km && (
-                                                <span className="text-primary-600 dark:text-primary-400">• {offer.wholesalerInfo.distance_km} km away</span>
+                                                <span className="text-black dark:text-white dark:text-black dark:text-white">• {offer.wholesalerInfo.distance_km} km away</span>
                                             )}
                                         </div>
                                     </div>
@@ -189,7 +189,7 @@ const WholesalerOffers = () => {
                                     {/* Action Button */}
                                     <button
                                         onClick={() => setSelectedOffer(offer)}
-                                        className="w-full flex items-center justify-center space-x-2 px-4 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium"
+                                        className="w-full flex items-center justify-center space-x-2 px-4 py-3 bg-black dark:bg-white text-white dark:text-black dark:text-black rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200 transition-colors font-medium"
                                     >
                                         <ShoppingCart className="h-5 w-5" />
                                         <span>Place Order</span>
@@ -216,9 +216,9 @@ const WholesalerOffers = () => {
                             <div>
                                 <p className="text-sm text-gray-600 dark:text-gray-400">Price</p>
                                 <div className="flex items-center space-x-2">
-                                    <span className="text-2xl font-bold text-green-600 dark:text-green-400">₹{selectedOffer.pricePerUnit}</span>
+                                    <span className="text-2xl font-bold text-black dark:text-white dark:text-black dark:text-white">₹{selectedOffer.pricePerUnit}</span>
                                     <span className="text-sm text-gray-600 dark:text-gray-400">/{selectedOffer.unit}</span>
-                                    <span className="px-2 py-1 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 text-xs font-semibold rounded">{selectedOffer.effectiveDiscount}% OFF</span>
+                                    <span className="px-2 py-1 bg-neutral-200 dark:bg-neutral-700 dark:bg-neutral-900 dark:bg-neutral-100/30 text-black dark:text-white dark:text-black dark:text-white text-xs font-semibold rounded">{selectedOffer.effectiveDiscount}% OFF</span>
                                 </div>
                             </div>
 
@@ -232,7 +232,7 @@ const WholesalerOffers = () => {
                                     max={selectedOffer.availableQty}
                                     value={orderQuantity}
                                     onChange={(e) => setOrderQuantity(parseInt(e.target.value))}
-                                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 dark:bg-gray-700 dark:text-white"
+                                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-black dark:ring-white dark:bg-gray-700 dark:text-white"
                                 />
                                 <p className="text-xs text-gray-500 mt-1">Min: {selectedOffer.minOrderQty || 1}, Max: {selectedOffer.availableQty}</p>
                             </div>
@@ -242,7 +242,7 @@ const WholesalerOffers = () => {
                                     <span className="text-gray-600 dark:text-gray-400">Subtotal</span>
                                     <span className="font-semibold text-gray-900 dark:text-white">₹{(selectedOffer.pricePerUnit * orderQuantity).toFixed(2)}</span>
                                 </div>
-                                <div className="flex justify-between items-center text-green-600 dark:text-green-400">
+                                <div className="flex justify-between items-center text-black dark:text-white dark:text-black dark:text-white">
                                     <span>You Save</span>
                                     <span className="font-semibold">
                                         {selectedOffer.discountApplied?.originalPrice
@@ -266,7 +266,7 @@ const WholesalerOffers = () => {
                             </button>
                             <button
                                 onClick={() => handlePlaceOrder(selectedOffer)}
-                                className="flex-1 px-4 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium"
+                                className="flex-1 px-4 py-3 bg-black dark:bg-white text-white dark:text-black dark:text-black rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200 transition-colors font-medium"
                             >
                                 Confirm Order
                             </button>
