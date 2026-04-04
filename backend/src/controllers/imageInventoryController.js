@@ -2,9 +2,10 @@ const OpenAI = require('openai');
 const Inventory = require('../models/Inventory');
 const fs = require('fs');
 
-const openai = new OpenAI({
+// Initialize OpenAI only if API key is provided
+const openai = process.env.OPENAI_API_KEY ? new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
-});
+}) : null;
 
 /**
  * Process uploaded image and extract inventory data using Gemini Vision
