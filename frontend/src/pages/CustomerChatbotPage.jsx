@@ -107,7 +107,7 @@ const CustomerChatbotPage = () => {
                 className={`p-3 sm:p-4 border rounded-lg cursor-pointer transition-all hover:shadow-md ${
                   selectedRetailer?._id === retailer._id
                     ? 'border-black dark:border-white bg-neutral-100 dark:bg-neutral-800'
-                    : 'border-gray-200 hover:border-primary-300'
+                    : 'border-gray-200 hover:border-neutral-200 dark:border-neutral-700'
                 }`}
               >
                 <div className="flex items-start space-x-2 sm:space-x-3">

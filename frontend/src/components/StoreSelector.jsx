@@ -67,15 +67,15 @@ const StoreSelector = ({ onStoreSelect, selectedStoreId }) => {
     return {
       isOpen,
       status: isOpen ? 'Open' : 'Closed',
-      statusColor: isOpen ? 'text-green-600' : 'text-red-600',
-      bgColor: isOpen ? 'bg-green-100' : 'bg-red-100'
+      statusColor: isOpen ? 'text-black dark:text-white' : 'text-black dark:text-white',
+      bgColor: isOpen ? 'bg-neutral-100 dark:bg-neutral-800' : 'bg-neutral-100 dark:bg-neutral-800'
     };
   };
 
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-neutral-200 dark:border-neutral-700"></div>
         <span className="ml-3 text-gray-600">Loading stores...</span>
       </div>
     );
@@ -87,7 +87,7 @@ const StoreSelector = ({ onStoreSelect, selectedStoreId }) => {
       <div className="p-6 border-b border-gray-200">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl font-semibold text-gray-900 flex items-center">
-            <Store className="w-5 h-5 mr-2 text-blue-600" />
+            <Store className="w-5 h-5 mr-2 text-black dark:text-white" />
             Choose Your Store
           </h2>
           <span className="text-sm text-gray-500">
@@ -104,14 +104,14 @@ const StoreSelector = ({ onStoreSelect, selectedStoreId }) => {
               placeholder="Search stores by name..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black dark:focus:ring-white focus:border-transparent"
             />
           </div>
           
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black dark:focus:ring-white focus:border-transparent"
           >
             <option value="distance">Nearest First</option>
             <option value="name">Name A-Z</option>
@@ -139,7 +139,7 @@ const StoreSelector = ({ onStoreSelect, selectedStoreId }) => {
                   key={store._id}
                   onClick={() => handleStoreSelect(store)}
                   className={`p-6 hover:bg-gray-50 cursor-pointer transition-colors ${
-                    isSelected ? 'bg-blue-50 border-l-4 border-blue-600' : ''
+                    isSelected ? 'bg-neutral-100 dark:bg-neutral-800 border-l-4 border-neutral-200 dark:border-neutral-700' : ''
                   }`}
                 >
                   <div className="flex items-start justify-between">
@@ -149,7 +149,7 @@ const StoreSelector = ({ onStoreSelect, selectedStoreId }) => {
                           {store.business_name || store.name}
                         </h3>
                         {isSelected && (
-                          <Check className="w-5 h-5 text-blue-600" />
+                          <Check className="w-5 h-5 text-black dark:text-white" />
                         )}
                         <span className={`px-2 py-1 text-xs rounded-full ${status.bgColor} ${status.statusColor}`}>
                           {status.status}
@@ -179,7 +179,7 @@ const StoreSelector = ({ onStoreSelect, selectedStoreId }) => {
                         
                         {store.rating && (
                           <div className="flex items-center">
-                            <Star className="w-4 h-4 mr-1 text-yellow-500 fill-current" />
+                            <Star className="w-4 h-4 mr-1 text-black dark:text-white fill-current" />
                             {store.rating.toFixed(1)}
                           </div>
                         )}
@@ -203,13 +203,13 @@ const StoreSelector = ({ onStoreSelect, selectedStoreId }) => {
 
       {/* Selected Store Summary */}
       {selectedStore && (
-        <div className="p-4 bg-blue-50 border-t border-blue-200">
+        <div className="p-4 bg-neutral-100 dark:bg-neutral-800 border-t border-neutral-200 dark:border-neutral-700">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-blue-900">
+              <p className="text-sm font-medium text-black dark:text-white">
                 Selected Store
               </p>
-              <p className="text-sm text-blue-700">
+              <p className="text-sm text-black dark:text-white">
                 {selectedStore.business_name || selectedStore.name}
               </p>
             </div>
@@ -218,7 +218,7 @@ const StoreSelector = ({ onStoreSelect, selectedStoreId }) => {
                 setSelectedStore(null);
                 onStoreSelect(null);
               }}
-              className="text-sm text-blue-600 hover:text-blue-800"
+              className="text-sm text-black dark:text-white hover:text-black dark:text-white"
             >
               Change
             </button>

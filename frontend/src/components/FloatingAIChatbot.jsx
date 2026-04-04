@@ -211,14 +211,14 @@ const FloatingAIChatbot = () => {
             <div className="fixed bottom-6 right-6 z-50">
                 <button
                     onClick={() => setIsOpen(true)}
-                    className="relative bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white p-4 rounded-full shadow-2xl hover:shadow-3xl transform hover:scale-110 transition-all duration-300 group"
+                    className="relative bg-black dark:bg-white text-white dark:text-black text-white p-4 rounded-full shadow-2xl hover:shadow-3xl transform hover:scale-110 transition-all duration-300 group"
                     title="AI Shopping Assistant"
                 >
                     <Bot className="w-7 h-7 animate-pulse" />
-                    <span className="absolute -top-1 -right-1 bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center animate-bounce shadow-lg">
+                    <span className="absolute -top-1 -right-1 bg-gradient-to-r from-neutral-100 dark:from-neutral-800 to-neutral-100 dark:to-neutral-800 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center animate-bounce shadow-lg">
                         AI
                     </span>
-                    <span className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 opacity-75 blur-xl group-hover:opacity-100 transition-opacity"></span>
+                    <span className="absolute inset-0 rounded-full bg-black dark:bg-white text-white dark:text-black opacity-75 blur-xl group-hover:opacity-100 transition-opacity"></span>
                 </button>
             </div>
         );
@@ -233,7 +233,7 @@ const FloatingAIChatbot = () => {
     return (
         <div className={`fixed bottom-6 right-6 w-[95vw] sm:w-[500px] h-[85vh] sm:h-[650px] ${bgClass} rounded-2xl shadow-2xl z-50 flex flex-col overflow-hidden border-2 ${borderClass}`}>
             {/* Header */}
-            <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white p-4">
+            <div className="bg-black dark:bg-white text-white dark:text-black text-white p-4">
                 <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center space-x-3">
                         <div className="relative">
@@ -242,7 +242,7 @@ const FloatingAIChatbot = () => {
                         </div>
                         <div>
                             <h3 className="font-bold text-lg">AI Shopping Assistant</h3>
-                            <p className="text-xs text-blue-100">
+                            <p className="text-xs text-black dark:text-white">
                                 {selectedRetailer ? selectedRetailer.shop_name : 'Select a store'}
                             </p>
                         </div>
@@ -292,17 +292,17 @@ const FloatingAIChatbot = () => {
                             <div
                                 key={retailer._id}
                                 onClick={() => setSelectedRetailer(retailer)}
-                                className={`p-4 border-2 ${borderClass} rounded-xl cursor-pointer transition-all transform hover:scale-105 ${hoverBgClass} hover:border-blue-500 hover:shadow-lg`}
+                                className={`p-4 border-2 ${borderClass} rounded-xl cursor-pointer transition-all transform hover:scale-105 ${hoverBgClass} hover:border-neutral-200 dark:border-neutral-700 hover:shadow-lg`}
                             >
                                 <div className="flex items-center space-x-3">
-                                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                                    <div className="w-12 h-12 bg-black dark:bg-white text-white dark:text-black rounded-full flex items-center justify-center text-white font-bold text-lg">
                                         {retailer.shop_name[0]}
                                     </div>
                                     <div className="flex-1">
                                         <h5 className={`font-semibold ${textClass}`}>{retailer.shop_name}</h5>
                                         <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>{retailer.phone}</p>
                                     </div>
-                                    <div className="text-blue-500">
+                                    <div className="text-black dark:text-white">
                                         <Bot className="w-5 h-5" />
                                     </div>
                                 </div>
@@ -317,7 +317,7 @@ const FloatingAIChatbot = () => {
                     <div className={`border-b ${borderClass} p-3 flex items-center justify-between ${cardBgClass}`}>
                         <button
                             onClick={() => setShowInventory(!showInventory)}
-                            className="flex items-center space-x-2 text-sm text-blue-600 hover:text-blue-700 font-medium"
+                            className="flex items-center space-x-2 text-sm text-black dark:text-white hover:text-black dark:text-white font-medium"
                         >
                             <Package className="w-4 h-4" />
                             <span>{showInventory ? 'Hide' : 'Show'} Inventory ({inventory.length})</span>
@@ -340,7 +340,7 @@ const FloatingAIChatbot = () => {
                                         <span className={`font-medium ${textClass}`}>{item.item_name}</span>
                                         <div className="flex items-center space-x-3">
                                             <span className={isDark ? 'text-gray-400' : 'text-gray-600'}>{item.quantity} units</span>
-                                            <span className="text-blue-600 font-bold">₹{item.price_per_unit}</span>
+                                            <span className="text-black dark:text-white font-bold">₹{item.price_per_unit}</span>
                                         </div>
                                     </div>
                                 ))}
@@ -356,7 +356,7 @@ const FloatingAIChatbot = () => {
                                 className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
                             >
                                 {message.type === 'user' ? (
-                                    <div className="max-w-[80%] px-4 py-2.5 rounded-2xl bg-blue-600 text-white shadow-sm">
+                                    <div className="max-w-[80%] px-4 py-2.5 rounded-2xl bg-black dark:bg-white text-white shadow-sm">
                                         <p className="text-sm">{message.content}</p>
                                         <span className="text-xs opacity-70 mt-1 block">
                                             {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
@@ -383,7 +383,7 @@ const FloatingAIChatbot = () => {
                                                             <span className={isDark ? 'text-gray-300' : 'text-gray-700'}>
                                                                 {item.item_name} × {item.quantity} {item.unit}
                                                             </span>
-                                                            <span className="font-semibold text-blue-600">
+                                                            <span className="font-semibold text-black dark:text-white">
                                                                 ₹{item.total_price}
                                                             </span>
                                                         </div>
@@ -391,7 +391,7 @@ const FloatingAIChatbot = () => {
                                                 </div>
                                                 <div className={`flex justify-between items-center mt-3 pt-2 border-t ${isDark ? 'border-gray-600' : 'border-gray-200'}`}>
                                                     <span className={`font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>Total</span>
-                                                    <span className="font-bold text-lg text-blue-600">
+                                                    <span className="font-bold text-lg text-black dark:text-white">
                                                         ₹{message.data.totalAmount}
                                                     </span>
                                                 </div>
@@ -400,8 +400,8 @@ const FloatingAIChatbot = () => {
 
                                         {/* Unavailable Items */}
                                         {message.data && message.data.unavailableItems && message.data.unavailableItems.length > 0 && message.data.unavailableItems.length <= 3 && (
-                                            <div className={`border-t ${isDark ? 'border-gray-600 bg-red-900/10' : 'border-gray-200 bg-red-50'} p-3`}>
-                                                <p className="text-xs font-semibold text-red-600 mb-1.5">Not Available</p>
+                                            <div className={`border-t ${isDark ? 'border-gray-600 bg-black dark:bg-white/10' : 'border-gray-200 bg-neutral-100 dark:bg-neutral-800'} p-3`}>
+                                                <p className="text-xs font-semibold text-black dark:text-white mb-1.5">Not Available</p>
                                                 <div className="space-y-1">
                                                     {message.data.unavailableItems.map((item, idx) => (
                                                         <p key={idx} className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
@@ -427,9 +427,9 @@ const FloatingAIChatbot = () => {
                             <div className="flex justify-start">
                                 <div className={`${isDark ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-200'} border px-4 py-3 rounded-2xl shadow-md`}>
                                     <div className="flex space-x-2">
-                                        <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce"></div>
-                                        <div className="w-2 h-2 bg-purple-500 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                                        <div className="w-2 h-2 bg-pink-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                                        <div className="w-2 h-2 bg-black dark:bg-white rounded-full animate-bounce"></div>
+                                        <div className="w-2 h-2 bg-black dark:bg-white rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                                        <div className="w-2 h-2 bg-black dark:bg-white rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
                                     </div>
                                 </div>
                             </div>
@@ -443,8 +443,8 @@ const FloatingAIChatbot = () => {
                             <button
                                 onClick={toggleMute}
                                 className={`p-3 rounded-xl transition-all ${isMuted
-                                    ? 'bg-red-100 text-red-600 hover:bg-red-200'
-                                    : 'bg-green-100 text-green-600 hover:bg-green-200'
+                                    ? 'bg-neutral-100 dark:bg-neutral-800 text-black dark:text-white hover:bg-neutral-100 dark:bg-neutral-800'
+                                    : 'bg-neutral-100 dark:bg-neutral-800 text-black dark:text-white hover:bg-neutral-100 dark:bg-neutral-800'
                                     }`}
                                 title={isMuted ? 'Unmute' : 'Mute'}
                             >
@@ -466,8 +466,8 @@ const FloatingAIChatbot = () => {
                                     onClick={startVoiceInput}
                                     disabled={isListening || isLoading}
                                     className={`p-3 rounded-xl transition-all ${isListening
-                                        ? 'bg-red-500 text-white animate-pulse'
-                                        : 'bg-blue-100 text-blue-600 hover:bg-blue-200'
+                                        ? 'bg-black dark:bg-white text-white animate-pulse'
+                                        : 'bg-neutral-100 dark:bg-neutral-800 text-black dark:text-white hover:bg-neutral-100 dark:bg-neutral-800'
                                         }`}
                                     title="Voice Input"
                                 >
@@ -483,14 +483,14 @@ const FloatingAIChatbot = () => {
                                 onChange={(e) => setInputMessage(e.target.value)}
                                 onKeyPress={handleKeyPress}
                                 placeholder={isListening ? "Listening..." : "Type your message..."}
-                                className={`flex-1 px-4 py-3 border-2 ${borderClass} rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm ${isDark ? 'bg-gray-700 text-white' : 'bg-white text-gray-900'
+                                className={`flex-1 px-4 py-3 border-2 ${borderClass} rounded-xl focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white text-sm ${isDark ? 'bg-gray-700 text-white' : 'bg-white text-gray-900'
                                     }`}
                                 disabled={isLoading || isListening}
                             />
                             <button
                                 onClick={sendMessage}
                                 disabled={!inputMessage.trim() || isLoading}
-                                className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-3 rounded-xl hover:from-blue-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all transform hover:scale-105 shadow-lg"
+                                className="bg-black dark:bg-white text-white dark:text-black text-white p-3 rounded-xl hover:from-neutral-100 dark:from-neutral-800 hover:to-neutral-100 dark:to-neutral-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all transform hover:scale-105 shadow-lg"
                             >
                                 <Send className="w-5 h-5" />
                             </button>

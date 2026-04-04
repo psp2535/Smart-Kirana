@@ -392,7 +392,7 @@ const CustomerChatbot = ({ retailerId, onOrderPlaced }) => {
   return (
     <div className="flex flex-col h-full bg-white rounded-lg shadow-lg">
       {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b bg-gradient-to-r from-blue-500 to-purple-600 text-white">
+      <div className="flex items-center justify-between p-4 border-b bg-black dark:bg-white text-white dark:text-black text-white">
         <div className="flex items-center space-x-3">
           <Bot className="w-8 h-8" />
           <div>
@@ -648,7 +648,7 @@ const CustomerChatbot = ({ retailerId, onOrderPlaced }) => {
             onChange={(e) => setInputMessage(e.target.value)}
             onKeyDown={handleKeyPress}
             placeholder="Type your message..."
-            className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white focus:border-transparent"
             disabled={isLoading}
           />
 

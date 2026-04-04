@@ -849,7 +849,7 @@ const Chatbot = ({ retailerId, retailerName, isCustomer = false }) => {
                         onChange={(e) => setInputMessage(e.target.value)}
                         onKeyPress={handleKeyPress}
                         placeholder={isListening ? "Listening..." : `Type your message... (${currentLang.icon} ${currentLang.name})`}
-                        className="flex-1 px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm bg-white text-gray-900"
+                        className="flex-1 px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white text-sm bg-white text-gray-900"
                         disabled={isLoading || isListening}
                     />
 
@@ -857,7 +857,7 @@ const Chatbot = ({ retailerId, retailerName, isCustomer = false }) => {
                     <button
                         onClick={handleSendMessage}
                         disabled={!inputMessage.trim() || isLoading}
-                        className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-3 rounded-xl hover:from-blue-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all transform hover:scale-105 shadow-lg"
+                        className="bg-black dark:bg-white text-white dark:text-black text-white p-3 rounded-xl hover:from-neutral-100 dark:from-neutral-800 hover:to-neutral-100 dark:to-neutral-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all transform hover:scale-105 shadow-lg"
                     >
                         <Send className="w-5 h-5" />
                     </button>
