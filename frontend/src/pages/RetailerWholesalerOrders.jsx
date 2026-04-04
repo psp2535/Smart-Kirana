@@ -111,9 +111,9 @@ const RetailerWholesalerOrders = () => {
     const getStatusColor = (status) => {
         const colors = {
             'REQUESTED': 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
-            'ACCEPTED': 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
-            'PACKED': 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200',
-            'DISPATCHED': 'bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200',
+            'ACCEPTED': 'bg-neutral-200 dark:bg-neutral-700 text-black dark:text-white dark:bg-blue-900 dark:text-blue-200',
+            'PACKED': 'bg-neutral-200 dark:bg-neutral-700 text-black dark:text-white dark:bg-purple-900 dark:text-purple-200',
+            'DISPATCHED': 'bg-neutral-200 dark:bg-neutral-700 text-black dark:text-white dark:bg-indigo-900 dark:text-white',
             'DELIVERED': 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
             'CANCELLED': 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
         };
@@ -195,19 +195,19 @@ const RetailerWholesalerOrders = () => {
             )}
 
             {order.status === 'PACKED' && !order.addedToInventory && (
-                <div className="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-lg p-3 mb-3">
+                <div className="bg-neutral-100 dark:bg-neutral-800 dark:bg-purple-900/20 border border-neutral-200 dark:border-neutral-700 dark:border-neutral-200 dark:border-neutral-700 rounded-lg p-3 mb-3">
                     <div className="flex items-center space-x-2">
-                        <Package className="h-5 w-5 text-purple-600" />
-                        <p className="text-sm text-purple-800 dark:text-purple-200">📦 Order is packed and ready for dispatch</p>
+                        <Package className="h-5 w-5 text-black dark:text-white" />
+                        <p className="text-sm text-black dark:text-white dark:text-purple-200">📦 Order is packed and ready for dispatch</p>
                     </div>
                 </div>
             )}
 
             {order.status === 'DISPATCHED' && !order.addedToInventory && (
-                <div className="bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800 rounded-lg p-3 mb-3">
+                <div className="bg-neutral-100 dark:bg-neutral-800 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 dark:border-neutral-200 dark:border-neutral-700 rounded-lg p-3 mb-3">
                     <div className="flex items-center space-x-2">
-                        <Truck className="h-5 w-5 text-indigo-600" />
-                        <p className="text-sm text-indigo-800 dark:text-indigo-200">🚚 Order is on the way! Expected delivery soon.</p>
+                        <Truck className="h-5 w-5 text-black dark:text-white" />
+                        <p className="text-sm text-black dark:text-white dark:text-white">🚚 Order is on the way! Expected delivery soon.</p>
                     </div>
                 </div>
             )}
@@ -222,10 +222,10 @@ const RetailerWholesalerOrders = () => {
             )}
 
             {order.status === 'DELIVERED' && !order.addedToInventory && (
-                <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3 mb-3">
+                <div className="bg-neutral-100 dark:bg-neutral-800 dark:bg-blue-900/20 border border-neutral-200 dark:border-neutral-700 dark:border-neutral-200 dark:border-neutral-700 rounded-lg p-3 mb-3">
                     <div className="flex items-center space-x-2">
-                        <Package className="h-5 w-5 text-blue-600" />
-                        <p className="text-sm text-blue-800 dark:text-blue-200">📦 Order delivered on {new Date(order.actualDeliveryDate).toLocaleDateString()}. Add items to your inventory now!</p>
+                        <Package className="h-5 w-5 text-black dark:text-white" />
+                        <p className="text-sm text-black dark:text-white dark:text-blue-200">📦 Order delivered on {new Date(order.actualDeliveryDate).toLocaleDateString()}. Add items to your inventory now!</p>
                     </div>
                 </div>
             )}

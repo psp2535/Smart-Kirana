@@ -139,8 +139,8 @@ const WholesalerAIInsights = () => {
                                 <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
                                     <div className="flex items-center justify-between">
                                         <div className="flex items-center space-x-3">
-                                            <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
-                                                <TrendingUp className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+                                            <div className="p-3 bg-neutral-200 dark:bg-neutral-700 dark:bg-blue-900/30 rounded-lg">
+                                                <TrendingUp className="h-6 w-6 text-black dark:text-white dark:text-blue-400" />
                                             </div>
                                             <div>
                                                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Business Health</h2>
@@ -148,7 +148,7 @@ const WholesalerAIInsights = () => {
                                             </div>
                                         </div>
                                         <div className="text-center">
-                                            <div className="text-4xl font-bold text-blue-600 dark:text-blue-400">{insights.aiInsights.overallHealth.score}</div>
+                                            <div className="text-4xl font-bold text-black dark:text-white dark:text-blue-400">{insights.aiInsights.overallHealth.score}</div>
                                             <div className="text-xs text-gray-600 dark:text-gray-400">out of 100</div>
                                         </div>
                                     </div>
@@ -193,7 +193,7 @@ const WholesalerAIInsights = () => {
 
                         {/* URGENT ACTIONS - Highest Priority */}
                         {insights.aiInsights?.expiryAlerts && insights.aiInsights.expiryAlerts.length > 0 && (
-                            <div className="bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20 rounded-xl shadow-lg border-2 border-red-300 dark:border-red-800 p-6">
+                            <div className="bg-black dark:bg-white text-white dark:text-black   rounded-xl shadow-lg border-2 border-red-300 dark:border-red-800 p-6">
                                 <div className="flex items-center space-x-3 mb-4">
                                     <div className="p-3 bg-red-600 rounded-lg animate-pulse">
                                         <Clock className="h-6 w-6 text-white" />
@@ -359,7 +359,7 @@ const WholesalerAIInsights = () => {
                                                                 product.suggestedDiscount
                                                             )}
                                                             disabled={sendingCampaign === product.productId}
-                                                            className="flex items-center justify-center space-x-1 px-3 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 font-medium"
+                                                            className="flex items-center justify-center space-x-1 px-3 py-2 bg-black dark:bg-white text-white dark:text-black text-sm rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200 transition-colors disabled:opacity-50 font-medium"
                                                         >
                                                             {sendingCampaign === product.productId ? (
                                                                 <RefreshCw className="h-4 w-4 animate-spin" />
@@ -380,10 +380,10 @@ const WholesalerAIInsights = () => {
 
                             {/* Pricing Optimization */}
                             {insights.aiInsights?.pricingRecommendations && insights.aiInsights.pricingRecommendations.length > 0 && (
-                                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border-l-4 border-indigo-500 p-6">
+                                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border-l-4 border-black dark:border-white p-6">
                                     <div className="flex items-center space-x-3 mb-4">
-                                        <div className="p-3 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg">
-                                            <DollarSign className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
+                                        <div className="p-3 bg-neutral-200 dark:bg-neutral-700 dark:bg-neutral-800 rounded-lg">
+                                            <DollarSign className="h-6 w-6 text-black dark:text-white dark:text-white" />
                                         </div>
                                         <div>
                                             <h2 className="text-xl font-semibold text-gray-900 dark:text-white">💰 Pricing</h2>
@@ -392,12 +392,12 @@ const WholesalerAIInsights = () => {
                                     </div>
                                     <div className="space-y-3">
                                         {insights.aiInsights.pricingRecommendations.map((rec, idx) => (
-                                            <div key={idx} className="border border-indigo-200 dark:border-indigo-900 rounded-lg p-4 bg-indigo-50 dark:bg-indigo-900/10">
+                                            <div key={idx} className="border border-neutral-200 dark:border-neutral-700 dark:border-indigo-900 rounded-lg p-4 bg-neutral-100 dark:bg-neutral-800 dark:bg-neutral-800">
                                                 <h3 className="font-semibold text-gray-900 dark:text-white mb-2">{rec.productName}</h3>
                                                 <div className="flex items-center space-x-3 mb-2">
                                                     <span className="text-sm text-gray-600 dark:text-gray-400 line-through">₹{rec.currentPrice}</span>
                                                     <span className="text-sm text-gray-400">→</span>
-                                                    <span className="text-lg font-bold text-indigo-600 dark:text-indigo-400">₹{rec.suggestedPrice}</span>
+                                                    <span className="text-lg font-bold text-black dark:text-white dark:text-white">₹{rec.suggestedPrice}</span>
                                                 </div>
                                                 <p className="text-sm text-gray-700 dark:text-gray-300 mb-3">{rec.message || rec.reason}</p>
                                                 {rec.productId && (
@@ -431,7 +431,7 @@ const WholesalerAIInsights = () => {
                                                                 toast.error('Failed to update price');
                                                             }
                                                         }}
-                                                        className="w-full flex items-center justify-center space-x-2 px-3 py-2 bg-indigo-600 text-white text-sm rounded-lg hover:bg-indigo-700 transition-colors font-medium"
+                                                        className="w-full flex items-center justify-center space-x-2 px-3 py-2 bg-black dark:bg-white text-white dark:text-black text-sm rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200 transition-colors font-medium"
                                                     >
                                                         <DollarSign className="h-4 w-4" />
                                                         <span>Apply Price</span>
@@ -523,19 +523,19 @@ const WholesalerAIInsights = () => {
 
                         {/* RESTOCK RECOMMENDATIONS - Products Selling Well */}
                         {insights.aiInsights?.restockRecommendations && insights.aiInsights.restockRecommendations.length > 0 && (
-                            <div className="bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 rounded-xl shadow-sm border-2 border-blue-300 dark:border-blue-800 p-6">
+                            <div className="bg-black dark:bg-white text-white dark:text-black   rounded-xl shadow-sm border-2 border-neutral-200 dark:border-neutral-700 dark:border-neutral-200 dark:border-neutral-700 p-6">
                                 <div className="flex items-center space-x-3 mb-4">
-                                    <div className="p-3 bg-blue-600 rounded-lg">
+                                    <div className="p-3 bg-black dark:bg-white rounded-lg">
                                         <Package className="h-6 w-6 text-white" />
                                     </div>
                                     <div>
                                         <h2 className="text-2xl font-bold text-blue-900 dark:text-blue-300">📦 Restock Recommendations</h2>
-                                        <p className="text-sm text-blue-700 dark:text-blue-400">Products selling well - order more inventory</p>
+                                        <p className="text-sm text-black dark:text-white dark:text-blue-400">Products selling well - order more inventory</p>
                                     </div>
                                 </div>
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                     {insights.aiInsights.restockRecommendations.map((restock, idx) => (
-                                        <div key={idx} className="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-blue-600">
+                                        <div key={idx} className="bg-white dark:bg-gray-800 rounded-lg p-4 border-l-4 border-black dark:border-white">
                                             <h3 className="font-bold text-gray-900 dark:text-white text-lg mb-2">{restock.productName}</h3>
                                             <div className="space-y-2 mb-3">
                                                 <div className="flex justify-between text-sm">
@@ -544,7 +544,7 @@ const WholesalerAIInsights = () => {
                                                 </div>
                                                 <div className="flex justify-between text-sm">
                                                     <span className="text-gray-600 dark:text-gray-400">Weekly Sales:</span>
-                                                    <span className="font-semibold text-blue-600 dark:text-blue-400">{restock.avgWeeklySales} units/week</span>
+                                                    <span className="font-semibold text-black dark:text-white dark:text-blue-400">{restock.avgWeeklySales} units/week</span>
                                                 </div>
                                                 <div className="flex justify-between text-sm">
                                                     <span className="text-gray-600 dark:text-gray-400">Suggested Order:</span>
@@ -554,7 +554,7 @@ const WholesalerAIInsights = () => {
                                             <p className="text-xs text-gray-700 dark:text-gray-300 mb-3 italic">{restock.message}</p>
                                             <div className={`px-3 py-2 rounded-lg text-center font-semibold ${restock.urgency === 'high'
                                                 ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
-                                                : 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'
+                                                : 'bg-neutral-200 dark:bg-neutral-700 text-black dark:text-white dark:bg-blue-900/30 dark:text-blue-400'
                                                 }`}>
                                                 {restock.urgency === 'high' ? '🚨 URGENT' : '📊 Recommended'}
                                             </div>
@@ -568,10 +568,10 @@ const WholesalerAIInsights = () => {
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                             {/* Personalized Offers */}
                             {insights.aiInsights?.personalizedOffers && insights.aiInsights.personalizedOffers.length > 0 && (
-                                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border-l-4 border-purple-500 p-6">
+                                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border-l-4 border-black dark:border-white p-6">
                                     <div className="flex items-center space-x-3 mb-4">
-                                        <div className="p-3 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
-                                            <Target className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+                                        <div className="p-3 bg-neutral-200 dark:bg-neutral-700 dark:bg-purple-900/30 rounded-lg">
+                                            <Target className="h-6 w-6 text-black dark:text-white dark:text-purple-400" />
                                         </div>
                                         <div>
                                             <h2 className="text-xl font-semibold text-gray-900 dark:text-white">🎯 Personalized Offers</h2>
@@ -580,20 +580,20 @@ const WholesalerAIInsights = () => {
                                     </div>
                                     <div className="space-y-3">
                                         {insights.aiInsights.personalizedOffers.map((offer, idx) => (
-                                            <div key={idx} className="border border-purple-200 dark:border-purple-900 rounded-lg p-4 bg-purple-50 dark:bg-purple-900/10">
+                                            <div key={idx} className="border border-neutral-200 dark:border-neutral-700 dark:border-purple-900 rounded-lg p-4 bg-neutral-100 dark:bg-neutral-800 dark:bg-purple-900/10">
                                                 <div className="flex justify-between items-start mb-3">
                                                     <div className="flex-1">
                                                         <h3 className="font-semibold text-gray-900 dark:text-white">{offer.retailerName}</h3>
                                                         {offer.retailerLocation && (
                                                             <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">📍 {offer.retailerLocation}</p>
                                                         )}
-                                                        <p className="text-sm text-purple-700 dark:text-purple-400 font-medium mt-1">{offer.productName}</p>
+                                                        <p className="text-sm text-black dark:text-white dark:text-purple-400 font-medium mt-1">{offer.productName}</p>
                                                     </div>
-                                                    <span className="px-3 py-1 bg-purple-600 text-white text-sm font-bold rounded-full">{offer.discount}% OFF</span>
+                                                    <span className="px-3 py-1 bg-black dark:bg-white text-white dark:text-black text-sm font-bold rounded-full">{offer.discount}% OFF</span>
                                                 </div>
                                                 <p className="text-sm text-gray-700 dark:text-gray-300 mb-3">{offer.message || offer.reason}</p>
                                                 {offer.campaignMessage && (
-                                                    <div className="bg-white dark:bg-gray-800 rounded-lg p-3 mb-3 border border-purple-200 dark:border-purple-800">
+                                                    <div className="bg-white dark:bg-gray-800 rounded-lg p-3 mb-3 border border-neutral-200 dark:border-neutral-700 dark:border-neutral-200 dark:border-neutral-700">
                                                         <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">📧 Message:</p>
                                                         <p className="text-sm text-gray-900 dark:text-white">{offer.campaignMessage}</p>
                                                     </div>
@@ -601,7 +601,7 @@ const WholesalerAIInsights = () => {
                                                 <button
                                                     onClick={() => handleSendCampaign(null, offer.campaignMessage, offer.discount, offer.retailerId)}
                                                     disabled={sendingCampaign === offer.retailerId}
-                                                    className="w-full flex items-center justify-center space-x-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+                                                    className="w-full flex items-center justify-center space-x-2 px-4 py-2 bg-black dark:bg-white text-white dark:text-black rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium"
                                                 >
                                                     {sendingCampaign === offer.retailerId ? (
                                                         <>
@@ -643,7 +643,7 @@ const WholesalerAIInsights = () => {
                                                     </div>
                                                     <span className={`px-3 py-1 text-xs font-bold rounded-full ${alert.status === 'low'
                                                         ? 'bg-red-600 text-white'
-                                                        : 'bg-blue-600 text-white'
+                                                        : 'bg-black dark:bg-white text-white dark:text-black'
                                                         }`}>
                                                         {alert.status.toUpperCase()}
                                                     </span>

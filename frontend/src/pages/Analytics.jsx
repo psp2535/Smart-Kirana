@@ -159,8 +159,8 @@ const Analytics = () => {
                             <p className="text-2xl font-bold text-gray-900 dark:text-white">₹{profitData?.grossProfit?.toLocaleString() || 0}</p>
                             <p className="text-xs text-green-600 mt-1">{profitData?.grossProfitMargin || 0}% margin</p>
                         </div>
-                        <div className="p-2 bg-blue-100 rounded-lg">
-                            <TrendingUp className="h-6 w-6 text-blue-600" />
+                        <div className="p-2 bg-neutral-200 dark:bg-neutral-700 rounded-lg">
+                            <TrendingUp className="h-6 w-6 text-black dark:text-white" />
                         </div>
                     </div>
                 </div>
@@ -171,10 +171,10 @@ const Analytics = () => {
                         <div>
                             <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Net Profit</p>
                             <p className="text-2xl font-bold text-gray-900 dark:text-white">₹{profitData?.netProfit?.toLocaleString() || 0}</p>
-                            <p className="text-xs text-purple-600 mt-1">{profitData?.netProfitMargin || 0}% margin</p>
+                            <p className="text-xs text-black dark:text-white mt-1">{profitData?.netProfitMargin || 0}% margin</p>
                         </div>
-                        <div className="p-2 bg-purple-100 rounded-lg">
-                            <Wallet className="h-6 w-6 text-purple-600" />
+                        <div className="p-2 bg-neutral-200 dark:bg-neutral-700 rounded-lg">
+                            <Wallet className="h-6 w-6 text-black dark:text-white" />
                         </div>
                     </div>
                 </div>
@@ -205,15 +205,15 @@ const Analytics = () => {
                 </div>
 
                 {/* Remaining Inventory Value */}
-                <div className="card bg-gradient-to-br from-indigo-50 to-purple-50">
+                <div className="card bg-black dark:bg-white text-white dark:text-black">
                     <div className="flex items-center justify-between">
                         <div className="w-full">
                             <p className="text-sm font-medium text-gray-600 dark:text-gray-400 flex items-center">
                                 <Package className="h-4 w-4 mr-1" />
                                 Remaining Inventory Value
                             </p>
-                            <p className="text-xl font-bold text-indigo-900 dark:text-indigo-400">₹{profitData?.inventoryValue?.toLocaleString() || 0}</p>
-                            <p className="text-xs text-indigo-600 mt-1">{inventoryStatus?.totalItems || 0} items in stock</p>
+                            <p className="text-xl font-bold text-indigo-900 dark:text-white">₹{profitData?.inventoryValue?.toLocaleString() || 0}</p>
+                            <p className="text-xs text-black dark:text-white mt-1">{inventoryStatus?.totalItems || 0} items in stock</p>
                         </div>
                     </div>
                 </div>
@@ -400,28 +400,28 @@ const Analytics = () => {
                     <div className="space-y-3">
                         <button 
                             onClick={() => navigate('/sales')}
-                            className="w-full text-left p-3 rounded-lg border border-gray-200 hover:bg-indigo-50 hover:border-indigo-300 transition-colors"
+                            className="w-full text-left p-3 rounded-lg border border-gray-200 hover:bg-neutral-100 dark:bg-neutral-800 hover:border-neutral-200 dark:border-neutral-700 transition-colors"
                         >
                             <p className="text-sm font-medium text-gray-900 dark:text-white">View Sales Dashboard</p>
                             <p className="text-xs text-gray-500 dark:text-gray-400">Access detailed sales data & reports</p>
                         </button>
                         <button 
                             onClick={() => navigate('/customers')}
-                            className="w-full text-left p-3 rounded-lg border border-gray-200 hover:bg-indigo-50 hover:border-indigo-300 transition-colors"
+                            className="w-full text-left p-3 rounded-lg border border-gray-200 hover:bg-neutral-100 dark:bg-neutral-800 hover:border-neutral-200 dark:border-neutral-700 transition-colors"
                         >
                             <p className="text-sm font-medium text-gray-900 dark:text-white">Customer Management</p>
                             <p className="text-xs text-gray-500 dark:text-gray-400">View & manage customer database</p>
                         </button>
                         <button 
                             onClick={() => navigate('/inventory')}
-                            className="w-full text-left p-3 rounded-lg border border-gray-200 hover:bg-indigo-50 hover:border-indigo-300 transition-colors"
+                            className="w-full text-left p-3 rounded-lg border border-gray-200 hover:bg-neutral-100 dark:bg-neutral-800 hover:border-neutral-200 dark:border-neutral-700 transition-colors"
                         >
                             <p className="text-sm font-medium text-gray-900 dark:text-white">Inventory Management</p>
                             <p className="text-xs text-gray-500 dark:text-gray-400">Stock levels & performance metrics</p>
                         </button>
                         <button 
                             onClick={() => navigate('/expenses')}
-                            className="w-full text-left p-3 rounded-lg border border-gray-200 hover:bg-indigo-50 hover:border-indigo-300 transition-colors"
+                            className="w-full text-left p-3 rounded-lg border border-gray-200 hover:bg-neutral-100 dark:bg-neutral-800 hover:border-neutral-200 dark:border-neutral-700 transition-colors"
                         >
                             <p className="text-sm font-medium text-gray-900 dark:text-white">Expense Tracking</p>
                             <p className="text-xs text-gray-500 dark:text-gray-400">Monitor business expenses</p>

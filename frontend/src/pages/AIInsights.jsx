@@ -384,8 +384,8 @@ const AIInsights = () => {
         return (
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                 {metadata.salesAnalyzed !== undefined && (
-                    <div className="bg-blue-50 p-3 rounded-lg">
-                        <p className="text-xs text-blue-600 font-medium">{t('ai.metadata.salesAnalyzed')}</p>
+                    <div className="bg-neutral-100 dark:bg-neutral-800 p-3 rounded-lg">
+                        <p className="text-xs text-black dark:text-white font-medium">{t('ai.metadata.salesAnalyzed')}</p>
                         <p className="text-lg font-bold text-blue-900">{metadata.salesAnalyzed}</p>
                     </div>
                 )}
@@ -396,8 +396,8 @@ const AIInsights = () => {
                     </div>
                 )}
                 {metadata.expensesAnalyzed !== undefined && (
-                    <div className="bg-purple-50 p-3 rounded-lg">
-                        <p className="text-xs text-purple-600 font-medium">{t('ai.metadata.expensesAnalyzed')}</p>
+                    <div className="bg-neutral-100 dark:bg-neutral-800 p-3 rounded-lg">
+                        <p className="text-xs text-black dark:text-white font-medium">{t('ai.metadata.expensesAnalyzed')}</p>
                         <p className="text-lg font-bold text-purple-900">{metadata.expensesAnalyzed}</p>
                     </div>
                 )}
@@ -414,8 +414,8 @@ const AIInsights = () => {
                     </div>
                 )}
                 {metadata.avgOrderValue !== undefined && (
-                    <div className="bg-blue-50 p-3 rounded-lg">
-                        <p className="text-xs text-blue-600 font-medium">{t('ai.metadata.avgOrderValue')}</p>
+                    <div className="bg-neutral-100 dark:bg-neutral-800 p-3 rounded-lg">
+                        <p className="text-xs text-black dark:text-white font-medium">{t('ai.metadata.avgOrderValue')}</p>
                         <p className="text-lg font-bold text-blue-900">₹{metadata.avgOrderValue.toLocaleString()}</p>
                     </div>
                 )}
@@ -525,7 +525,7 @@ const AIInsights = () => {
         return (
             <div className="space-y-6">
                 {/* Festival Header Card */}
-                <div className="bg-gradient-to-r from-orange-500 to-pink-500 rounded-lg p-6 text-white">
+                <div className="bg-black dark:bg-white text-white dark:text-black rounded-lg p-6 text-white">
                     <div className="flex items-start justify-between">
                         <div className="flex-1">
                             <div className="flex items-center mb-2">
@@ -621,7 +621,7 @@ const AIInsights = () => {
                                             </p>
                                             <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${item.action.includes('Restock')
                                                 ? 'bg-red-100 text-red-800'
-                                                : 'bg-blue-100 text-blue-800'
+                                                : 'bg-neutral-200 dark:bg-neutral-700 text-black dark:text-white'
                                                 }`}>
                                                 {item.action}
                                             </span>
@@ -635,7 +635,7 @@ const AIInsights = () => {
 
                 {/* AI Response */}
                 {festivalData.message && (
-                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+                    <div className="bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-lg p-6">
                         <h3 className="text-lg font-semibold text-blue-900 mb-3 flex items-center">
                             <Brain className="h-5 w-5 mr-2" />
                             AI Recommendations
@@ -643,9 +643,9 @@ const AIInsights = () => {
                         <div className="prose prose-sm max-w-none">
                             <ReactMarkdown
                                 components={{
-                                    p: ({ node, ...props }) => <p className="text-blue-800 mb-2" {...props} />,
-                                    ul: ({ node, ...props }) => <ul className="list-disc list-inside space-y-1 text-blue-800" {...props} />,
-                                    li: ({ node, ...props }) => <li className="text-blue-800" {...props} />,
+                                    p: ({ node, ...props }) => <p className="text-black dark:text-white mb-2" {...props} />,
+                                    ul: ({ node, ...props }) => <ul className="list-disc list-inside space-y-1 text-black dark:text-white" {...props} />,
+                                    li: ({ node, ...props }) => <li className="text-black dark:text-white" {...props} />,
                                     strong: ({ node, ...props }) => <strong className="font-semibold text-blue-900" {...props} />,
                                 }}
                             >
@@ -761,7 +761,7 @@ const AIInsights = () => {
                         {/* Sales Trend Chart */}
                         <div className="bg-white border border-gray-200 rounded-lg p-4">
                             <h4 className="text-sm font-semibold text-gray-700 mb-3 flex items-center">
-                                <TrendingUp className="h-4 w-4 mr-2 text-blue-600" />
+                                <TrendingUp className="h-4 w-4 mr-2 text-black dark:text-white" />
                                 Sales Trend (Last 30 Days)
                             </h4>
                             <ResponsiveContainer width="100%" height={250}>
@@ -781,7 +781,7 @@ const AIInsights = () => {
                         {/* Top Products Chart */}
                         <div className="bg-white border border-gray-200 rounded-lg p-4">
                             <h4 className="text-sm font-semibold text-gray-700 mb-3 flex items-center">
-                                <Package className="h-4 w-4 mr-2 text-blue-600" />
+                                <Package className="h-4 w-4 mr-2 text-black dark:text-white" />
                                 Top 10 Selling Products
                             </h4>
                             {chartData.topProducts && chartData.topProducts.length > 0 ? (
@@ -865,7 +865,7 @@ const AIInsights = () => {
                         {/* Expense Trend Chart */}
                         <div className="bg-white border border-gray-200 rounded-lg p-4">
                             <h4 className="text-sm font-semibold text-gray-700 mb-3 flex items-center">
-                                <TrendingDown className="h-4 w-4 mr-2 text-purple-600" />
+                                <TrendingDown className="h-4 w-4 mr-2 text-black dark:text-white" />
                                 Expense Trend (Last 90 Days)
                             </h4>
                             <ResponsiveContainer width="100%" height={250}>
@@ -885,7 +885,7 @@ const AIInsights = () => {
                         {/* Expense by Category Chart */}
                         <div className="bg-white border border-gray-200 rounded-lg p-4">
                             <h4 className="text-sm font-semibold text-gray-700 mb-3 flex items-center">
-                                <Calendar className="h-4 w-4 mr-2 text-purple-600" />
+                                <Calendar className="h-4 w-4 mr-2 text-black dark:text-white" />
                                 Expense by Category
                             </h4>
                             <ResponsiveContainer width="100%" height={250}>
@@ -957,7 +957,7 @@ const AIInsights = () => {
 
                             if (actions.length > 0) {
                                 return (
-                                    <div className="mb-6 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/30 dark:to-emerald-900/30 border-2 border-green-400 dark:border-green-600 rounded-xl p-6 shadow-lg animate-slideInLeft">
+                                    <div className="mb-6 bg-black dark:bg-white text-white dark:text-black dark:from-green-900/30 dark:to-emerald-900/30 border-2 border-green-400 dark:border-green-600 rounded-xl p-6 shadow-lg animate-slideInLeft">
                                         <div className="flex items-center mb-4">
                                             <div className="p-2 bg-green-500 rounded-lg mr-3">
                                                 <Sparkles className="h-6 w-6 text-white" />
@@ -997,15 +997,15 @@ const AIInsights = () => {
                                         colorClass = 'text-yellow-700 dark:text-yellow-300';
                                         bgClass = 'bg-yellow-100 dark:bg-yellow-900/40';
                                     } else if (text.includes('💡')) {
-                                        colorClass = 'text-purple-700 dark:text-purple-300';
-                                        bgClass = 'bg-purple-100 dark:bg-purple-900/40';
+                                        colorClass = 'text-black dark:text-white dark:text-purple-300';
+                                        bgClass = 'bg-neutral-200 dark:bg-neutral-700 dark:bg-purple-900/40';
                                     } else if (text.includes('📊')) {
-                                        colorClass = 'text-indigo-700 dark:text-indigo-300';
-                                        bgClass = 'bg-indigo-100 dark:bg-indigo-900/40';
+                                        colorClass = 'text-black dark:text-white dark:text-white';
+                                        bgClass = 'bg-neutral-200 dark:bg-neutral-700 dark:bg-neutral-800';
                                     }
 
                                     return (
-                                        <h2 className={`text-xl font-bold ${colorClass} ${bgClass} mt-6 mb-3 p-3 rounded-lg border-l-4 ${text.includes('🎯') ? 'border-green-500' : text.includes('💰') ? 'border-yellow-500' : text.includes('💡') ? 'border-purple-500' : 'border-indigo-500'}`} {...props}>
+                                        <h2 className={`text-xl font-bold ${colorClass} ${bgClass} mt-6 mb-3 p-3 rounded-lg border-l-4 ${text.includes('🎯') ? 'border-green-500' : text.includes('💰') ? 'border-yellow-500' : text.includes('💡') ? 'border-black dark:border-white' : 'border-black dark:border-white'}`} {...props}>
                                             {children}
                                         </h2>
                                     );
@@ -1034,9 +1034,9 @@ const AIInsights = () => {
                                     if (text.match(/₹[\d,]+/)) {
                                         highlightClass = 'font-bold text-green-600 dark:text-green-400 bg-green-100 dark:bg-green-900/40 px-1 rounded';
                                     } else if (text.match(/\d+%/)) {
-                                        highlightClass = 'font-bold text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-900/40 px-1 rounded';
+                                        highlightClass = 'font-bold text-black dark:text-white dark:text-blue-400 bg-neutral-200 dark:bg-neutral-700 dark:bg-blue-900/40 px-1 rounded';
                                     } else if (text.toLowerCase().includes('high') || text.toLowerCase().includes('top')) {
-                                        highlightClass = 'font-bold text-purple-600 dark:text-purple-400 bg-purple-100 dark:bg-purple-900/40 px-1 rounded';
+                                        highlightClass = 'font-bold text-black dark:text-white dark:text-purple-400 bg-neutral-200 dark:bg-neutral-700 dark:bg-purple-900/40 px-1 rounded';
                                     }
 
                                     return <strong className={highlightClass} {...props}>{children}</strong>;

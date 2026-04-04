@@ -333,7 +333,7 @@ const WholesalerInventory = () => {
                             return (
                                 <div key={product._id} className={`bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border-2 transition-all ${isEditing ? 'border-primary-500 ring-4 ring-primary-100 dark:ring-primary-900/50' : 'border-transparent hover:shadow-xl'}`}>
                                     {/* Card Header */}
-                                    <div className={`px-6 py-4 ${product.isActive ? 'bg-gradient-to-r from-primary-500 to-primary-600' : 'bg-gray-400'}`}>
+                                    <div className={`px-6 py-4 ${product.isActive ? 'bg-black dark:bg-white text-white dark:text-black' : 'bg-gray-400'}`}>
                                         <div className="flex justify-between items-start">
                                             <div className="flex-1">
                                                 {isEditing ? (
@@ -398,7 +398,7 @@ const WholesalerInventory = () => {
 
                                         {/* Pricing Section */}
                                         <div className="grid grid-cols-2 gap-3">
-                                            <div className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 p-4 rounded-lg border border-green-200 dark:border-green-800">
+                                            <div className="bg-black dark:bg-white text-white dark:text-black   p-4 rounded-lg border border-green-200 dark:border-green-800">
                                                 <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">Selling Price</p>
                                                 {isEditing ? (
                                                     <input
@@ -415,9 +415,9 @@ const WholesalerInventory = () => {
                                             </div>
 
                                             {profitInfo && (
-                                                <div className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 p-4 rounded-lg border border-purple-200 dark:border-purple-800">
+                                                <div className="bg-black dark:bg-white text-white dark:text-black   p-4 rounded-lg border border-neutral-200 dark:border-neutral-700 dark:border-neutral-200 dark:border-neutral-700">
                                                     <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">Profit Margin</p>
-                                                    <p className="text-2xl font-bold text-purple-700 dark:text-purple-400">{profitInfo.margin}%</p>
+                                                    <p className="text-2xl font-bold text-black dark:text-white dark:text-purple-400">{profitInfo.margin}%</p>
                                                     <p className="text-xs text-gray-500 mt-1">₹{profitInfo.profit} profit</p>
                                                 </div>
                                             )}
@@ -552,9 +552,9 @@ const WholesalerInventory = () => {
                                                 ) : (
                                                     <div className="space-y-1">
                                                         {product.bulkDiscounts.map((discount, idx) => (
-                                                            <div key={idx} className="flex justify-between items-center bg-blue-50 dark:bg-blue-900/20 px-3 py-2 rounded text-sm">
+                                                            <div key={idx} className="flex justify-between items-center bg-neutral-100 dark:bg-neutral-800 dark:bg-blue-900/20 px-3 py-2 rounded text-sm">
                                                                 <span className="text-gray-700 dark:text-gray-300">≥ {discount.minQty} {product.unit}</span>
-                                                                <span className="font-semibold text-blue-700 dark:text-blue-300">₹{discount.price}/{product.unit}</span>
+                                                                <span className="font-semibold text-black dark:text-white dark:text-blue-300">₹{discount.price}/{product.unit}</span>
                                                             </div>
                                                         ))}
                                                     </div>
@@ -564,16 +564,16 @@ const WholesalerInventory = () => {
 
                                         {/* Analytics (if available) */}
                                         {product.totalOrders > 0 && !isEditing && (
-                                            <div className="bg-gradient-to-r from-indigo-50 to-blue-50 dark:from-indigo-900/20 dark:to-blue-900/20 border border-indigo-200 dark:border-indigo-800 rounded-lg p-3">
+                                            <div className="bg-black dark:bg-white text-white dark:text-black   border border-neutral-200 dark:border-neutral-700 dark:border-neutral-200 dark:border-neutral-700 rounded-lg p-3">
                                                 <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">Performance</p>
                                                 <div className="grid grid-cols-2 gap-2 text-sm">
                                                     <div>
                                                         <p className="text-xs text-gray-500">Total Orders</p>
-                                                        <p className="font-bold text-indigo-700 dark:text-indigo-300">{product.totalOrders}</p>
+                                                        <p className="font-bold text-black dark:text-white dark:text-white">{product.totalOrders}</p>
                                                     </div>
                                                     <div>
                                                         <p className="text-xs text-gray-500">Qty Sold</p>
-                                                        <p className="font-bold text-indigo-700 dark:text-indigo-300">{product.totalQuantitySold} {product.unit}</p>
+                                                        <p className="font-bold text-black dark:text-white dark:text-white">{product.totalQuantitySold} {product.unit}</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -670,13 +670,13 @@ const WholesalerInventory = () => {
                                 </div>
 
                                 {addMethod === 'manual' && !aiRecommendations && (
-                                    <button type="button" onClick={getAIRecommendations} disabled={isLoading} className="w-full flex items-center justify-center space-x-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50">
+                                    <button type="button" onClick={getAIRecommendations} disabled={isLoading} className="w-full flex items-center justify-center space-x-2 px-4 py-2 bg-black dark:bg-white text-white dark:text-black rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200 disabled:opacity-50">
                                         <Sparkles className="h-5 w-5" /><span>{isLoading ? 'Getting AI Recommendations...' : 'Get AI Recommendations'}</span>
                                     </button>
                                 )}
 
                                 {aiRecommendations && (
-                                    <div className="bg-gradient-to-r from-purple-50 to-indigo-50 dark:from-purple-900/20 dark:to-indigo-900/20 border-2 border-purple-300 dark:border-purple-800 rounded-lg p-5">
+                                    <div className="bg-black dark:bg-white text-white dark:text-black   border-2 border-neutral-200 dark:border-neutral-700 dark:border-neutral-200 dark:border-neutral-700 rounded-lg p-5">
                                         <h4 className="font-bold text-purple-900 dark:text-purple-200 mb-4 flex items-center text-lg"><Sparkles className="h-6 w-6 mr-2" />AI Business Recommendations</h4>
                                         <div className="grid grid-cols-2 gap-4 text-sm">
                                             <div className="bg-white dark:bg-gray-800 p-3 rounded-lg">
@@ -686,11 +686,11 @@ const WholesalerInventory = () => {
                                             </div>
                                             <div className="bg-white dark:bg-gray-800 p-3 rounded-lg">
                                                 <p className="text-gray-600 dark:text-gray-400 text-xs mb-1">Min Order Quantity</p>
-                                                <p className="text-2xl font-bold text-blue-600">{aiRecommendations.recommendedMinOrder} {productForm.unit}</p>
+                                                <p className="text-2xl font-bold text-black dark:text-white">{aiRecommendations.recommendedMinOrder} {productForm.unit}</p>
                                             </div>
                                             <div className="bg-white dark:bg-gray-800 p-3 rounded-lg">
                                                 <p className="text-gray-600 dark:text-gray-400 text-xs mb-1">Expected Profit Margin</p>
-                                                <p className="text-2xl font-bold text-purple-600">{aiRecommendations.profitMargin}%</p>
+                                                <p className="text-2xl font-bold text-black dark:text-white">{aiRecommendations.profitMargin}%</p>
                                             </div>
                                             <div className="bg-white dark:bg-gray-800 p-3 rounded-lg">
                                                 <p className="text-gray-600 dark:text-gray-400 text-xs mb-1">Sales Velocity</p>

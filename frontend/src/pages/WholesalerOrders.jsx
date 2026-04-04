@@ -63,9 +63,9 @@ const WholesalerOrders = () => {
     const getStatusColor = (status) => {
         const colors = {
             'REQUESTED': 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
-            'ACCEPTED': 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
-            'PACKED': 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200',
-            'DISPATCHED': 'bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200',
+            'ACCEPTED': 'bg-neutral-200 dark:bg-neutral-700 text-black dark:text-white dark:bg-blue-900 dark:text-blue-200',
+            'PACKED': 'bg-neutral-200 dark:bg-neutral-700 text-black dark:text-white dark:bg-purple-900 dark:text-purple-200',
+            'DISPATCHED': 'bg-neutral-200 dark:bg-neutral-700 text-black dark:text-white dark:bg-indigo-900 dark:text-white',
             'DELIVERED': 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
             'CANCELLED': 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
         };
@@ -185,13 +185,13 @@ const WholesalerOrders = () => {
                                 )}
 
                                 {order.status === 'ACCEPTED' && (
-                                    <button onClick={() => updateOrderStatus(order._id, 'PACKED', 'Order packed and ready')} className="w-full px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 flex items-center justify-center space-x-2">
+                                    <button onClick={() => updateOrderStatus(order._id, 'PACKED', 'Order packed and ready')} className="w-full px-4 py-2 bg-black dark:bg-white text-white dark:text-black rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200 flex items-center justify-center space-x-2">
                                         <Package className="h-5 w-5" /><span>Mark as Packed</span>
                                     </button>
                                 )}
 
                                 {order.status === 'PACKED' && (
-                                    <button onClick={() => updateOrderStatus(order._id, 'DISPATCHED', 'Order dispatched for delivery')} className="w-full px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 flex items-center justify-center space-x-2">
+                                    <button onClick={() => updateOrderStatus(order._id, 'DISPATCHED', 'Order dispatched for delivery')} className="w-full px-4 py-2 bg-black dark:bg-white text-white dark:text-black rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200 flex items-center justify-center space-x-2">
                                         <Truck className="h-5 w-5" /><span>Mark as Dispatched</span>
                                     </button>
                                 )}

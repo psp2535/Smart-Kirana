@@ -11,10 +11,10 @@ import {
   ShoppingCart,
   CreditCard,
   AlertCircle,
-  CheckCircle,
   UserPlus
 } from 'lucide-react';
-import { salesAPI, expensesAPI, inventoryAPI, customersAPI, profitAnalyticsAPI, aiAPI } from '../services/api';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { salesAPI, expensesAPI, inventoryAPI, customersAPI, profitAnalyticsAPI } from '../services/api';
 
 const Dashboard = () => {
   const { t } = useTranslation();
@@ -27,6 +27,7 @@ const Dashboard = () => {
   const [profitData, setProfitData] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [recentActivities, setRecentActivities] = useState([]);
+  const [chartData, setChartData] = useState([]);
 
   const handleQuickAction = (path) => {
     navigate(path);
@@ -57,28 +58,21 @@ const Dashboard = () => {
       setInventory(inventoryData);
       setCustomers(customersData);
       
-      // Calculate profit manually first
-      const totalSales = salesData.reduce((sum, s) => sum + Number(s.total_amount || 0), 0);
-      const totalExpenses = expensesData.reduce((sum, e) => sum + Number(e.amount || 0), 0);
-      const totalInventoryValue = inventoryData.reduce((sum, i) => sum + (Number(i.stock_qty || 0) * Number(i.price_per_unit || 0)), 0);
-      
-      // Calculate profit manually from sales data
       const totalRevenue = salesData.reduce((sum, s) => sum + Number(s.total_amount || 0), 0);
       const totalCOGS = salesData.reduce((sum, s) => sum + Number(s.total_cogs || 0), 0);
+      const totalExpenses = expensesData.reduce((sum, e) => sum + Number(e.amount || 0), 0);
+      const totalInventoryValue = inventoryData.reduce((sum, i) => sum + (Number(i.stock_qty || 0) * Number(i.price_per_unit || 0)), 0);
       const grossProfit = totalRevenue - totalCOGS;
       const netProfit = grossProfit - totalExpenses;
       
-      // Try profit API, fallback to manual calculation
       try {
         const pRes = await profitAnalyticsAPI.getProfitAnalysis();
         if (pRes?.success && pRes.data && pRes.data.revenue > 0) {
           setProfitData(pRes.data);
-          console.log('✅ Using profit API data:', pRes.data);
         } else {
-          throw new Error('Invalid API data, using manual calculation');
+          throw new Error('Invalid API data');
         }
-      } catch (profitError) {
-        console.log('⚠️ Using manual profit calculation');
+      } catch (err) {
         setProfitData({
           revenue: totalRevenue,
           totalCOGS: totalCOGS,
@@ -89,8 +83,32 @@ const Dashboard = () => {
           inventoryValue: totalInventoryValue
         });
       }
+
+      // Use actual sales data grouped by the last 7 days
+      const last7Days = [...Array(7)].map((_, i) => {
+        const d = new Date();
+        d.setDate(d.getDate() - (6 - i));
+        return {
+          dateObj: d,
+          name: d.toLocaleDateString('en-US', { weekday: 'short' }),
+          revenue: 0
+        };
+      });
+
+      salesData.forEach(sale => {
+        const saleDate = new Date(sale.createdAt || sale.date);
+        const dayMatch = last7Days.find(d => 
+          d.dateObj.getDate() === saleDate.getDate() &&
+          d.dateObj.getMonth() === saleDate.getMonth() &&
+          d.dateObj.getFullYear() === saleDate.getFullYear()
+        );
+        if (dayMatch) {
+          dayMatch.revenue += Number(sale.total_amount || 0);
+        }
+      });
       
-      // Generate recent activities from real data
+      setChartData(last7Days);
+      
       generateRecentActivities(salesData, expensesData, inventoryData, customersData);
       
     } catch (err) {
@@ -110,7 +128,7 @@ const Dashboard = () => {
         icon: ShoppingCart,
         message: `Sale of ₹${sale.total_amount} recorded`,
         time: sale.createdAt || sale.date,
-        status: 'success'
+        status: 'default'
       });
     });
     
@@ -121,9 +139,8 @@ const Dashboard = () => {
         icon: CreditCard,
         message: `${expense.category || 'Expense'}: ₹${expense.amount}`,
         time: expense.createdAt || expense.date,
-        status: 'info'
+        status: 'default'
       });
-      
     });
     
     const lowStock = inventoryData.filter(item => item.stock_qty <= (item.min_stock_level || 5));
@@ -134,7 +151,7 @@ const Dashboard = () => {
         icon: AlertCircle,
         message: `${lowStock.length} items low on stock`,
         time: new Date(),
-        status: 'warning'
+        status: 'issue'
       });
     }
     
@@ -145,7 +162,7 @@ const Dashboard = () => {
         icon: UserPlus,
         message: `Customer ${customer.name} added`,
         time: customer.createdAt,
-        status: 'success'
+        status: 'default'
       });
     });
     
@@ -155,98 +172,55 @@ const Dashboard = () => {
 
   const timeAgo = (date) => {
     const seconds = Math.floor((new Date() - new Date(date)) / 1000);
-    const intervals = {
-      year: 31536000,
-      month: 2592000,
-      week: 604800,
-      day: 86400,
-      hour: 3600,
-      minute: 60
-    };
-    
+    const intervals = { year: 31536000, month: 2592000, week: 604800, day: 86400, hour: 3600, minute: 60 };
     for (const [unit, secondsInUnit] of Object.entries(intervals)) {
       const interval = Math.floor(seconds / secondsInUnit);
-      if (interval >= 1) {
-        return `${interval} ${unit}${interval !== 1 ? 's' : ''} ago`;
-      }
+      if (interval >= 1) return `${interval} ${unit}${interval !== 1 ? 's' : ''} ago`;
     }
     return 'Just now';
   };
 
-  // Calculate values
   const totalSales = sales.reduce((sum, s) => sum + Number(s.total_amount || 0), 0);
   const totalExpenses = expenses.reduce((sum, e) => sum + Number(e.amount || 0), 0);
   const totalInventoryValue = inventory.reduce((sum, i) => sum + (Number(i.stock_qty || 0) * Number(i.price_per_unit || 0)), 0);
   const basicProfit = totalSales - totalExpenses;
   
-  // Calculate profit margin properly - use API data only if it has valid values, otherwise calculate
   const actualProfit = (profitData && profitData.revenue > 0) ? profitData.netProfit : basicProfit;
   const actualRevenue = (profitData && profitData.revenue > 0) ? profitData.revenue : totalSales;
   const profitMargin = actualRevenue > 0 ? (actualProfit / actualRevenue * 100) : 0;
   
-  console.log('Dashboard Calculation Debug:', {
-    totalSales,
-    totalExpenses,
-    basicProfit,
-    profitDataFromAPI: profitData,
-    actualProfit,
-    actualRevenue,
-    profitMargin
-  });
-  
-  // Stats cards with REAL profit values
   const stats = [
     { 
       name: t('dashboard.stats.netProfit'), 
       value: `₹${actualProfit.toLocaleString()}`, 
-      change: `${profitMargin.toFixed(1)}% ${t('dashboard.stats.margin', { value: profitMargin.toFixed(1) }).split('%')[1]}`, 
-      changeType: actualProfit >= 0 ? 'positive' : 'negative', 
+      change: `${profitMargin.toFixed(1)}% MARGIN`, 
       icon: TrendingUp 
     },
     { 
       name: t('dashboard.stats.totalRevenue'), 
       value: `₹${(profitData?.revenue || totalSales).toLocaleString()}`, 
-      change: `${profitData?.salesCount || sales.length} ${t('dashboard.stats.sales', { count: profitData?.salesCount || sales.length }).split(' ')[1]}`, 
-      changeType: 'positive', 
+      change: `${profitData?.salesCount || sales.length} SALES`, 
       icon: DollarSign 
     },
     { 
       name: t('dashboard.stats.inventoryValue'), 
       value: `₹${(profitData?.inventoryValue || totalInventoryValue).toLocaleString()}`, 
-      change: `${inventory.length} ${t('dashboard.stats.items', { count: inventory.length }).split(' ')[1]}`, 
-      changeType: 'neutral', 
+      change: `${inventory.length} ITEMS`, 
       icon: Package 
     },
     { 
       name: t('dashboard.stats.activeCustomers'), 
       value: String(customers.length), 
-      change: t('dashboard.stats.growing'), 
-      changeType: 'positive', 
+      change: `TOTAL BASE`, 
       icon: Users 
     },
   ];
 
-  // Search functionality
   const filteredData = {
-    sales: sales.filter(s => 
-      !searchQuery || 
-      s.customer_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      s.payment_method?.toLowerCase().includes(searchQuery.toLowerCase())
-    ),
-    expenses: expenses.filter(e => 
-      !searchQuery || 
-      e.category?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      e.description?.toLowerCase().includes(searchQuery.toLowerCase())
-    ),
-    inventory: inventory.filter(i => 
-      !searchQuery || 
-      i.item_name?.toLowerCase().includes(searchQuery.toLowerCase())
-    ),
-    customers: customers.filter(c => 
-      !searchQuery || 
-      c.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      c.phone?.includes(searchQuery)
-    )
+    sales: sales.filter(s => !searchQuery || s.customer_name?.toLowerCase().includes(searchQuery.toLowerCase()) || s.payment_method?.toLowerCase().includes(searchQuery.toLowerCase())),
+    expenses: expenses.filter(e => !searchQuery || e.category?.toLowerCase().includes(searchQuery.toLowerCase()) || e.description?.toLowerCase().includes(searchQuery.toLowerCase())),
+    inventory: inventory.filter(i => !searchQuery || i.item_name?.toLowerCase().includes(searchQuery.toLowerCase())),
+    customers: customers.filter(c => !searchQuery || c.name?.toLowerCase().includes(searchQuery.toLowerCase()) || c.phone?.includes(searchQuery))
   };
   
   const searchResults = [
@@ -258,41 +232,39 @@ const Dashboard = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="animate-spin rounded-full h-12 w-12 border-2 border-t-black border-r-black border-b-transparent border-l-transparent dark:border-t-white dark:border-r-white"></div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
-      {/* Header with Search */}
-      <div className="flex flex-col space-y-4 md:flex-row md:justify-between md:items-center md:space-y-0">
+    <div className="space-y-8 animate-fadeIn text-black dark:text-white pb-10">
+      {/* Header */}
+      <div className="flex flex-col space-y-4 md:flex-row md:justify-between md:items-end md:space-y-0">
         <div>
-          <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">{t('dashboard.title')}</h1>
-          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-            {t('dashboard.subtitle')}
-          </p>
+          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight">{t('dashboard.title')}</h1>
+          <p className="mt-2 text-sm text-neutral-500 font-medium uppercase tracking-widest">{t('dashboard.subtitle')}</p>
         </div>
-        <div className="relative w-full md:w-64">
+        <div className="relative w-full md:w-72">
           <input
             type="text"
             placeholder={t('dashboard.searchPlaceholder')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 text-sm border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            className="w-full pl-10 pr-4 py-3 bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 rounded-xl focus:ring-0 focus:border-black dark:focus:border-white transition-colors"
           />
-          <Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400 dark:text-white" />
+          <Search className="absolute left-3 top-3.5 h-5 w-5 text-neutral-400" />
           {searchQuery && searchResults.length > 0 && (
-            <div className="absolute top-12 left-0 right-0 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg max-h-64 overflow-y-auto z-10 w-full md:w-auto">
+            <div className="absolute top-14 left-0 right-0 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl shadow-2xl max-h-64 overflow-y-auto z-20">
               {searchResults.map((result, idx) => (
-                <div key={idx} className="px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer border-b dark:border-gray-700">
+                <div key={idx} className="px-4 py-3 hover:bg-neutral-100 dark:hover:bg-neutral-800 cursor-pointer border-b border-neutral-100 dark:border-neutral-800 last:border-0 transition-colors">
                   <div className="flex justify-between items-center">
                     <div>
-                      <span className="text-xs font-medium text-indigo-600 dark:text-indigo-400">{result.type}</span>
-                      <p className="text-sm text-gray-900 dark:text-white">{result.name}</p>
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">{result.type}</span>
+                      <p className="text-sm font-medium">{result.name}</p>
                     </div>
-                    <span className="text-sm font-semibold text-gray-700 dark:text-white">
+                    <span className="text-sm font-semibold">
                       {result.type === 'Inventory' ? `${result.amount} units` : result.type === 'Customer' ? result.amount : `₹${result.amount}`}
                     </span>
                   </div>
@@ -300,140 +272,182 @@ const Dashboard = () => {
               ))}
             </div>
           )}
-          {searchQuery && searchResults.length === 0 && (
-            <div className="absolute top-12 left-0 right-0 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg px-4 py-3 z-10">
-              <p className="text-sm text-gray-500 dark:text-gray-400 text-center">No results found for "{searchQuery}"</p>
-            </div>
-          )}
         </div>
       </div>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {stats.map((stat) => (
-          <div key={stat.name} className="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg border border-transparent dark:border-gray-700 p-4 sm:p-5">
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <stat.icon className="h-6 w-6 sm:h-8 sm:w-8 text-indigo-600 dark:text-indigo-400" />
+      {/* Primary KPI Stats - Bento Grid Top Row */}
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {stats.map((stat, i) => (
+          <div key={stat.name} className="bg-white dark:bg-neutral-900 rounded-[2rem] p-6 shadow-sm border border-neutral-200 dark:border-neutral-800 flex flex-col justify-between hover:-translate-y-1 transition-transform duration-300 group">
+            <div className="flex justify-between items-start mb-6">
+              <div className="p-3 rounded-2xl bg-neutral-100 dark:bg-neutral-800 group-hover:bg-black group-hover:text-white dark:group-hover:bg-white dark:group-hover:text-black transition-colors">
+                <stat.icon className="h-6 w-6 text-neutral-700 dark:text-neutral-300 group-hover:text-white dark:group-hover:text-black" />
               </div>
-              <div className="ml-3 sm:ml-5 flex-1 min-w-0">
-                <dl>
-                  <dt className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400 truncate">{stat.name}</dt>
-                  <dd className="flex flex-col">
-                    <p className="text-lg sm:text-2xl font-semibold text-gray-900 dark:text-white break-all">{stat.value}</p>
-                    <p className={`mt-1 flex items-baseline text-xs sm:text-sm font-semibold ${stat.changeType === 'positive' ? 'text-green-600' : stat.changeType === 'negative' ? 'text-red-600' : 'text-gray-500'}`}>
-                      {stat.change}
-                    </p>
-                  </dd>
-                </dl>
-              </div>
+              <span className="text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400">
+                {stat.change}
+              </span>
             </div>
+             <div>
+               <p className="text-xs font-bold uppercase tracking-widest mb-1 text-neutral-500">{stat.name}</p>
+               <h3 className="text-3xl font-black tracking-tight">{stat.value}</h3>
+             </div>
           </div>
         ))}
       </div>
 
-      {/* Main Content Grid */}
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        {/* AI Daily Digest */}
-        <div className="bg-white dark:bg-gray-800 border border-transparent dark:border-gray-700 p-4 sm:p-6 rounded-lg shadow">
-          <h3 className="text-base sm:text-lg font-medium text-gray-900 dark:text-white flex items-center mb-4">
-            <Brain className="h-5 w-5 mr-2 text-indigo-600 dark:text-indigo-400" />
-            {t('dashboard.digest.title')}
-          </h3>
-          <div className="space-y-3">
+      {/* Main Grid - Second Row */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        {/* Performance Chart */}
+        <div className="lg:col-span-2 bg-white dark:bg-neutral-900 rounded-[2rem] p-8 shadow-sm border border-neutral-200 dark:border-neutral-800">
+           <div className="flex justify-between items-end mb-8">
+             <div>
+               <h3 className="text-xl font-bold tracking-tight mb-1">Weekly Revenue</h3>
+               <p className="text-sm text-neutral-500 font-medium">Performance overview across the last 7 days.</p>
+             </div>
+             <div className="hidden sm:block text-right">
+               <p className="text-3xl font-black">₹{(profitData?.revenue || totalSales).toLocaleString()}</p>
+               <p className="text-xs text-neutral-500 uppercase tracking-widest font-bold">Total Payout</p>
+             </div>
+           </div>
+           
+           <div className="h-64 w-full">
+             <ResponsiveContainer width="100%" height="100%">
+               <AreaChart data={chartData} margin={{ top: 10, right: 0, left: 0, bottom: 0 }}>
+                 <defs>
+                   <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
+                     <stop offset="5%" stopColor="currentColor" stopOpacity={0.15}/>
+                     <stop offset="95%" stopColor="currentColor" stopOpacity={0}/>
+                   </linearGradient>
+                 </defs>
+                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#525252" opacity={0.2} />
+                 <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#737373' }} dy={10} />
+                 <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#737373' }} dx={-10} />
+                 <Tooltip 
+                   contentStyle={{ backgroundColor: '#171717', color: '#fff', borderRadius: '12px', border: 'none', padding: '12px 16px' }}
+                   itemStyle={{ color: '#fff', fontWeight: 'bold' }}
+                   labelStyle={{ color: '#a3a3a3', marginBottom: '4px', fontSize: '12px', textTransform: 'uppercase' }}
+                   cursor={{ stroke: '#525252', strokeWidth: 1, strokeDasharray: '4 4' }}
+                 />
+                 <Area type="monotone" dataKey="revenue" stroke="currentColor" strokeWidth={3} fillOpacity={1} fill="url(#colorRevenue)" className="text-black dark:text-white" />
+               </AreaChart>
+             </ResponsiveContainer>
+           </div>
+        </div>
+
+        {/* AI Daily Digest (Structured Layout) */}
+        <div className="bg-white dark:bg-neutral-900 rounded-[2rem] p-8 shadow-sm border border-neutral-200 dark:border-neutral-800 flex flex-col">
+          <div className="flex items-center justify-between mb-8">
+            <h3 className="text-xl font-bold flex items-center">
+              <Brain className="h-6 w-6 mr-3 text-neutral-500" />
+              AI Insights
+            </h3>
+            <span className="flex h-3 w-3 relative">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-black dark:bg-white opacity-20"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-black dark:bg-white"></span>
+            </span>
+          </div>
+          <div className="space-y-6 flex-1">
             {actualProfit !== undefined && actualProfit !== null ? (
-              <>
-                <div className="p-4 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg">
-                  <p className="text-sm font-semibold text-indigo-900 dark:text-indigo-200 mb-2">{t('dashboard.digest.performance')}</p>
-                  <p className="text-sm text-gray-700 dark:text-gray-300">
-                    {t('dashboard.digest.performanceText', { profit: actualProfit.toLocaleString(), margin: profitMargin.toFixed(1) })}
-                    {actualProfit > 0 ? t('dashboard.digest.performanceGood') : t('dashboard.digest.performanceBad')}
+              <div className="grid grid-cols-1 gap-4">
+                <div className="p-5 rounded-2xl bg-neutral-50 dark:bg-neutral-800/50 border border-neutral-100 dark:border-neutral-800">
+                  <p className="text-[10px] uppercase tracking-widest font-extrabold text-neutral-400 mb-2">Performance</p>
+                  <p className="text-sm font-medium leading-relaxed">
+                    {actualProfit > 0 ? 'Profit margin looks solid. ' : 'Business is operating at a loss. '}
+                    You are running at a <span className="font-bold text-black dark:text-white">{profitMargin.toFixed(1)}% margin</span> with <span className="font-bold text-black dark:text-white">₹{actualProfit.toLocaleString()}</span> net profit.
                   </p>
                 </div>
                 {inventory.filter(i => i.stock_qty <= (i.min_stock_level || 5)).length > 0 && (
-                  <div className="p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
-                    <p className="text-sm font-semibold text-yellow-900 dark:text-yellow-200 mb-2">{t('dashboard.digest.stockAlert')}</p>
-                    <p className="text-sm text-gray-700 dark:text-gray-300">
-                      {t('dashboard.digest.stockAlertText', { count: inventory.filter(i => i.stock_qty <= (i.min_stock_level || 5)).length })}
-                    </p>
+                   <div className="p-5 rounded-2xl bg-neutral-50 dark:bg-neutral-800/50 border border-neutral-100 dark:border-neutral-800">
+                     <p className="text-[10px] uppercase tracking-widest font-extrabold text-neutral-400 mb-2 flex items-center">
+                       <AlertCircle className="w-3 h-3 mr-1" /> Critical Stock
+                     </p>
+                     <p className="text-sm font-medium leading-relaxed">
+                       You have <span className="font-bold text-black dark:text-white">{inventory.filter(i => i.stock_qty <= (i.min_stock_level || 5)).length}</span> items running low. Restock required immediately to prevent lost sales.
+                     </p>
+                   </div>
+                )}
+                {profitData?.salesCount > 0 && (
+                  <div className="p-5 rounded-2xl bg-neutral-50 dark:bg-neutral-800/50 border border-neutral-100 dark:border-neutral-800">
+                     <p className="text-[10px] uppercase tracking-widest font-extrabold text-neutral-400 mb-2">Velocity</p>
+                     <p className="text-sm font-medium leading-relaxed">
+                       <span className="font-bold text-black dark:text-white">{profitData.salesCount}</span> sales generated today amounting to <span className="font-bold text-black dark:text-white">₹{profitData.revenue?.toLocaleString()}</span>.
+                     </p>
                   </div>
                 )}
-                {profitData.salesCount > 0 && (
-                  <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                    <p className="text-sm font-semibold text-green-900 dark:text-green-200 mb-2">{t('dashboard.digest.salesUpdate')}</p>
-                    <p className="text-sm text-gray-700 dark:text-gray-300">
-                      {t('dashboard.digest.salesUpdateText', { count: profitData.salesCount, revenue: profitData.revenue?.toLocaleString() })}
-                    </p>
-                  </div>
-                )}
-              </>
+              </div>
             ) : (
-              <div className="p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
-                <p className="text-sm text-gray-600 dark:text-gray-300">{t('dashboard.digest.noData')}</p>
+              <div className="h-full flex flex-col items-center justify-center text-neutral-400 opacity-50">
+                <Brain className="w-12 h-12 mb-4" />
+                <p className="text-sm font-medium">Gathering data for insights...</p>
               </div>
             )}
           </div>
         </div>
-        
-        {/* Quick Actions */}
-        <div className="bg-white dark:bg-gray-800 border border-transparent dark:border-gray-700 p-4 sm:p-6 rounded-lg shadow">
-          <h3 className="text-base sm:text-lg font-medium text-gray-900 dark:text-white mb-4 sm:mb-6">{t('dashboard.quickActions.title')}</h3>
-          <div className="grid grid-cols-2 gap-3 sm:gap-4">
-             <button 
-               onClick={() => handleQuickAction('/sales')} 
-               className="flex flex-col items-center justify-center gap-2 sm:gap-3 w-full text-gray-900 dark:text-gray-100 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600 font-medium rounded-lg px-4 py-4 sm:px-8 sm:py-8 text-center transition-all shadow-sm hover:shadow-md"
-             >
-               <ShoppingCart className="h-6 w-6 sm:h-10 sm:w-10" />
-               <span className="text-xs sm:text-base font-semibold">{t('dashboard.quickActions.recordSale')}</span>
-             </button>
-             <button 
-               onClick={() => handleQuickAction('/expenses')} 
-               className="flex flex-col items-center justify-center gap-2 sm:gap-3 w-full text-gray-900 dark:text-gray-100 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600 font-medium rounded-lg px-4 py-4 sm:px-8 sm:py-8 text-center transition-all shadow-sm hover:shadow-md"
-             >
-               <CreditCard className="h-6 w-6 sm:h-10 sm:w-10" />
-               <span className="text-xs sm:text-base font-semibold">{t('dashboard.quickActions.addExpense')}</span>
-             </button>
-             <button 
-               onClick={() => handleQuickAction('/inventory')} 
-               className="flex flex-col items-center justify-center gap-2 sm:gap-3 w-full text-gray-900 dark:text-gray-100 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600 font-medium rounded-lg px-4 py-4 sm:px-8 sm:py-8 text-center transition-all shadow-sm hover:shadow-md"
-             >
-               <Package className="h-6 w-6 sm:h-10 sm:w-10" />
-               <span className="text-xs sm:text-base font-semibold">{t('dashboard.quickActions.updateInventory')}</span>
-             </button>
-             <button 
-               onClick={() => handleQuickAction('/customers')} 
-               className="flex flex-col items-center justify-center gap-2 sm:gap-3 w-full text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-900 hover:bg-gray-200 dark:hover:bg-gray-800 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-700 font-medium rounded-lg px-4 py-4 sm:px-8 sm:py-8 text-center transition-all shadow-sm hover:shadow-md"
-             >
-               <UserPlus className="h-6 w-6 sm:h-10 sm:w-10" />
-               <span className="text-xs sm:text-base font-semibold">{t('dashboard.quickActions.addCustomer')}</span>
-             </button>
-          </div>
-        </div>
       </div>
-      
-      {/* Recent Activity */}
-      <div className="bg-white dark:bg-black border border-transparent dark:border-gray-800 p-4 sm:p-6 rounded-lg shadow">
-         <h3 className="text-base sm:text-lg font-medium text-gray-900 dark:text-white mb-4">{t('dashboard.recentActivity.title')}</h3>
-         <div className="space-y-4">
-          {recentActivities.length > 0 ? (
-            recentActivities.map((activity) => {
-              const ActivityIcon = activity.icon;
-              return (
-                <div key={activity.id} className="flex items-start sm:items-center space-x-3">
-                   <div className={`flex-shrink-0 p-2 rounded-full ${activity.status === 'success' ? 'bg-green-100 text-green-500' : activity.status === 'warning' ? 'bg-yellow-100 text-yellow-500' : 'bg-blue-100 text-blue-500'}`}>
-                    <ActivityIcon className="h-4 w-4 sm:h-5 sm:w-5" />
-                   </div>
-                   <div className="flex-1 min-w-0">
-                     <p className="text-xs sm:text-sm text-gray-900 dark:text-white">{activity.message}</p>
-                   </div>
-                   <p className="text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">{timeAgo(activity.time)}</p>
-                 </div>
-              );
-            })
-          ) : (
-            <p className="text-sm text-gray-500 dark:text-gray-400 text-center py-4">No recent activity. Start by creating a sale or adding inventory!</p>
-          )}
-         </div>
+
+      {/* Third Row - Action Grid & Recent Activity */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        
+        {/* Editorial Quick Actions */}
+        <div className="bg-white dark:bg-neutral-900 rounded-[2rem] p-8 shadow-sm border border-neutral-200 dark:border-neutral-800">
+           <div className="mb-6">
+             <h3 className="text-xl font-bold tracking-tight mb-1">Quick Actions</h3>
+             <p className="text-sm text-neutral-500 font-medium">Manage your daily operations seamlessly.</p>
+           </div>
+           
+           <div className="grid grid-cols-2 gap-4">
+              <button onClick={() => handleQuickAction('/dashboard/sales')} className="group flex flex-col justify-between h-32 p-5 rounded-2xl bg-neutral-100 dark:bg-neutral-800 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all text-left border border-transparent">
+                 <ShoppingCart className="h-6 w-6 text-neutral-500 group-hover:text-inherit" />
+                 <span className="font-bold tracking-tight">Record Sale</span>
+              </button>
+              <button onClick={() => handleQuickAction('/dashboard/expenses')} className="group flex flex-col justify-between h-32 p-5 rounded-2xl bg-neutral-100 dark:bg-neutral-800 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all text-left border border-transparent">
+                 <CreditCard className="h-6 w-6 text-neutral-500 group-hover:text-inherit" />
+                 <span className="font-bold tracking-tight">Add Expense</span>
+              </button>
+              <button onClick={() => handleQuickAction('/dashboard/inventory')} className="group flex flex-col justify-between h-32 p-5 rounded-2xl bg-neutral-100 dark:bg-neutral-800 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all text-left border border-transparent">
+                 <Package className="h-6 w-6 text-neutral-500 group-hover:text-inherit" />
+                 <span className="font-bold tracking-tight">Update Inventory</span>
+              </button>
+              <button onClick={() => handleQuickAction('/dashboard/customers')} className="group flex flex-col justify-between h-32 p-5 rounded-2xl border border-neutral-300 dark:border-neutral-700 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all text-left">
+                 <UserPlus className="h-6 w-6 text-neutral-500 group-hover:text-inherit" />
+                 <span className="font-bold tracking-tight">Add Customer</span>
+              </button>
+           </div>
+        </div>
+
+        {/* Minimalist Recent Activity */}
+        <div className="bg-white dark:bg-neutral-900 rounded-[2rem] p-8 shadow-sm border border-neutral-200 dark:border-neutral-800">
+           <div className="mb-6 flex justify-between items-end">
+             <h3 className="text-xl font-bold tracking-tight">Recent Activity</h3>
+             <button className="text-[10px] uppercase font-bold tracking-widest text-neutral-500 hover:text-black dark:hover:text-white transition-colors">View All</button>
+           </div>
+           
+           <div className="space-y-0">
+             {recentActivities.length > 0 ? (
+               recentActivities.map((activity, idx) => {
+                 const ActivityIcon = activity.icon;
+                 return (
+                   <div key={activity.id} className={`flex items-center space-x-4 py-4 ${idx !== recentActivities.length - 1 ? 'border-b border-neutral-100 dark:border-neutral-800' : ''}`}>
+                      <div className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center ${activity.status === 'issue' ? 'bg-neutral-800 text-white dark:bg-white dark:text-black' : 'bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300'}`}>
+                       <ActivityIcon className="h-4 w-4" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-semibold truncate">{activity.message}</p>
+                        <p className="text-xs text-neutral-500 font-medium">{timeAgo(activity.time)}</p>
+                      </div>
+                    </div>
+                 );
+               })
+             ) : (
+               <div className="h-40 flex flex-col items-center justify-center text-neutral-400">
+                 <ShoppingCart className="w-8 h-8 mb-3 opacity-20" />
+                 <p className="text-sm font-medium">No recent activity yet.</p>
+               </div>
+             )}
+           </div>
+        </div>
+
       </div>
     </div>
   );

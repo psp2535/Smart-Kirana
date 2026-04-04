@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Starting BizNova Development Environment..."
+echo "Starting Smart Kirana Development Environment..."
 echo
 
 echo "Starting Backend Server..."

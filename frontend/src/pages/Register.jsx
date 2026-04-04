@@ -112,7 +112,7 @@ const Register = () => {
       const result = await register(registrationData);
 
       if (result.success) {
-        toast.success('Account created successfully! Welcome to BizNova');
+        toast.success('Account created successfully! Welcome to Smart Kirana');
         navigate('/');
       } else {
         toast.error(result.message || 'Registration failed. Please try again.');
@@ -131,7 +131,7 @@ const Register = () => {
         {/* Header */}
         <div className="text-center">
           <h2 className="mt-6 text-3xl font-bold text-gray-900">
-            Join BizNova
+            Join Smart Kirana
           </h2>
           <p className="mt-2 text-sm text-gray-600">
             Create your AI-powered business assistant account
