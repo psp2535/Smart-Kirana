@@ -17,7 +17,9 @@ const getApiUrl = () => {
   
   // Production - Update this with your actual backend URL
   // For Render.com, it's usually: https://your-backend-service.onrender.com
-  return 'https://Smart Kirana1-bkd.onrender.com'; // Update this!
+  return hostname.includes('onrender.com') 
+    ? `https://${hostname.replace('-bkd', '')}-bkd.onrender.com` 
+    : 'http://localhost:5000';
 };
 
 // Create axios instance with base configuration
@@ -409,6 +411,85 @@ export const chatbotAPI = {
             message: 'What should I stock for upcoming festival?',
             language: 'en'
         });
+        return response.data;
+    }
+};
+
+// Notifications API calls
+export const notificationsAPI = {
+    // Get notifications for current user
+    getNotifications: async () => {
+        const response = await api.get('/notifications');
+        return response.data;
+    },
+
+    // Get unread count
+    getUnreadCount: async () => {
+        const response = await api.get('/notifications/unread-count');
+        return response.data;
+    },
+
+    // Mark as read
+    markAsRead: async (id) => {
+        const response = await api.put(`/notifications/${id}/read`);
+        return response.data;
+    },
+
+    // Mark all read
+    markAllRead: async () => {
+        const response = await api.put('/notifications/mark-all-read');
+        return response.data;
+    },
+
+    // Delete notification
+    deleteNotification: async (id) => {
+        const response = await api.delete(`/notifications/${id}`);
+        return response.data;
+    }
+};
+
+// Wholesaler API calls
+export const wholesalerAPI = {
+    // Get wholesaler dashboard stats
+    getStats: async () => {
+        const response = await api.get('/wholesalers/dashboard/stats');
+        return response.data;
+    },
+
+    // Get wholesaler orders
+    getOrders: async (params = {}) => {
+        const response = await api.get('/wholesalers/orders/wholesaler', { params });
+        return response.data;
+    },
+
+    // Get wholesaler inventory
+    getInventory: async (params = {}) => {
+        const response = await api.get('/wholesalers/inventory/my', { params });
+        return response.data;
+    },
+
+    // Update order status
+    updateOrderStatus: async (orderId, statusData) => {
+        // Backend uses PATCH for /orders/:orderId/status
+        const response = await api.patch(`/wholesalers/orders/${orderId}/status`, statusData);
+        return response.data;
+    },
+
+    // Get AI insights for wholesaler
+    getAIInsights: async () => {
+        const response = await api.get('/wholesalers/ai-insights');
+        return response.data;
+    },
+
+    // Send AI campaign
+    sendAICampaign: async (campaignData) => {
+        const response = await api.post('/wholesalers/send-campaign', campaignData);
+        return response.data;
+    },
+
+    // Apply discount to product
+    applyDiscount: async (discountData) => {
+        const response = await api.post('/wholesalers/apply-discount', discountData);
         return response.data;
     }
 };

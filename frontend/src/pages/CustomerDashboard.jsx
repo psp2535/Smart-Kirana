@@ -4,7 +4,7 @@ import { Search, Send, Package, Clock, CheckCircle, XCircle, Plus, Store, Shoppi
 import toast, { Toaster } from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import NotificationBell from '../components/NotificationBell';
-import FloatingAIChatbot from '../components/FloatingAIChatbot';
+import FloatingChatbot from '../components/FloatingChatbot';
 
 /**
  * Customer Dashboard
@@ -388,7 +388,6 @@ const CustomerDashboard = () => {
       });
 
       const result = await response.json();
-
       if (result.success) {
         setParsedBillItems(result.data.items);
         toast.success(result.message, { duration: 3000 });
@@ -500,7 +499,7 @@ const CustomerDashboard = () => {
         if (paymentMethod === 'UPI' && result.data.retailer_upi) {
           toast.success(
             <div>
-              <p className="font-semibold">✅ {t('customerDashboard.paymentModal.title')}!</p>
+              <p className="font-semibold">{t('customerDashboard.paymentModal.title')}!</p>
               <p className="text-sm mt-1">{t('customerDashboard.paymentModal.retailerUpiId')} <span className="font-mono font-bold">{result.data.retailer_upi}</span></p>
               <p className="text-xs mt-1">{t('customerDashboard.paymentModal.sendToUpi', { amount: result.data.total })}</p>
             </div>,
@@ -561,7 +560,7 @@ const CustomerDashboard = () => {
       />
       
       {/* Floating AI Chatbot */}
-      <FloatingAIChatbot />
+      <FloatingChatbot />
 
       {/* Modern Minimalist Header */}
       <header className={`sticky top-0 z-40 backdrop-blur-md border-b ${isDarkMode ? 'bg-gray-900/95 border-gray-800' : 'bg-white/95 border-gray-200'}`}>
@@ -571,7 +570,7 @@ const CustomerDashboard = () => {
             <div className="flex items-center space-x-3">
               <div className="relative group">
                 <div 
-                  className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center text-white font-bold shadow-lg cursor-pointer"
+                  className="w-10 h-10 bg-neutral-800 dark:bg-neutral-700 rounded-xl flex items-center justify-center text-white font-bold shadow-lg cursor-pointer"
                   title={user.name || 'Customer'}
                 >
                   {user.name?.[0] || 'C'}
@@ -631,8 +630,8 @@ const CustomerDashboard = () => {
               <button
                 onClick={handleLogout}
                 className={`px-3 py-1.5 text-sm font-medium rounded-lg transition-colors ${isDarkMode
-                  ? 'bg-black dark:bg-white hover:bg-red-700 text-white'
-                  : 'bg-black dark:bg-white hover:bg-red-700 text-white'
+                  ? 'bg-white text-black hover:bg-neutral-200'
+                  : 'bg-black text-white hover:bg-neutral-800'
                   }`}
               >
                 {t('customerDashboard.logout')}
@@ -701,9 +700,9 @@ const CustomerDashboard = () => {
         {activeTab === 'home' && (
           <div className="space-y-6">
             {/* Welcome Section */}
-            <div className={`rounded-xl p-6 ${isDarkMode ? 'bg-gradient-to-r from-blue-900 to-purple-900' : 'bg-gradient-to-r from-blue-600 to-purple-600'} text-white`}>
-              <h2 className="text-2xl font-bold mb-2">{t('customerDashboard.welcome.title', { name: user.name })} 👋</h2>
-              <p className="text-blue-100">{t('customerDashboard.welcome.subtitle')}</p>
+            <div className={`rounded-xl p-6 ${isDarkMode ? 'bg-neutral-900 border border-neutral-800' : 'bg-black'} text-white`}>
+              <h2 className="text-2xl font-bold mb-2">{t('customerDashboard.welcome.title', { name: user.name })}</h2>
+              <p className={`text-neutral-300 ${isDarkMode ? 'text-neutral-400' : ''}`}>{t('customerDashboard.welcome.subtitle')}</p>
             </div>
 
             {/* Feature Cards Grid */}
@@ -713,12 +712,12 @@ const CustomerDashboard = () => {
                 onClick={() => navigate('/customer/nearby-shops')}
                 className={`group cursor-pointer rounded-xl p-6 transition-all hover:scale-105 ${
                   isDarkMode 
-                    ? 'bg-gradient-to-br from-green-900 to-teal-900 hover:from-green-800 hover:to-teal-800' 
-                    : 'bg-gradient-to-br from-green-500 to-teal-500 hover:from-green-600 hover:to-teal-600'
+                    ? 'bg-neutral-900 border border-neutral-800 hover:bg-neutral-800' 
+                    : 'bg-neutral-800 hover:bg-neutral-900'
                 } shadow-lg hover:shadow-2xl`}
               >
                 <div className="flex items-center justify-between mb-4">
-                  <div className="p-3 bg-white/20 rounded-xl">
+                  <div className="p-3 bg-neutral-700 rounded-xl">
                     <MapPin className="h-8 w-8 text-white" />
                   </div>
                   <div className="text-white/80 group-hover:text-white transition-colors">
@@ -732,7 +731,7 @@ const CustomerDashboard = () => {
                   {t('customerDashboard.features.nearbyShops.description')}
                 </p>
                 <div className="flex items-center text-white/80 text-xs">
-                  <span className="px-2 py-1 bg-white/20 rounded-full">{t('customerDashboard.features.nearbyShops.badge')}</span>
+                  <span className="px-2 py-1 bg-neutral-700 rounded-full">{t('customerDashboard.features.nearbyShops.badge')}</span>
                 </div>
               </div>
 
@@ -741,12 +740,12 @@ const CustomerDashboard = () => {
                 onClick={() => setActiveTab('my-requests')}
                 className={`group cursor-pointer rounded-xl p-6 transition-all hover:scale-105 ${
                   isDarkMode 
-                    ? 'bg-gradient-to-br from-blue-900 to-indigo-900 hover:from-blue-800 hover:to-indigo-800' 
-                    : 'bg-gradient-to-br from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600'
+                    ? 'bg-neutral-900 border border-neutral-800 hover:bg-neutral-800' 
+                    : 'bg-neutral-700 hover:bg-neutral-800'
                 } shadow-lg hover:shadow-2xl`}
               >
                 <div className="flex items-center justify-between mb-4">
-                  <div className="p-3 bg-white/20 rounded-xl">
+                  <div className="p-3 bg-neutral-700 rounded-xl">
                     <ShoppingCart className="h-8 w-8 text-white" />
                   </div>
                   <div className="text-white/80 group-hover:text-white transition-colors">
@@ -762,7 +761,7 @@ const CustomerDashboard = () => {
                   {t('customerDashboard.features.myOrders.description')}
                 </p>
                 <div className="flex items-center text-white/80 text-xs">
-                  <span className="px-2 py-1 bg-white/20 rounded-full">
+                  <span className="px-2 py-1 bg-neutral-700 rounded-full">
                     {t('customerDashboard.features.myOrders.activeOrders', { count: requests.length })}
                   </span>
                 </div>
@@ -836,8 +835,8 @@ const CustomerDashboard = () => {
                   onClick={() => setActiveTab('my-requests')}
                   className={`mt-4 w-full py-2 rounded-lg text-sm font-medium transition-colors ${
                     isDarkMode 
-                      ? 'bg-black dark:bg-white hover:bg-blue-700 text-white' 
-                      : 'bg-black dark:bg-white hover:bg-blue-700 text-white'
+                      ? 'bg-white text-black hover:bg-neutral-200' 
+                      : 'bg-black text-white hover:bg-neutral-800'
                   }`}
                 >
                   {t('customerDashboard.recentOrders.viewAll')}
@@ -864,7 +863,7 @@ const CustomerDashboard = () => {
                   placeholder={t('customerDashboard.browseStores.searchPlaceholder')}
                   value={searchQuery}
                   onChange={handleSearch}
-                  className={`w-full pl-10 pr-4 py-2.5 text-sm rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all ${isDarkMode
+                  className={`w-full pl-10 pr-4 py-2.5 text-sm rounded-lg border focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white transition-all ${isDarkMode
                     ? 'bg-gray-800 border-gray-700 text-white placeholder-gray-500'
                     : 'bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400'
                     }`}
@@ -927,7 +926,7 @@ const CustomerDashboard = () => {
                     <button
                       type="button"
                       onClick={() => setShowBillScanModal(true)}
-                      className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-green-600 to-teal-600 text-white rounded-lg hover:from-green-700 hover:to-teal-700 transition-all shadow-md text-sm font-medium"
+                      className="flex items-center space-x-2 px-4 py-2 bg-neutral-800 dark:bg-neutral-100 dark:text-neutral-900 text-white rounded-lg hover:bg-neutral-900 dark:hover:bg-neutral-200 transition-all shadow-md text-sm font-medium"
                     >
                       <FileText className="h-4 w-4" />
                       <span>{t('customerDashboard.orderForm.scanList')}</span>
@@ -939,7 +938,7 @@ const CustomerDashboard = () => {
                     <button
                       type="button"
                       onClick={() => setShowInventory(!showInventory)}
-                      className={`flex items-center space-x-1 sm:space-x-2 text-xs sm:text-sm font-medium transition-colors ${isDarkMode ? 'text-black dark:text-white hover:text-primary-300' : 'text-black dark:text-white hover:text-black dark:text-white'}`}
+                      className={`flex items-center space-x-1 sm:space-x-2 text-xs sm:text-sm font-medium transition-colors ${isDarkMode ? 'text-white hover:text-neutral-300' : 'text-black hover:text-neutral-600'}`}
                     >
                       <Package className="h-4 w-4" />
                       <span>{showInventory ? t('customerDashboard.orderForm.hideInventory') : t('customerDashboard.orderForm.viewInventory', { count: retailerInventory.length })}</span>
@@ -1104,8 +1103,8 @@ const CustomerDashboard = () => {
 
                   {/* Order Summary */}
                   {Object.keys(itemAvailability).length > 0 && (
-                    <div className={`rounded-lg p-4 transition-colors ${isDarkMode ? 'bg-neutral-900 dark:bg-neutral-100/30 border border-blue-700' : 'bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700'}`}>
-                      <h3 className={`text-sm font-semibold mb-3 flex items-center space-x-2 ${isDarkMode ? 'text-blue-300' : 'text-black dark:text-white'}`}>
+                    <div className={`rounded-lg p-4 transition-colors ${isDarkMode ? 'bg-neutral-900 border border-neutral-700' : 'bg-neutral-100 border border-neutral-200'}`}>
+                      <h3 className={`text-sm font-semibold mb-3 flex items-center space-x-2 ${isDarkMode ? 'text-white' : 'text-black'}`}>
                         <Package className="h-4 w-4" />
                         <span>{t('customerDashboard.orderForm.orderSummary')}</span>
                       </h3>
@@ -1132,7 +1131,7 @@ const CustomerDashboard = () => {
                         })}
                       </div>
                       {Object.values(itemAvailability).some(item => !item.can_order) && (
-                        <div className={`mt-3 p-2 rounded text-sm flex items-center space-x-2 ${isDarkMode ? 'bg-neutral-900 dark:bg-neutral-100/30 border border-red-700 text-red-300' : 'bg-neutral-200 dark:bg-neutral-700 border border-red-300 text-neutral-800 dark:text-neutral-200'}`}>
+                        <div className={`mt-3 p-2 rounded text-sm flex items-center space-x-2 ${isDarkMode ? 'bg-neutral-800 border border-neutral-700 text-neutral-300' : 'bg-neutral-100 border border-neutral-200 text-neutral-800'}`}>
                           <AlertCircle className="h-4 w-4" />
                           <span className="font-medium">Cannot proceed: Some items are unavailable or insufficient</span>
                         </div>
@@ -1160,7 +1159,7 @@ const CustomerDashboard = () => {
                     <button
                       type="submit"
                       disabled={isLoading}
-                      className="flex-1 flex items-center justify-center space-x-2 py-3 px-4 text-sm font-semibold bg-gradient-to-r from-primary-600 to-purple-600 text-white rounded-xl hover:from-primary-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all transform hover:scale-105 shadow-lg"
+                      className="flex-1 flex items-center justify-center space-x-2 py-3 px-4 text-sm font-semibold bg-black dark:bg-white text-white dark:text-black rounded-xl hover:bg-neutral-900 dark:hover:bg-neutral-100 disabled:opacity-50 disabled:cursor-not-allowed transition-all transform hover:scale-105 shadow-xl"
                     >
                       <Send className="h-4 w-4" />
                       <span>{isLoading ? 'Sending...' : 'Send Request'}</span>
@@ -1172,7 +1171,7 @@ const CustomerDashboard = () => {
                         setSelectedRetailer(null);
                         setMessageForm({ items: [{ item_name: '', quantity: 1 }], notes: '' });
                       }}
-                      className={`px-4 py-3 text-sm font-medium rounded-xl transition-all transform hover:scale-105 ${isDarkMode ? 'border border-gray-600 text-gray-300 hover:bg-gray-700' : 'border border-gray-300 text-gray-700 hover:bg-gray-50'}`}
+                      className={`px-4 py-3 text-sm font-medium rounded-xl transition-all transform hover:scale-105 ${isDarkMode ? 'border border-neutral-700 text-neutral-300 hover:bg-neutral-800' : 'border border-neutral-200 text-neutral-600 hover:bg-neutral-50'}`}
                     >
                       Cancel
                     </button>
@@ -1191,7 +1190,7 @@ const CustomerDashboard = () => {
         {/* My Requests Tab */}
         {activeTab === 'my-requests' && (
           <div className={`rounded-xl p-5 ${isDarkMode ? 'bg-gray-900 border border-gray-800' : 'bg-white border border-gray-200'} shadow-sm`}>
-            <h2 className={`text-lg font-semibold mb-4 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+            <h2 className={`text-lg font-semibold mb-4 ${isDarkMode ? 'text-white' : 'text-neutral-900'}`}>
               {t('customerDashboard.myOrdersTab.title')}
             </h2>
 
@@ -1200,16 +1199,16 @@ const CustomerDashboard = () => {
                 <div
                   key={request._id}
                   className={`rounded-lg p-4 border transition-all ${isDarkMode
-                      ? 'bg-gray-800 border-gray-700 hover:border-gray-600'
-                      : 'bg-gray-50 border-gray-200 hover:border-gray-300'
+                      ? 'bg-neutral-800 border-neutral-700 hover:border-neutral-600'
+                      : 'bg-neutral-50 border-neutral-200 hover:border-neutral-300'
                     }`}
                 >
                   <div className="flex justify-between items-start mb-3">
                     <div className="flex-1">
-                      <h3 className={`text-sm font-medium ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+                      <h3 className={`text-sm font-medium ${isDarkMode ? 'text-white' : 'text-neutral-900'}`}>
                         {request.retailer_id?.shop_name || request.retailer_id?.name}
                       </h3>
-                      <p className={`text-xs mt-1 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                      <p className={`text-xs mt-1 ${isDarkMode ? 'text-neutral-400' : 'text-neutral-500'}`}>
                         {new Date(request.createdAt).toLocaleDateString()} at {new Date(request.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                       </p>
                     </div>
@@ -1264,7 +1263,7 @@ const CustomerDashboard = () => {
                       {request.status === 'billed' && (
                         <button
                           onClick={() => handleOpenPaymentModal(request)}
-                          className="w-full mt-2 py-2.5 px-4 bg-gradient-to-r from-green-600 to-teal-600 text-white rounded-lg hover:from-green-700 hover:to-teal-700 transition-all font-medium text-sm flex items-center justify-center gap-2 shadow-md"
+                          className="w-full mt-2 py-2.5 px-4 bg-black dark:bg-white text-white dark:text-black rounded-lg hover:bg-neutral-900 dark:hover:bg-neutral-100 transition-all font-medium text-sm flex items-center justify-center gap-2 shadow-md"
                         >
                           <CheckCircle className="h-4 w-4" />
                           Confirm Payment
@@ -1377,7 +1376,7 @@ const CustomerDashboard = () => {
                       />
                       <label
                         htmlFor="bill-upload-customer"
-                        className="mt-4 inline-block bg-black dark:bg-white text-white dark:text-black px-6 py-2 rounded-lg hover:bg-green-700 cursor-pointer transition-colors"
+                        className="mt-4 inline-block bg-black dark:bg-white text-white dark:text-black px-6 py-2 rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200 cursor-pointer transition-colors"
                       >
                         {t('customerDashboard.billScanner.selectImage')}
                       </label>
@@ -1385,9 +1384,9 @@ const CustomerDashboard = () => {
                   )}
                 </div>
 
-                <div className={`rounded-lg p-4 ${isDarkMode ? 'bg-neutral-900 dark:bg-neutral-100/20 border border-green-800' : 'bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700'}`}>
-                  <h4 className={`font-semibold mb-2 ${isDarkMode ? 'text-black dark:text-white' : 'text-black dark:text-white'}`}>{t('customerDashboard.billScanner.whatWeExtract')}</h4>
-                  <ul className={`text-sm space-y-1 ${isDarkMode ? 'text-green-300' : 'text-neutral-800 dark:text-neutral-200'}`}>
+                <div className={`rounded-lg p-4 ${isDarkMode ? 'bg-neutral-900 border border-neutral-800' : 'bg-neutral-100 border border-neutral-200'}`}>
+                  <h4 className={`font-semibold mb-2 ${isDarkMode ? 'text-white' : 'text-black'}`}>{t('customerDashboard.billScanner.whatWeExtract')}</h4>
+                  <ul className={`text-sm space-y-1 ${isDarkMode ? 'text-neutral-400' : 'text-neutral-600'}`}>
                     <li>{t('customerDashboard.billScanner.extractItem1')}</li>
                     <li>{t('customerDashboard.billScanner.extractItem2')}</li>
                     <li>{t('customerDashboard.billScanner.extractItem3')}</li>
@@ -1409,7 +1408,7 @@ const CustomerDashboard = () => {
                   <button
                     onClick={handleBillScan}
                     disabled={!selectedImage || uploadingImage}
-                    className="px-6 py-2 bg-gradient-to-r from-green-600 to-teal-600 text-white rounded-lg hover:from-green-700 hover:to-teal-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center gap-2"
+                    className="px-6 py-2 bg-black dark:bg-white text-white dark:text-black rounded-lg hover:bg-neutral-900 dark:hover:bg-neutral-100 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center gap-2"
                   >
                     {uploadingImage ? (
                       <>
@@ -1500,7 +1499,7 @@ const CustomerDashboard = () => {
                   <button
                     onClick={handleBillConfirm}
                     disabled={uploadingImage || parsedBillItems.length === 0}
-                    className="px-6 py-2 bg-gradient-to-r from-green-600 to-teal-600 text-white rounded-lg hover:from-green-700 hover:to-teal-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center gap-2"
+                    className="px-6 py-2 bg-black dark:bg-white text-white dark:text-black rounded-lg hover:bg-neutral-900 dark:hover:bg-neutral-100 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center gap-2"
                   >
                     {uploadingImage ? (
                       <>
@@ -1642,8 +1641,12 @@ const CustomerDashboard = () => {
           </div>
         </div>
       )}
-    </div>
-  );
+            {/* New Unified Chatbot */}
+            <FloatingChatbot 
+                isCustomerMode={true} 
+            />
+        </div>
+    );
 };
 
 export default CustomerDashboard;

@@ -3,13 +3,19 @@ const Inventory = require('../models/Inventory');
 const Expense = require('../models/Expense');
 const User = require('../models/User');
 const CustomerRequest = require('../models/CustomerRequest');
-const OpenAI = require('openai');
+const { GoogleGenerativeAI } = require('@google/generative-ai');
 const { normalize, isValidQuantity } = require('../utils/quantityHelper');
 const healthScoreService = require('../services/healthScoreService');
 const festivalForecastService = require('../services/festivalForecastService');
 
-const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY
+// Initialize Gemini
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
+const model = genAI.getGenerativeModel({ 
+    model: 'gemini-2.5-flash',
+    generationConfig: {
+        responseMimeType: "application/json",
+        temperature: 0.3,
+    }
 });
 const pendingOrders = new Map();
 const conversationHistory = new Map(); // Store last 5 messages per user
@@ -518,18 +524,12 @@ Return ONLY valid JSON, no markdown or extra text.
 `;
 
     try {
-        const completion = await openai.chat.completions.create({
-            model: 'gpt-4o-mini',
-            messages: [{ role: 'user', content: prompt }],
-            temperature: 0.3,
-            max_tokens: 1000,
-            response_format: { type: "json_object" }
-        });
-
-        const responseText = completion.choices[0].message.content.trim();
+        const result = await model.generateContent(prompt);
+        const response = await result.response;
+        const responseText = response.text();
         return JSON.parse(responseText);
     } catch (error) {
-        console.error('AI processing error:', error);
+        console.error('Gemini processing error:', error);
 
         // Fallback: Try to parse the message manually for common patterns
         const fallbackResponse = parseMessageFallback(message);
@@ -549,18 +549,13 @@ Return ONLY valid JSON, no markdown or extra text.
  */
 const executeAction = async (userId, aiResponse, businessData, originalMessage, language = 'en') => {
     try {
-        // Check if message contains direct billing commands for auto-confirmation
-        const directBillCommands = ['bill', 'बिल', 'బిల్లు', 'బిల్', 'make bill', 'create bill', 'bill for', 'make sale', 'create sale'];
-        const isDirectBillCommand = directBillCommands.some(cmd => {
-            const lowerMessage = originalMessage.toLowerCase();
-            // Match "bill [item]" or "make bill [item]"
-            return lowerMessage.startsWith(cmd + ' ') || lowerMessage.includes(' ' + cmd + ' ');
-        });
+        // Always require confirmation for sales
+        const isDirectBillCommand = false;
 
         switch (aiResponse.action) {
             case 'create_sale':
-                // Auto-confirm if it's a direct "make bill" command
-                return await createSalePreview(userId, aiResponse, businessData, isDirectBillCommand, language);
+                // Removed auto-confirm: all sales now show a preview first
+                return await createSalePreview(userId, aiResponse, businessData, false, language);
             case 'add_inventory':
                 return await addInventoryItem(userId, aiResponse);
             case 'update_inventory':
@@ -954,27 +949,32 @@ const addInventoryItem = async (userId, data) => {
             };
         }
 
-        // Create new inventory item
-        const newItem = new Inventory({
-            user_id: userId,
-            item_name: data.item_name,
-            stock_qty: data.quantity,
-            cost_price: data.cost_per_unit,
-            selling_price: data.price_per_unit,
-            price_per_unit: data.price_per_unit, // For backward compatibility
-            category: data.category || 'Other',
-            min_stock_level: data.min_stock_level || 5
-        });
+        // Store pending inventory addition (always ask for confirmation)
+        const pendingInventory = {
+            type: 'inventory',
+            action: 'create_new',
+            userId,
+            data: {
+                item_name: data.item_name,
+                stock_qty: data.quantity,
+                cost_price: data.cost_per_unit,
+                selling_price: data.price_per_unit,
+                price_per_unit: data.price_per_unit,
+                category: data.category || 'Other',
+                min_stock_level: data.min_stock_level || 5
+            },
+            timestamp: Date.now()
+        };
 
-        await newItem.save();
+        pendingOrders.set(`retailer_${userId}`, pendingInventory);
 
         const profitPerUnit = data.price_per_unit - data.cost_per_unit;
         const profitMargin = ((profitPerUnit / data.price_per_unit) * 100).toFixed(2);
 
         return {
             success: true,
-            message: `✅ Added to inventory:\n\n📦 ${data.item_name}\n🔢 Quantity: ${data.quantity} units\n💰 Cost: ₹${data.cost_per_unit} each\n🏷️ Selling Price: ₹${data.price_per_unit} each\n📈 Profit: ₹${profitPerUnit} per unit (${profitMargin}%)\n📂 Category: ${newItem.category}`,
-            data: { type: 'inventory_added', item: newItem, profit_analysis: { profit_per_unit: profitPerUnit, profit_margin: profitMargin } }
+            message: `📋 Inventory Preview:\n\n📦 ${data.item_name}\n🔢 Quantity: ${data.quantity} units\n💰 Cost: ₹${data.cost_per_unit} each\n🏷️ Selling Price: ₹${data.price_per_unit} each\n📈 Profit: ₹${profitPerUnit} per unit (${profitMargin}%)\n📂 Category: ${pendingInventory.data.category}\n\nReply 'yes' to confirm adding this item.`,
+            data: { type: 'inventory_preview', item: pendingInventory.data, profit_analysis: { profit_per_unit: profitPerUnit, profit_margin: profitMargin } }
         };
     } catch (error) {
         console.error('Add inventory error:', error);
@@ -1039,6 +1039,59 @@ const updateInventoryItem = async (userId, data, businessData) => {
  */
 const confirmInventoryAdd = async (userId, pendingOperation) => {
     try {
+        if (pendingOperation.action === 'create_new') {
+            const data = pendingOperation.data;
+            const newItem = new Inventory({
+                user_id: userId,
+                item_name: data.item_name,
+                stock_qty: data.stock_qty,
+                cost_price: data.cost_price,
+                selling_price: data.selling_price,
+                price_per_unit: data.price_per_unit,
+                category: data.category || 'Other',
+                min_stock_level: data.min_stock_level || 5
+            });
+
+            await newItem.save();
+            pendingOrders.delete(`retailer_${userId}`);
+
+            const profitPerUnit = data.selling_price - data.cost_price;
+            const profitMargin = ((profitPerUnit / data.selling_price) * 100).toFixed(2);
+
+            return {
+                success: true,
+                message: `✅ New item added to inventory:\n\n📦 ${data.item_name}\n🔢 Quantity: ${data.stock_qty} units\n💰 Cost: ₹${data.cost_price} each\n🏷️ Selling Price: ₹${data.selling_price} each\n📈 Profit: ₹${profitPerUnit} per unit (${profitMargin}%)\n📂 Category: ${newItem.category}`,
+                data: { type: 'inventory_added', item: newItem }
+            };
+        }
+
+        if (pendingOperation.action === 'update_details') {
+            const { existing_item, new_data } = pendingOperation;
+
+            // Apply specific updates
+            if (new_data.quantity !== undefined) {
+                existing_item.stock_qty = new_data.quantity;
+            }
+            if (new_data.price_per_unit !== undefined) {
+                existing_item.price_per_unit = new_data.price_per_unit;
+            }
+            if (new_data.cost_per_unit !== undefined) {
+                existing_item.cost_per_unit = new_data.cost_per_unit;
+            }
+
+            await existing_item.save();
+            pendingOrders.delete(`retailer_${userId}`);
+
+            const profitPerUnit = existing_item.price_per_unit - (existing_item.cost_per_unit || 0);
+            const profitMargin = existing_item.price_per_unit > 0 ? ((profitPerUnit / existing_item.price_per_unit) * 100).toFixed(2) : 0;
+
+            return {
+                success: true,
+                message: `✅ Updated inventory details:\n\n📦 ${existing_item.item_name}\n🔢 Stock: ${existing_item.stock_qty} units\n🏷️ Price: ₹${existing_item.price_per_unit}\n📈 Profit Margin: ${profitMargin}%`,
+                data: { type: 'inventory_updated', item: existing_item }
+            };
+        }
+
         const { existing_item, new_data } = pendingOperation;
 
         // Update existing item
@@ -1182,6 +1235,9 @@ const generateBusinessInsights = async (aiResponse, businessData) => {
             case 'profit':
                 insightMessage = generateProfitInsights(businessData);
                 break;
+            case 'festival':
+                insightMessage = generateFestivalInsights(businessData);
+                break;
             case 'overview':
             default:
                 insightMessage = generateOverviewInsights(businessData);
@@ -1210,44 +1266,40 @@ const generateBusinessInsights = async (aiResponse, businessData) => {
 const generateSalesInsights = (businessData) => {
     const { metrics, sales } = businessData;
 
-    let insights = `📊 SALES INSIGHTS\n\n`;
-    insights += `💰 Total Revenue: ₹${metrics.totalRevenue.toLocaleString()}\n`;
-    insights += `📈 Gross Profit: ₹${metrics.grossProfit.toLocaleString()}\n\n`;
+    let insights = `### 📊 Sales Insights\n\n`;
     
-    insights += `📅 TODAY:\n`;
-    insights += `• Revenue: ₹${metrics.todayRevenue.toLocaleString()}\n`;
-    insights += `• Profit: ₹${metrics.todayProfit.toLocaleString()}\n`;
-    insights += `• Sales: ${metrics.todaySalesCount} transactions\n\n`;
-    
-    insights += `📅 YESTERDAY:\n`;
-    insights += `• Revenue: ₹${metrics.yesterdayRevenue.toLocaleString()}\n`;
-    insights += `• Profit: ₹${metrics.yesterdayProfit.toLocaleString()}\n`;
-    insights += `• Sales: ${metrics.yesterdaySalesCount} transactions\n\n`;
-    
+    insights += `| Metric | Value |\n`;
+    insights += `| :--- | :--- |\n`;
+    insights += `| **Total Revenue** | ₹${metrics.totalRevenue.toLocaleString()} |\n`;
+    insights += `| **Gross Profit** | ₹${metrics.grossProfit.toLocaleString()} |\n`;
+    insights += `| **Net Profit** | ₹${metrics.netProfit.toLocaleString()} |\n`;
+    insights += `| **Profit Margin** | ${metrics.profitMargin}% |\n\n`;
+
+    insights += `#### 📅 Performance Breakdown\n\n`;
+    insights += `| Period | Revenue | Profit | Sales |\n`;
+    insights += `| :--- | :--- | :--- | :--- |\n`;
+    insights += `| **Today** | ₹${metrics.todayRevenue.toLocaleString()} | ₹${metrics.todayProfit.toLocaleString()} | ${metrics.todaySalesCount} |\n`;
+    insights += `| **Yesterday** | ₹${metrics.yesterdayRevenue.toLocaleString()} | ₹${metrics.yesterdayProfit.toLocaleString()} | ${metrics.yesterdaySalesCount} |\n`;
+    insights += `| **This Month** | ₹${metrics.monthlyRevenue.toLocaleString()} | - | - |\n\n`;
+
     // Comparison
     const revenueDiff = metrics.todayRevenue - metrics.yesterdayRevenue;
-    const profitDiff = metrics.todayProfit - metrics.yesterdayProfit;
     if (metrics.yesterdayRevenue > 0) {
         const revenueChange = ((revenueDiff / metrics.yesterdayRevenue) * 100).toFixed(1);
-        insights += `📊 vs Yesterday: ${revenueDiff >= 0 ? '📈' : '📉'} ${revenueChange}% revenue, ${profitDiff >= 0 ? '📈' : '📉'} ₹${Math.abs(profitDiff).toLocaleString()} profit\n\n`;
+        insights += `> **Analysis:** Your revenue is **${revenueDiff >= 0 ? 'up' : 'down'} ${Math.abs(revenueChange)}%** compared to yesterday.\n\n`;
     }
-    
-    insights += `📆 This Month: ₹${metrics.monthlyRevenue.toLocaleString()}\n\n`;
 
     if (sales.length > 0) {
-        const avgSaleValue = metrics.totalRevenue / sales.length;
-        insights += `📊 Average Sale: ₹${avgSaleValue.toFixed(0)}\n`;
-        insights += `🛒 Total Transactions: ${sales.length}\n\n`;
-
-        // Top selling items
+        // Top selling items logic
         const itemSales = {};
         sales.forEach(sale => {
             sale.items?.forEach(item => {
-                if (!itemSales[item.item_name]) {
-                    itemSales[item.item_name] = { quantity: 0, revenue: 0 };
+                const name = item.item_name;
+                if (!itemSales[name]) {
+                    itemSales[name] = { quantity: 0, revenue: 0 };
                 }
-                itemSales[item.item_name].quantity += item.quantity;
-                itemSales[item.item_name].revenue += item.quantity * item.price_per_unit;
+                itemSales[name].quantity += item.quantity;
+                itemSales[name].revenue += item.quantity * item.price_per_unit;
             });
         });
 
@@ -1256,21 +1308,16 @@ const generateSalesInsights = (businessData) => {
             .slice(0, 5);
 
         if (topItems.length > 0) {
-            insights += `🏆 TOP SELLING ITEMS:\n`;
-            topItems.forEach(([item, data], idx) => {
-                insights += `${idx + 1}. ${item}: ${data.quantity} units, ₹${data.revenue.toLocaleString()}\n`;
+            insights += `#### 🏆 Top Selling Items\n\n`;
+            insights += `| Item | Quantity | Revenue |\n`;
+            insights += `| :--- | :--- | :--- |\n`;
+            topItems.forEach(([item, data]) => {
+                insights += `| ${item} | ${data.quantity} units | ₹${data.revenue.toLocaleString()} |\n`;
             });
+            insights += `\n`;
         }
     } else {
-        insights += `📝 No sales recorded yet.\n\n`;
-        insights += `💡 You have ${businessData.inventory.length} items in inventory:\n`;
-        businessData.inventory.slice(0, 5).forEach(item => {
-            insights += `• ${item.item_name}: ${item.stock_qty} units @ ₹${item.price_per_unit}\n`;
-        });
-        if (businessData.inventory.length > 5) {
-            insights += `... and ${businessData.inventory.length - 5} more items\n`;
-        }
-        insights += `\nStart selling by saying: "Make bill for 2 ${businessData.inventory[0]?.item_name || 'items'}"`;
+        insights += `*No sales recorded yet. Your current top items in stock are listed below.*\n\n`;
     }
 
     return insights;
@@ -1279,31 +1326,40 @@ const generateSalesInsights = (businessData) => {
 const generateInventoryInsights = (businessData) => {
     const { inventory, lowStockItems, outOfStockItems, metrics } = businessData;
 
-    let insights = `📦 INVENTORY INSIGHTS\n\n`;
-    insights += `📊 Total Items: ${inventory.length}\n`;
-    insights += `⚠️ Low Stock: ${metrics.lowStockCount} items\n`;
-    insights += `❌ Out of Stock: ${metrics.outOfStockCount} items\n\n`;
+    let insights = `### 📦 Inventory Insights\n\n`;
+    
+    insights += `| Metric | Count |\n`;
+    insights += `| :--- | :--- |\n`;
+    insights += `| **Total Items** | ${inventory.length} |\n`;
+    insights += `| **Low Stock Alerts** | ${metrics.lowStockCount} |\n`;
+    insights += `| **Out of Stock** | ${metrics.outOfStockCount} |\n\n`;
 
-    const totalInventoryValue = inventory.reduce((sum, item) => sum + (item.stock_qty * item.cost_per_unit || 0), 0);
+    const totalInventoryValue = inventory.reduce((sum, item) => sum + (item.stock_qty * (item.cost_per_unit || 0)), 0);
     const totalSellingValue = inventory.reduce((sum, item) => sum + (item.stock_qty * item.price_per_unit), 0);
 
-    insights += `💰 Inventory Value (Cost): ₹${totalInventoryValue.toLocaleString()}\n`;
-    insights += `🏷️ Inventory Value (Selling): ₹${totalSellingValue.toLocaleString()}\n`;
-    insights += `📈 Potential Profit: ₹${(totalSellingValue - totalInventoryValue).toLocaleString()}\n\n`;
+    insights += `#### 💰 Valuation\n\n`;
+    insights += `| Type | Value |\n`;
+    insights += `| :--- | :--- |\n`;
+    insights += `| **Inventory Cost** | ₹${totalInventoryValue.toLocaleString()} |\n`;
+    insights += `| **Retail Value** | ₹${totalSellingValue.toLocaleString()} |\n`;
+    insights += `| **Potential Profit** | ₹${(totalSellingValue - totalInventoryValue).toLocaleString()} |\n\n`;
 
     if (lowStockItems.length > 0) {
-        insights += `⚠️ RESTOCK NEEDED:\n`;
+        insights += `#### ⚠️ Restock Needed\n\n`;
+        insights += `| Item | Stock Left |\n`;
+        insights += `| :--- | :--- |\n`;
         lowStockItems.slice(0, 5).forEach(item => {
-            insights += `• ${item.item_name}: ${item.stock_qty} left\n`;
+            insights += `| ${item.item_name} | ${item.stock_qty} units |\n`;
         });
         insights += `\n`;
     }
 
     if (outOfStockItems.length > 0) {
-        insights += `❌ OUT OF STOCK:\n`;
+        insights += `#### ❌ Out of Stock\n\n`;
         outOfStockItems.slice(0, 5).forEach(item => {
-            insights += `• ${item.item_name}\n`;
+            insights += `* ${item.item_name}\n`;
         });
+        insights += `\n`;
     }
 
     return insights;
@@ -1312,13 +1368,15 @@ const generateInventoryInsights = (businessData) => {
 const generateExpenseInsights = (businessData) => {
     const { expenses, metrics } = businessData;
 
-    let insights = `💸 EXPENSE INSIGHTS\n\n`;
-    insights += `💰 Total Expenses: ₹${metrics.totalExpenses.toLocaleString()}\n`;
-    insights += `📅 Today: ₹${metrics.todayExpenses.toLocaleString()}\n`;
-    insights += `📆 This Month: ₹${metrics.monthlyExpenses.toLocaleString()}\n\n`;
+    let insights = `### 💸 Expense Insights\n\n`;
+    
+    insights += `| Metric | Amount |\n`;
+    insights += `| :--- | :--- |\n`;
+    insights += `| **Total Expenses** | ₹${metrics.totalExpenses.toLocaleString()} |\n`;
+    insights += `| **Today's Expenses** | ₹${metrics.todayExpenses.toLocaleString()} |\n`;
+    insights += `| **Monthly Expenses** | ₹${metrics.monthlyExpenses.toLocaleString()} |\n\n`;
 
     if (expenses.length > 0) {
-        // Expense by category
         const categoryExpenses = {};
         expenses.forEach(expense => {
             if (!categoryExpenses[expense.category]) {
@@ -1331,14 +1389,14 @@ const generateExpenseInsights = (businessData) => {
             .sort((a, b) => b[1] - a[1])
             .slice(0, 5);
 
-        insights += `📊 EXPENSES BY CATEGORY:\n`;
+        insights += `#### 📊 Category Breakdown\n\n`;
+        insights += `| Category | Amount | Share |\n`;
+        insights += `| :--- | :--- | :--- |\n`;
         topCategories.forEach(([category, amount]) => {
             const percentage = ((amount / metrics.totalExpenses) * 100).toFixed(1);
-            insights += `• ${category}: ₹${amount.toLocaleString()} (${percentage}%)\n`;
+            insights += `| ${category} | ₹${amount.toLocaleString()} | ${percentage}% |\n`;
         });
-
-        const avgExpense = metrics.totalExpenses / expenses.length;
-        insights += `\n📊 Average Expense: ₹${avgExpense.toFixed(0)}\n`;
+        insights += `\n`;
     }
 
     return insights;
@@ -1347,50 +1405,66 @@ const generateExpenseInsights = (businessData) => {
 const generateProfitInsights = (businessData) => {
     const { metrics } = businessData;
 
-    let insights = `📈 PROFIT ANALYSIS\n\n`;
-    insights += `💰 Total Revenue: ₹${metrics.totalRevenue.toLocaleString()}\n`;
-    insights += `💸 Total COGS: ₹${metrics.totalCogs.toLocaleString()}\n`;
-    insights += `💸 Total Expenses: ₹${metrics.totalExpenses.toLocaleString()}\n`;
-    insights += `📈 Gross Profit: ₹${metrics.grossProfit.toLocaleString()}\n`;
-    insights += `💎 Net Profit: ₹${metrics.netProfit.toLocaleString()}\n`;
-    insights += `📊 Profit Margin: ${metrics.profitMargin}%\n\n`;
+    let insights = `### 📈 Profit Analysis\n\n`;
     
-    insights += `📅 TODAY'S PROFIT:\n`;
-    insights += `• Revenue: ₹${metrics.todayRevenue.toLocaleString()}\n`;
-    insights += `• COGS: ₹${metrics.todayCogs.toLocaleString()}\n`;
-    insights += `• Expenses: ₹${metrics.todayExpenses.toLocaleString()}\n`;
-    insights += `• Net Profit: ₹${metrics.todayProfit.toLocaleString()}\n\n`;
+    insights += `| Financial Stat | Amount |\n`;
+    insights += `| :--- | :--- |\n`;
+    insights += `| **Total Revenue** | ₹${metrics.totalRevenue.toLocaleString()} |\n`;
+    insights += `| **Total COGS** | ₹${metrics.totalCogs.toLocaleString()} |\n`;
+    insights += `| **Total Expenses** | ₹${metrics.totalExpenses.toLocaleString()} |\n`;
+    insights += `| **Gross Profit** | ₹${metrics.grossProfit.toLocaleString()} |\n`;
+    insights += `| **Net Profit** | **₹${metrics.netProfit.toLocaleString()}** |\n`;
+    insights += `| **Profit Margin** | ${metrics.profitMargin}% |\n\n`;
     
-    insights += `📅 YESTERDAY'S PROFIT:\n`;
-    insights += `• Revenue: ₹${metrics.yesterdayRevenue.toLocaleString()}\n`;
-    insights += `• COGS: ₹${metrics.yesterdayCogs.toLocaleString()}\n`;
-    insights += `• Expenses: ₹${metrics.yesterdayExpenses.toLocaleString()}\n`;
-    insights += `• Net Profit: ₹${metrics.yesterdayProfit.toLocaleString()}\n\n`;
+    insights += `#### 📅 Today's Breakdown\n\n`;
+    insights += `* **Revenue:** ₹${metrics.todayRevenue.toLocaleString()}\n`;
+    insights += `* **Expenses:** ₹${metrics.todayExpenses.toLocaleString()}\n`;
+    insights += `* **Net Profit:** ₹${metrics.todayProfit.toLocaleString()}\n\n`;
     
     // Comparison
     const profitDiff = metrics.todayProfit - metrics.yesterdayProfit;
     if (metrics.yesterdayProfit !== 0) {
-        insights += `📊 Comparison: ${profitDiff >= 0 ? '📈 Up' : '📉 Down'} ₹${Math.abs(profitDiff).toLocaleString()} from yesterday\n\n`;
+        insights += `> **Comparison:** Your profit is **${profitDiff >= 0 ? 'up' : 'down'} ₹${Math.abs(profitDiff).toLocaleString()}** from yesterday.\n\n`;
     }
 
     // Profit analysis
     if (metrics.netProfit > 0) {
-        insights += `✅ Your business is profitable!\n`;
+        insights += `✅ **Status:** Your business is currently profitable.\n\n`;
         if (parseFloat(metrics.profitMargin) > 20) {
-            insights += `🎉 Excellent profit margin (${metrics.profitMargin}%)`;
-        } else if (parseFloat(metrics.profitMargin) > 10) {
-            insights += `👍 Good profit margin (${metrics.profitMargin}%)`;
-        } else {
-            insights += `⚠️ Low profit margin (${metrics.profitMargin}%). Consider:\n• Reducing costs\n• Increasing prices\n• Focusing on high-margin items`;
+            insights += `> 🎉 **Excellent!** Your profit margin is high.\n`;
+        } else if (parseFloat(metrics.profitMargin) < 10) {
+            insights += `> ⚠️ **Caution:** Low profit margin. Consider reducing operational costs.\n`;
         }
     } else {
-        insights += `⚠️ Business is running at a loss.\n`;
-        insights += `💡 RECOMMENDATIONS:\n`;
-        insights += `• Review and reduce expenses\n`;
-        insights += `• Increase sales volume\n`;
-        insights += `• Optimize pricing strategy\n`;
-        insights += `• Focus on high-margin products`;
+        insights += `⚠️ **Alert:** Business is currently running at a loss.\n\n`;
     }
+
+    return insights;
+};
+
+const generateFestivalInsights = (businessData) => {
+    const { festivalForecast } = businessData;
+
+    if (!festivalForecast || !festivalForecast.has_forecast) {
+        return `### 📅 Festival Planning\n\nNo upcoming festivals were found in the current dataset for the next 30-60 days. Check back soon for seasonal demand updates!`;
+    }
+
+    let insights = `### 🎊 Festival Planning: ${festivalForecast.festival_name}\n\n`;
+    
+    insights += `> **Status:** ${festivalForecast.is_imminent ? '🔥 URGENT' : '⏳ Approaching'} | **Demand:** ${festivalForecast.demand_level}\n\n`;
+
+    insights += `#### 📦 Recommended Stocking Actions\n\n`;
+    insights += `| Item | Stock | Confidence | Recommended Action |\n`;
+    insights += `| :--- | :--- | :--- | :--- |\n`;
+    
+    festivalForecast.forecast_items.forEach(item => {
+        insights += `| ${item.item_name} | ${item.current_stock} | ${item.confidence} | ${item.action} |\n`;
+    });
+
+    insights += `\n#### 💡 Strategy Highlights\n\n`;
+    festivalForecast.forecast_items.slice(0, 3).forEach(item => {
+        insights += `* **${item.item_name}**: ${item.reasoning}\n`;
+    });
 
     return insights;
 };

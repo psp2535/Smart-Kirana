@@ -325,8 +325,8 @@ const Sales = () => {
             invoiceElement.innerHTML = `
                 <div style="max-width: 600px; margin: 0 auto;">
                     <!-- Header -->
-                    <div style="text-align: center; margin-bottom: 20px; border-bottom: 2px solid #4F46E5; padding-bottom: 15px;">
-                        <h1 style="color: #4F46E5; font-size: 28px; margin: 0 0 5px 0;">BILL</h1>
+                    <div style="text-align: center; margin-bottom: 20px; border-bottom: 2px solid #000000; padding-bottom: 15px;">
+                        <h1 style="color: #000000; font-size: 28px; margin: 0 0 5px 0;">BILL</h1>
                         <p style="color: #666; font-size: 16px; margin: 0;">${shopName}</p>
                     </div>
 
@@ -372,9 +372,9 @@ const Sales = () => {
                                 </tr>
                             `).join('')}
                             <!-- Total Row -->
-                            <tr style="background-color: #F3F4F6; border-top: 2px solid #4F46E5;">
+                            <tr style="background-color: #F3F4F6; border-top: 2px solid #000000;">
                                 <td colspan="3" style="padding: 12px; text-align: right; font-weight: bold; font-size: 16px; color: #111;">TOTAL</td>
-                                <td style="padding: 12px; text-align: right; font-weight: bold; font-size: 18px; color: #4F46E5;">₹${totalAmount.toFixed(2)}</td>
+                                <td style="padding: 12px; text-align: right; font-weight: bold; font-size: 18px; color: #000000;">₹${totalAmount.toFixed(2)}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -428,7 +428,7 @@ const Sales = () => {
         
         element.innerHTML = `
             <div style="text-align: center; margin-bottom: 30px;">
-                <h1 style="color: #4F46E5; margin-bottom: 10px;">Sales Report</h1>
+                <h1 style="color: #000000; margin-bottom: 10px;">Sales Report</h1>
                 <p style="color: #666;">Generated on: ${now}</p>
             </div>
             
@@ -449,7 +449,7 @@ const Sales = () => {
 
             <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
                 <thead>
-                    <tr style="background: #4F46E5; color: white;">
+                    <tr style="background: #000000; color: white;">
                         <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Date</th>
                         <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Customer</th>
                         <th style="padding: 12px; text-align: center; border: 1px solid #ddd;">Items</th>
@@ -531,8 +531,8 @@ const Sales = () => {
                             <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Sales (All Time)</p>
                             <p className="text-2xl font-bold text-gray-900 dark:text-white">₹{sales.reduce((sum, sale) => sum + sale.total_amount, 0).toLocaleString()}</p>
                         </div>
-                        <div className="p-2 bg-green-100 rounded-lg">
-                            <Plus className="h-6 w-6 text-green-600" />
+                        <div className="p-2 bg-neutral-100 dark:bg-neutral-800 rounded-lg">
+                            <Plus className="h-6 w-6 text-black dark:text-white" />
                         </div>
                     </div>
                 </div>
@@ -565,8 +565,8 @@ const Sales = () => {
                             <p className="text-sm font-medium text-gray-600 dark:text-gray-400">{t('sales.avgOrderValue')}</p>
                             <p className="text-2xl font-bold text-gray-900 dark:text-white">₹{sales.length > 0 ? Math.round(sales.reduce((sum, sale) => sum + sale.total_amount, 0) / sales.length) : 0}</p>
                         </div>
-                        <div className="p-2 bg-orange-100 rounded-lg">
-                            <Plus className="h-6 w-6 text-orange-600" />
+                        <div className="p-2 bg-neutral-100 dark:bg-neutral-800 rounded-lg">
+                            <Plus className="h-6 w-6 text-black dark:text-white" />
                         </div>
                     </div>
                 </div>
@@ -640,7 +640,7 @@ const Sales = () => {
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                                             {sale.items?.length || 0} item(s)
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-green-600">
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-black dark:text-white">
                                             ₹{sale.total_amount?.toLocaleString() || 0}
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
@@ -650,28 +650,28 @@ const Sales = () => {
                                             <div className="flex gap-2">
                                                 <button 
                                                     onClick={() => handleView(sale)}
-                                                    className="text-black dark:text-white hover:text-blue-900"
+                                                    className="text-neutral-500 hover:text-black dark:hover:text-white transition-colors"
                                                     title="View Details"
                                                 >
                                                     <Eye className="h-4 w-4" />
                                                 </button>
                                                 <button
                                                     onClick={() => downloadInvoice(sale)}
-                                                    className="text-green-600 hover:text-green-900"
+                                                    className="text-neutral-500 hover:text-black dark:hover:text-white transition-colors"
                                                     title="Download Invoice"
                                                 >
                                                     <Download className="h-4 w-4" />
                                                 </button>
                                                 <button
                                                     onClick={() => handleEdit(sale)}
-                                                    className="text-black dark:text-white hover:text-indigo-900"
+                                                    className="text-neutral-500 hover:text-black dark:hover:text-white transition-colors"
                                                     title="Edit Sale"
                                                 >
                                                     <Edit className="h-4 w-4" />
                                                 </button>
                                                 <button 
                                                     onClick={() => handleDelete(sale._id)}
-                                                    className="text-red-600 hover:text-red-900"
+                                                    className="text-neutral-400 hover:text-neutral-900 transition-colors"
                                                     title="Delete Sale"
                                                 >
                                                     <Trash2 className="h-4 w-4" />

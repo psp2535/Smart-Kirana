@@ -13,6 +13,8 @@ import {
 } from 'lucide-react';
 import api from '../services/api';
 import { useTranslation } from 'react-i18next';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 const FloatingChatbot = ({ isCustomerMode = false, retailerId = null, retailerName = null }) => {
     const { t } = useTranslation();
@@ -25,6 +27,9 @@ const FloatingChatbot = ({ isCustomerMode = false, retailerId = null, retailerNa
     const [language, setLanguage] = useState('en'); // en, hi, te
     const [autoSpeak, setAutoSpeak] = useState(true);
     const [pendingConfirmation, setPendingConfirmation] = useState(null);
+    const [retailers, setRetailers] = useState([]);
+    const [selectedRetailer, setSelectedRetailer] = useState(null);
+    const [isRetailerSelected, setIsRetailerSelected] = useState(false);
     
     const messagesEndRef = useRef(null);
     const recognitionRef = useRef(null);
@@ -69,10 +74,15 @@ const FloatingChatbot = ({ isCustomerMode = false, retailerId = null, retailerNa
         }
 
         // Welcome message
+        // Welcome message
         const welcomeMessage = isCustomerMode 
-            ? `Hi! I'm your AI shopping assistant for ${retailerName || 'our store'}. What would you like to buy or cook today?`
+            ? (retailerId ? `Hi! I'm your AI shopping assistant for ${retailerName || 'our store'}. What would you like to buy or cook today?` : "Hi! I'm your AI shopping assistant. Please select a store to start shopping.")
             : t(`chatbot.welcome.${language}`);
         
+        if (isCustomerMode && !retailerId) {
+            fetchRetailers();
+        }
+
         setMessages([{
             type: 'bot',
             content: welcomeMessage,
@@ -87,14 +97,36 @@ const FloatingChatbot = ({ isCustomerMode = false, retailerId = null, retailerNa
                 synthesisRef.current.cancel();
             }
         };
-    }, []);
+    }, [isCustomerMode, retailerId, language]);
+
+    const fetchRetailers = async () => {
+        try {
+            const response = await api.get('/customer-requests/retailers');
+            if (response.data.success) {
+                setRetailers(response.data.data.retailers || []);
+            }
+        } catch (error) {
+            console.error('Failed to fetch retailers:', error);
+        }
+    };
+
+    const handleSelectRetailer = (retailer) => {
+        setSelectedRetailer(retailer);
+        setIsRetailerSelected(true);
+        const welcomeMsg = `Hi! I'm your AI shopping assistant for ${retailer.shop_name}. What would you like to buy or cook today?`;
+        setMessages([{
+            type: 'bot',
+            content: welcomeMsg,
+            timestamp: new Date()
+        }]);
+    };
 
     // Update language in speech recognition
     useEffect(() => {
         if (recognitionRef.current) {
             recognitionRef.current.lang = currentLang.speechCode;
         }
-    }, [language]);
+    }, [language, currentLang]);
 
     // Scroll to bottom
     useEffect(() => {
@@ -435,61 +467,110 @@ const FloatingChatbot = ({ isCustomerMode = false, retailerId = null, retailerNa
                         </div>
                     </div>
 
-                    {/* Messages */}
-                    <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-3 sm:space-y-4 bg-gray-50">
-                        {messages.map((message, index) => (
-                            <div
-                                key={index}
-                                className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
-                            >
-                                <div
-                                    className={`max-w-[85%] sm:max-w-[80%] rounded-2xl px-3 py-2 sm:px-4 ${
-                                        message.type === 'user'
-                                            ? 'bg-black dark:bg-white text-white dark:text-black text-white'
-                                            : message.isStockError
-                                            ? 'bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-black dark:text-white'
-                                            : message.isError
-                                            ? 'bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-black dark:text-white'
-                                            : message.isSuccess
-                                            ? 'bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-black dark:text-white'
-                                            : message.isConfirmation
-                                            ? 'bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-black dark:text-white'
-                                            : 'bg-white border border-gray-200 text-gray-800'
-                                    }`}
-                                >
-                                    <p className="text-xs sm:text-sm whitespace-pre-wrap break-words">{message.content}</p>
-                                    <p className={`text-xs mt-1 ${
-                                        message.type === 'user' ? 'text-black dark:text-white' : 'text-gray-400'
-                                    }`}>
-                                        {new Date(message.timestamp).toLocaleTimeString('en-IN', {
-                                            hour: '2-digit',
-                                            minute: '2-digit'
-                                        })}
-                                    </p>
-                                </div>
-                            </div>
-                        ))}
-
-                        {isLoading && (
-                            <div className="flex justify-start">
-                                <div className="bg-white border border-gray-200 rounded-2xl px-3 py-2 sm:px-4 sm:py-3">
-                                    <div className="flex items-center space-x-2">
-                                        <Loader2 className="h-3.5 w-3.5 sm:h-4 sm:w-4 animate-spin text-black dark:text-white" />
-                                        <span className="text-xs sm:text-sm text-gray-600">Thinking...</span>
+                    {/* Messages & Retailer Selection */}
+                    <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-3 sm:space-y-4 bg-neutral-50 dark:bg-neutral-900">
+                        {isCustomerMode && !retailerId && !isRetailerSelected ? (
+                            <div className="space-y-3">
+                                <p className="text-xs font-bold uppercase tracking-widest text-neutral-500 mb-2">Select a Store to Begin</p>
+                                {retailers.length > 0 ? (
+                                    retailers.map((r) => (
+                                        <div 
+                                            key={r._id} 
+                                            onClick={() => handleSelectRetailer(r)} 
+                                            className="p-3 bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-xl cursor-pointer hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-all flex items-center space-x-3"
+                                        >
+                                            <div className="w-10 h-10 bg-black dark:bg-white text-white dark:text-black rounded-full flex items-center justify-center font-bold">
+                                                {r.shop_name?.[0] || 'S'}
+                                            </div>
+                                            <div className="flex-1 min-w-0">
+                                                <p className="text-sm font-bold truncate text-black dark:text-white">{r.shop_name}</p>
+                                                <p className="text-xs text-neutral-500 truncate">{r.locality || 'Local Store'}</p>
+                                            </div>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <div className="text-center py-10">
+                                        <Loader2 className="h-8 w-8 animate-spin mx-auto text-neutral-400 mb-2" />
+                                        <p className="text-xs text-neutral-500">Searching for nearby stores...</p>
                                     </div>
-                                </div>
+                                )}
                             </div>
-                        )}
-
-                        {isSpeaking && (
-                            <div className="flex justify-start">
-                                <div className="bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-2xl px-3 py-2 sm:px-4">
-                                    <div className="flex items-center space-x-2">
-                                        <Volume2 className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-black dark:text-white animate-pulse" />
-                                        <span className="text-xs sm:text-sm text-black dark:text-white">Speaking...</span>
+                        ) : (
+                            <>
+                                {messages.map((message, index) => (
+                                    <div
+                                        key={index}
+                                        className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
+                                    >
+                                        <div
+                                            className={`max-w-[85%] sm:max-w-[80%] rounded-2xl px-3 py-2 sm:px-4 ${
+                                                message.type === 'user'
+                                                    ? 'bg-black dark:bg-white text-white dark:text-black text-white'
+                                                    : message.isStockError
+                                                    ? 'bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-black dark:text-white'
+                                                    : message.isError
+                                                    ? 'bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-black dark:text-white'
+                                                    : message.isSuccess
+                                                    ? 'bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-black dark:text-white'
+                                                    : message.isConfirmation
+                                                    ? 'bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-black dark:text-white'
+                                                    : 'bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-neutral-800 dark:text-neutral-200'
+                                            }`}
+                                        >
+                                            <div className="text-xs sm:text-sm prose prose-sm max-w-none dark:prose-invert">
+                                                <ReactMarkdown 
+                                                    remarkPlugins={[remarkGfm]}
+                                                    components={{
+                                                        p: ({node, ...props}) => <p className="mb-2 last:mb-0" {...props} />,
+                                                        table: ({node, ...props}) => (
+                                                            <div className="overflow-x-auto my-2 border border-neutral-200 dark:border-neutral-700 rounded-lg">
+                                                                <table className="min-w-full divide-y divide-neutral-200 dark:divide-neutral-700" {...props} />
+                                                            </div>
+                                                        ),
+                                                        th: ({node, ...props}) => <th className="px-2 py-1 bg-neutral-100 dark:bg-neutral-800 text-left text-[10px] font-bold uppercase tracking-wider" {...props} />,
+                                                        td: ({node, ...props}) => <td className="px-2 py-1 text-[11px] border-t border-neutral-100 dark:border-neutral-700" {...props} />,
+                                                        ul: ({node, ...props}) => <ul className="list-disc list-inside mb-2" {...props} />,
+                                                        li: ({node, ...props}) => <li className="mb-1" {...props} />,
+                                                        strong: ({node, ...props}) => <strong className="font-bold text-black dark:text-white" {...props} />,
+                                                    }}
+                                                >
+                                                    {message.content}
+                                                </ReactMarkdown>
+                                            </div>
+                                            <p className={`text-[10px] mt-1 ${
+                                                message.type === 'user' ? 'text-neutral-300' : 'text-neutral-400'
+                                            }`}>
+                                                {new Date(message.timestamp).toLocaleTimeString('en-IN', {
+                                                    hour: '2-digit',
+                                                    minute: '2-digit'
+                                                })}
+                                            </p>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
+                                ))}
+
+                                {isLoading && (
+                                    <div className="flex justify-start">
+                                        <div className="bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-2xl px-3 py-2 sm:px-4 sm:py-3">
+                                            <div className="flex items-center space-x-2">
+                                                <Loader2 className="h-3.5 w-3.5 sm:h-4 sm:w-4 animate-spin text-black dark:text-white" />
+                                                <span className="text-xs sm:text-sm text-neutral-500">Thinking...</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+
+                                {isSpeaking && (
+                                    <div className="flex justify-start">
+                                        <div className="bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-2xl px-3 py-2 sm:px-4">
+                                            <div className="flex items-center space-x-2">
+                                                <Volume2 className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-black dark:text-white animate-pulse" />
+                                                <span className="text-xs sm:text-sm text-black dark:text-white">Speaking...</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+                            </>
                         )}
 
                         <div ref={messagesEndRef} />

@@ -26,12 +26,12 @@ const AIInsights = () => {
 
     // Chart colors
     const CHART_COLORS = {
-        blue: ['#171717', '#60a5fa', '#93c5fd', '#bfdbfe', '#dbeafe', '#eff6ff'],
-        green: ['#171717', '#34d399', '#6ee7b7', '#a7f3d0', '#d1fae5', '#ecfdf5'],
-        purple: ['#171717', '#a78bfa', '#c4b5fd', '#ddd6fe', '#ede9fe', '#f5f3ff'],
-        orange: ['#171717', '#fbbf24', '#fcd34d', '#fde68a', '#fef3c7', '#fffbeb'],
-        red: ['#171717', '#f87171', '#fca5a5', '#fecaca', '#fee2e2', '#fef2f2'],
-        pink: ['#171717', '#f472b6', '#f9a8d4', '#fbcfe8', '#fce7f3', '#fdf2f8']
+        blue: ['#171717', '#404040', '#737373', '#a3a3a3', '#d4d4d4', '#f5f5f5'],
+        green: ['#171717', '#404040', '#737373', '#a3a3a3', '#d4d4d4', '#f5f5f5'],
+        purple: ['#000000', '#171717', '#262626', '#404040', '#525252', '#737373'],
+        orange: ['#171717', '#404040', '#737373', '#a3a3a3', '#d4d4d4', '#f5f5f5'],
+        red: ['#000000', '#171717', '#262626', '#404040', '#525252', '#737373'],
+        pink: ['#171717', '#404040', '#737373', '#a3a3a3', '#d4d4d4', '#f5f5f5']
     };
 
     const [activeTab, setActiveTab] = useState('demand');
@@ -124,28 +124,28 @@ const AIInsights = () => {
             id: 'demand',
             name: t('ai.tabs.demand.name'),
             icon: TrendingUp,
-            color: 'blue',
+            color: 'neutral',
             description: t('ai.tabs.demand.description')
         },
         {
             id: 'revenue',
             name: t('ai.tabs.revenue.name'),
             icon: DollarSign,
-            color: 'green',
+            color: 'neutral',
             description: t('ai.tabs.revenue.description')
         },
         {
             id: 'expense',
             name: t('ai.tabs.expense.name'),
             icon: Calendar,
-            color: 'purple',
+            color: 'neutral',
             description: t('ai.tabs.expense.description')
         },
         {
             id: 'festival',
             name: 'Festival Planning',
             icon: PartyPopper,
-            color: 'orange',
+            color: 'neutral',
             description: 'AI-powered festival demand forecasting for better inventory planning'
         }
     ];
@@ -525,14 +525,14 @@ const AIInsights = () => {
         return (
             <div className="space-y-6">
                 {/* Festival Header Card */}
-                <div className="bg-black dark:bg-white text-white dark:text-black dark:text-black rounded-lg p-6 text-white">
+                <div className="bg-black dark:bg-white rounded-lg p-6 shadow-lg border border-neutral-800 dark:border-neutral-200">
                     <div className="flex items-start justify-between">
                         <div className="flex-1">
                             <div className="flex items-center mb-2">
-                                <PartyPopper className="h-8 w-8 mr-3" />
-                                <h2 className="text-2xl font-bold">{festival_name}</h2>
+                                <PartyPopper className="h-8 w-8 mr-3 text-white dark:text-black" />
+                                <h2 className="text-2xl font-bold text-white dark:text-black">{festival_name}</h2>
                             </div>
-                            <div className="flex items-center space-x-4 text-sm">
+                            <div className="flex items-center space-x-4 text-sm text-neutral-300 dark:text-neutral-700">
                                 <div className="flex items-center">
                                     <Clock className="h-4 w-4 mr-1" />
                                     <span>{months_away === 0 ? 'This month' : `${months_away} month${months_away > 1 ? 's' : ''} away`}</span>
@@ -542,19 +542,12 @@ const AIInsights = () => {
                                     <span>{demand_level} Demand</span>
                                 </div>
                                 {is_imminent && (
-                                    <span className="bg-white/20 px-2 py-1 rounded text-xs font-semibold">
-                                        🔥 URGENT
+                                    <span className="bg-neutral-700 dark:bg-neutral-200 px-2 py-1 rounded text-xs font-bold text-white dark:text-black">
+                                        URGENT
                                     </span>
                                 )}
                             </div>
                         </div>
-                        <button
-                            onClick={() => generateInsight('festival')}
-                            className="bg-white/20 hover:bg-white/30 px-3 py-2 rounded-lg flex items-center text-sm"
-                        >
-                            <RefreshCw className="h-4 w-4 mr-1" />
-                            Refresh
-                        </button>
                     </div>
                 </div>
 
@@ -620,8 +613,8 @@ const AIInsights = () => {
                                                 {item.reasoning}
                                             </p>
                                             <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${item.action.includes('Restock')
-                                                ? 'bg-neutral-200 dark:bg-neutral-700 text-neutral-800 dark:text-neutral-200'
-                                                : 'bg-neutral-200 dark:bg-neutral-700 text-black dark:text-white'
+                                                ? 'bg-neutral-800 text-white'
+                                                : 'bg-neutral-200 text-black'
                                                 }`}>
                                                 {item.action}
                                             </span>
@@ -659,16 +652,11 @@ const AIInsights = () => {
     };
 
     const renderInsightContent = (type) => {
-        // Special handling for festival forecast
-        if (type === 'festival') {
-            return renderFestivalForecast();
-        }
-
         const insight = insights[type];
-        const isLoading = loading[type];
+        const loadingState = loading[type];
         const errorMsg = error[type];
 
-        if (isLoading) {
+        if (loadingState) {
             return (
                 <div className="flex flex-col items-center justify-center py-20">
                     <Loader2 className="h-12 w-12 text-black dark:text-white animate-spin mb-4" />
@@ -688,7 +676,7 @@ const AIInsights = () => {
                             <p className="text-black dark:text-white text-sm">{errorMsg}</p>
                             <button
                                 onClick={() => generateInsight(type)}
-                                className="mt-4 btn-primary"
+                                className="mt-4 btn-primary transition-all hover:scale-105"
                             >
                                 <RefreshCw className="h-4 w-4 mr-2" />
                                 {t('ai.tryAgain')}
@@ -702,7 +690,7 @@ const AIInsights = () => {
         if (!insight) {
             return (
                 <div className="text-center py-20">
-                    <Sparkles className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+                    <Sparkles className="h-16 w-16 text-neutral-400 mx-auto mb-4" />
                     <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                         {tabs.find(t => t.id === type)?.name}
                     </h3>
@@ -711,7 +699,7 @@ const AIInsights = () => {
                     </p>
                     <button
                         onClick={() => generateInsight(type)}
-                        className="btn-primary inline-flex items-center"
+                        className="btn-primary inline-flex items-center transition-all hover:scale-105"
                     >
                         <Brain className="h-5 w-5 mr-2" />
                         {t('ai.generateButton')}
@@ -723,221 +711,42 @@ const AIInsights = () => {
         // Get the correct ref
         let contentRef;
         switch (type) {
-            case 'demand':
-                contentRef = demandRef;
-                break;
-            case 'revenue':
-                contentRef = revenueRef;
-                break;
-            case 'expense':
-                contentRef = expenseRef;
-                break;
-            default:
-                contentRef = demandRef;
+            case 'demand': contentRef = demandRef; break;
+            case 'revenue': contentRef = revenueRef; break;
+            case 'expense': contentRef = expenseRef; break;
+            default: contentRef = null;
         }
 
         return (
             <div className="space-y-6" ref={contentRef}>
                 {/* PDF Header - Hidden on screen, shown in PDF */}
                 <div className="pdf-header" style={{ display: 'none' }}>
-                    <div style={{ textAlign: 'center', marginBottom: '20px', borderBottom: '2px solid #171717', paddingBottom: '15px' }}>
-                        <h1 style={{ fontSize: '28px', fontWeight: 'bold', color: '#171717', marginBottom: '5px' }}>
-                            {tabs.find(t => t.id === type)?.name}
-                        </h1>
-                        <p style={{ fontSize: '16px', color: '#171717', marginBottom: '5px' }}>
-                            Powered by OpenAI API - Smart Kirana
-                        </p>
-                        <p style={{ fontSize: '12px', color: '#171717' }}>
-                            Generated on: {new Date(insight.metadata?.generatedAt).toLocaleString('en-IN')}
-                        </p>
+                    <div className="text-center mb-5 border-b-2 border-neutral-900 pb-4">
+                        <h1 className="text-2xl font-bold text-neutral-900 mb-1">{tabs.find(t => t.id === type)?.name}</h1>
+                        <p className="text-sm text-neutral-700">Powered by AI Business Intelligence - Smart Kirana</p>
                     </div>
                 </div>
 
-                {renderMetadata(insight.metadata)}
-
-                {/* Charts Section */}
-                {type === 'demand' && chartData.salesTrend.length > 0 && (
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-                        {/* Sales Trend Chart */}
-                        <div className="bg-white border border-gray-200 rounded-lg p-4">
-                            <h4 className="text-sm font-semibold text-gray-700 mb-3 flex items-center">
-                                <TrendingUp className="h-4 w-4 mr-2 text-black dark:text-white" />
-                                Sales Trend (Last 30 Days)
-                            </h4>
-                            <ResponsiveContainer width="100%" height={250}>
-                                <LineChart data={chartData.salesTrend}>
-                                    <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                                    <XAxis dataKey="date" tick={{ fontSize: 11 }} stroke="#6b7280" />
-                                    <YAxis tick={{ fontSize: 11 }} stroke="#6b7280" />
-                                    <Tooltip
-                                        contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px' }}
-                                        formatter={(value) => [`₹${value}`, 'Revenue']}
-                                    />
-                                    <Line type="monotone" dataKey="revenue" stroke="#171717" strokeWidth={2} dot={{ fill: '#171717', r: 3 }} />
-                                </LineChart>
-                            </ResponsiveContainer>
-                        </div>
-
-                        {/* Top Products Chart */}
-                        <div className="bg-white border border-gray-200 rounded-lg p-4">
-                            <h4 className="text-sm font-semibold text-gray-700 mb-3 flex items-center">
-                                <Package className="h-4 w-4 mr-2 text-black dark:text-white" />
-                                Top 10 Selling Products
-                            </h4>
-                            {chartData.topProducts && chartData.topProducts.length > 0 ? (
-                                <ResponsiveContainer width="100%" height={250}>
-                                    <BarChart data={chartData.topProducts} layout="horizontal">
-                                        <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                                        <XAxis type="number" tick={{ fontSize: 11 }} stroke="#6b7280" />
-                                        <YAxis dataKey="name" type="category" width={100} tick={{ fontSize: 10 }} stroke="#6b7280" />
-                                        <Tooltip
-                                            contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px' }}
-                                            formatter={(value) => [value, 'Quantity']}
-                                        />
-                                        <Bar dataKey="quantity" fill="#171717" radius={[0, 4, 4, 0]} />
-                                    </BarChart>
-                                </ResponsiveContainer>
-                            ) : (
-                                <div className="flex items-center justify-center h-[250px] text-gray-400">
-                                    <div className="text-center">
-                                        <Package className="h-12 w-12 mx-auto mb-2 opacity-50" />
-                                        <p className="text-sm">No product sales data available</p>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                )}
-
-                {type === 'revenue' && chartData.revenueTrend.length > 0 && (
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-                        {/* Revenue Trend Chart */}
-                        <div className="bg-white border border-gray-200 rounded-lg p-4">
-                            <h4 className="text-sm font-semibold text-gray-700 mb-3 flex items-center">
-                                <TrendingUp className="h-4 w-4 mr-2 text-black dark:text-white" />
-                                Revenue Trend (Last 60 Days)
-                            </h4>
-                            <ResponsiveContainer width="100%" height={250}>
-                                <LineChart data={chartData.revenueTrend}>
-                                    <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                                    <XAxis dataKey="date" tick={{ fontSize: 11 }} stroke="#6b7280" />
-                                    <YAxis tick={{ fontSize: 11 }} stroke="#6b7280" />
-                                    <Tooltip
-                                        contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px' }}
-                                        formatter={(value) => [`₹${value}`, 'Revenue']}
-                                    />
-                                    <Line type="monotone" dataKey="revenue" stroke="#171717" strokeWidth={2} dot={{ fill: '#171717', r: 3 }} />
-                                </LineChart>
-                            </ResponsiveContainer>
-                        </div>
-
-                        {/* Revenue by Category Chart */}
-                        <div className="bg-white border border-gray-200 rounded-lg p-4">
-                            <h4 className="text-sm font-semibold text-gray-700 mb-3 flex items-center">
-                                <DollarSign className="h-4 w-4 mr-2 text-black dark:text-white" />
-                                Revenue by Category
-                            </h4>
-                            <ResponsiveContainer width="100%" height={250}>
-                                <PieChart>
-                                    <Pie
-                                        data={chartData.revenueByCategory}
-                                        cx="50%"
-                                        cy="50%"
-                                        labelLine={false}
-                                        label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
-                                        outerRadius={80}
-                                        fill="#171717"
-                                        dataKey="value"
-                                    >
-                                        {chartData.revenueByCategory.map((entry, index) => (
-                                            <Cell key={`cell-${index}`} fill={['#171717', '#171717', '#171717', '#171717', '#171717', '#171717'][index % 6]} />
-                                        ))}
-                                    </Pie>
-                                    <Tooltip formatter={(value) => `₹${value}`} />
-                                </PieChart>
-                            </ResponsiveContainer>
-                        </div>
-                    </div>
-                )}
-
-                {type === 'expense' && chartData.expenseTrend.length > 0 && (
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-                        {/* Expense Trend Chart */}
-                        <div className="bg-white border border-gray-200 rounded-lg p-4">
-                            <h4 className="text-sm font-semibold text-gray-700 mb-3 flex items-center">
-                                <TrendingDown className="h-4 w-4 mr-2 text-black dark:text-white" />
-                                Expense Trend (Last 90 Days)
-                            </h4>
-                            <ResponsiveContainer width="100%" height={250}>
-                                <LineChart data={chartData.expenseTrend}>
-                                    <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                                    <XAxis dataKey="date" tick={{ fontSize: 11 }} stroke="#6b7280" />
-                                    <YAxis tick={{ fontSize: 11 }} stroke="#6b7280" />
-                                    <Tooltip
-                                        contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px' }}
-                                        formatter={(value) => [`₹${value}`, 'Expense']}
-                                    />
-                                    <Line type="monotone" dataKey="amount" stroke="#171717" strokeWidth={2} dot={{ fill: '#171717', r: 3 }} />
-                                </LineChart>
-                            </ResponsiveContainer>
-                        </div>
-
-                        {/* Expense by Category Chart */}
-                        <div className="bg-white border border-gray-200 rounded-lg p-4">
-                            <h4 className="text-sm font-semibold text-gray-700 mb-3 flex items-center">
-                                <Calendar className="h-4 w-4 mr-2 text-black dark:text-white" />
-                                Expense by Category
-                            </h4>
-                            <ResponsiveContainer width="100%" height={250}>
-                                <PieChart>
-                                    <Pie
-                                        data={chartData.expenseByCategory}
-                                        cx="50%"
-                                        cy="50%"
-                                        labelLine={false}
-                                        label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
-                                        outerRadius={80}
-                                        fill="#171717"
-                                        dataKey="value"
-                                    >
-                                        {chartData.expenseByCategory.map((entry, index) => (
-                                            <Cell key={`cell-${index}`} fill={['#171717', '#171717', '#171717', '#171717', '#171717', '#171717'][index % 6]} />
-                                        ))}
-                                    </Pie>
-                                    <Tooltip formatter={(value) => `₹${value}`} />
-                                </PieChart>
-                            </ResponsiveContainer>
-                        </div>
-                    </div>
-                )}
-
                 <div className="bg-white border border-gray-200 rounded-lg p-6">
-                    <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center justify-between mb-6">
                         <div className="flex items-center">
-                            <CheckCircle className="h-6 w-6 text-black dark:text-white mr-2" />
-                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">AI Analysis</h3>
+                            <Brain className="h-6 w-6 text-black dark:text-white mr-2" />
+                            <h3 className="text-lg font-bold text-gray-900 dark:text-white">AI Analysis & Insights</h3>
                         </div>
                         <div className="flex items-center space-x-3">
-                            <button
-                                onClick={() => exportToPDF(type)}
-                                disabled={exportingPDF}
-                                className="text-sm bg-black dark:bg-white text-white dark:text-black px-3 py-1.5 rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200 flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
-                            >
-                                {exportingPDF ? (
-                                    <>
-                                        <Loader2 className="h-4 w-4 mr-1 animate-spin" />
-                                        Exporting...
-                                    </>
-                                ) : (
-                                    <>
-                                        <Download className="h-4 w-4 mr-1" />
-                                        Export PDF
-                                    </>
-                                )}
-                            </button>
+                            {contentRef && (
+                                <button
+                                    onClick={() => exportToPDF(type)}
+                                    disabled={exportingPDF}
+                                    className="text-sm bg-black dark:bg-white text-white dark:text-black px-3 py-1.5 rounded-lg hover:opacity-80 flex items-center disabled:opacity-50 transition-all"
+                                >
+                                    {exportingPDF ? <Loader2 className="h-4 w-4 mr-1 animate-spin" /> : <Download className="h-4 w-4 mr-1" />}
+                                    {exportingPDF ? 'Exporting...' : 'Export PDF'}
+                                </button>
+                            )}
                             <button
                                 onClick={() => generateInsight(type)}
-                                className="text-sm text-black dark:text-white hover:text-black dark:text-white flex items-center"
+                                className="text-sm font-semibold text-black dark:text-white hover:opacity-70 flex items-center transition-all bg-neutral-100 dark:bg-neutral-800 px-3 py-1.5 rounded-lg border border-neutral-200 dark:border-neutral-700"
                             >
                                 <RefreshCw className="h-4 w-4 mr-1" />
                                 Regenerate
@@ -945,119 +754,27 @@ const AIInsights = () => {
                         </div>
                     </div>
 
-                    {/* Extract and display Quick Actions prominently */}
-                    {(() => {
-                        const quickActionsMatch = insight.analysis.match(/## 🎯 Quick Actions\s*([\s\S]*?)(?=##|$)/);
-                        if (quickActionsMatch) {
-                            const actionsText = quickActionsMatch[1];
-                            const actions = actionsText.split('\n')
-                                .filter(line => line.trim().startsWith('-'))
-                                .map(line => line.replace(/^-\s*/, '').trim())
-                                .slice(0, 3);
-
-                            if (actions.length > 0) {
-                                return (
-                                    <div className="mb-6 bg-black dark:bg-white text-white dark:text-black dark:text-black dark:from-green-900/30 dark:to-emerald-900/30 border-2 border-green-400 dark:border-green-600 rounded-xl p-6 shadow-lg animate-slideInLeft">
-                                        <div className="flex items-center mb-4">
-                                            <div className="p-2 bg-black dark:bg-white rounded-lg mr-3">
-                                                <Sparkles className="h-6 w-6 text-white" />
-                                            </div>
-                                            <h3 className="text-xl font-bold text-black dark:text-white dark:text-green-100">🎯 Quick Actions - Do This Today!</h3>
-                                        </div>
-                                        <div className="space-y-3">
-                                            {actions.map((action, idx) => (
-                                                <div key={idx} className="flex items-start bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm border border-neutral-200 dark:border-neutral-700 dark:border-green-700">
-                                                    <div className="flex-shrink-0 w-8 h-8 bg-black dark:bg-white text-white dark:text-black rounded-full flex items-center justify-center font-bold mr-3">
-                                                        {idx + 1}
-                                                    </div>
-                                                    <p className="text-gray-900 dark:text-gray-100 font-medium flex-1">{action}</p>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                );
-                            }
-                        }
-                        return null;
-                    })()}
-
-                    <div className="prose prose-sm max-w-none">
-                        <ReactMarkdown
-                            components={{
-                                h1: ({ node, ...props }) => <h1 className="text-2xl font-bold text-gray-900 dark:text-white mt-6 mb-3" {...props} />,
-                                h2: ({ node, children, ...props }) => {
-                                    const text = children?.toString() || '';
-                                    let colorClass = 'text-gray-900 dark:text-white';
-                                    let bgClass = 'bg-gray-100 dark:bg-gray-700/40';
-
-                                    if (text.includes('🎯')) {
-                                        colorClass = 'text-black dark:text-white dark:text-green-300';
-                                        bgClass = 'bg-neutral-200 dark:bg-neutral-700 dark:bg-neutral-900 dark:bg-neutral-100/40';
-                                    } else if (text.includes('💰')) {
-                                        colorClass = 'text-black dark:text-white dark:text-yellow-300';
-                                        bgClass = 'bg-neutral-200 dark:bg-neutral-700 dark:bg-neutral-900 dark:bg-neutral-100/40';
-                                    } else if (text.includes('💡')) {
-                                        colorClass = 'text-black dark:text-white dark:text-purple-300';
-                                        bgClass = 'bg-neutral-200 dark:bg-neutral-700 dark:bg-neutral-900 dark:bg-neutral-100/40';
-                                    } else if (text.includes('📊')) {
-                                        colorClass = 'text-black dark:text-white dark:text-white';
-                                        bgClass = 'bg-neutral-200 dark:bg-neutral-700 dark:bg-neutral-800';
-                                    }
-
-                                    return (
-                                        <h2 className={`text-xl font-bold ${colorClass} ${bgClass} mt-6 mb-3 p-3 rounded-lg border-l-4 ${text.includes('🎯') ? 'border-black dark:border-white' : text.includes('💰') ? 'border-black dark:border-white' : text.includes('💡') ? 'border-black dark:border-white' : 'border-black dark:border-white'}`} {...props}>
-                                            {children}
-                                        </h2>
-                                    );
-                                },
-                                h3: ({ node, ...props }) => <h3 className="text-lg font-medium text-gray-900 dark:text-white mt-4 mb-2" {...props} />,
-                                p: ({ node, ...props }) => <p className="text-gray-700 dark:text-gray-300 mb-3 leading-relaxed" {...props} />,
-                                ul: ({ node, ...props }) => <ul className="list-disc list-inside space-y-2 mb-4" {...props} />,
-                                ol: ({ node, ...props }) => <ol className="list-decimal list-inside space-y-2 mb-4" {...props} />,
-                                li: ({ node, children, ...props }) => {
-                                    const text = children?.toString() || '';
-                                    let className = 'text-gray-700 dark:text-gray-300 pl-2';
-                                    let boxClass = '';
-
-                                    if (text.toLowerCase().includes('action') || text.toLowerCase().includes('restock') || text.toLowerCase().includes('order')) {
-                                        boxClass = 'bg-neutral-100 dark:bg-neutral-800 dark:bg-neutral-900 dark:bg-neutral-100/30 border-l-4 border-black dark:border-white pl-3 py-1 my-1 rounded';
-                                    } else if (text.toLowerCase().includes('urgent') || text.toLowerCase().includes('critical') || text.toLowerCase().includes('alert')) {
-                                        boxClass = 'bg-neutral-100 dark:bg-neutral-800 dark:bg-neutral-900 dark:bg-neutral-100/30 border-l-4 border-black dark:border-white pl-3 py-1 my-1 rounded';
-                                    }
-
-                                    return <li className={`${className} ${boxClass}`} {...props}>{children}</li>;
-                                },
-                                strong: ({ node, children, ...props }) => {
-                                    const text = children?.toString() || '';
-                                    let highlightClass = 'font-semibold text-gray-900 dark:text-white';
-
-                                    if (text.match(/₹[\d,]+/)) {
-                                        highlightClass = 'font-bold text-black dark:text-white dark:text-black dark:text-white bg-neutral-200 dark:bg-neutral-700 dark:bg-neutral-900 dark:bg-neutral-100/40 px-1 rounded';
-                                    } else if (text.match(/\d+%/)) {
-                                        highlightClass = 'font-bold text-black dark:text-white dark:text-black dark:text-white bg-neutral-200 dark:bg-neutral-700 dark:bg-neutral-900 dark:bg-neutral-100/40 px-1 rounded';
-                                    } else if (text.toLowerCase().includes('high') || text.toLowerCase().includes('top')) {
-                                        highlightClass = 'font-bold text-black dark:text-white dark:text-black dark:text-white bg-neutral-200 dark:bg-neutral-700 dark:bg-neutral-900 dark:bg-neutral-100/40 px-1 rounded';
-                                    }
-
-                                    return <strong className={highlightClass} {...props}>{children}</strong>;
-                                },
-                                code: ({ node, inline, ...props }) =>
-                                    inline ? (
-                                        <code className="bg-gray-100 dark:bg-gray-700 px-1.5 py-0.5 rounded text-sm font-mono text-gray-800 dark:text-gray-200" {...props} />
-                                    ) : (
-                                        <code className="block bg-gray-100 dark:bg-gray-700 p-3 rounded text-sm font-mono text-gray-800 dark:text-gray-200 overflow-x-auto" {...props} />
-                                    ),
-                            }}
-                        >
-                            {insight.analysis}
-                        </ReactMarkdown>
-                    </div>
-
-                    <div className="mt-6 pt-4 border-t border-gray-200">
-                        <p className="text-xs text-gray-500">
-                            Generated at: {new Date(insight.metadata?.generatedAt).toLocaleString('en-IN')}
-                        </p>
-                    </div>
+                    {type === 'festival' ? renderFestivalForecast() : (
+                        <>
+                            {renderMetadata(insight.metadata)}
+                            
+                            <div className="prose prose-sm max-w-none">
+                                <ReactMarkdown
+                                    components={{
+                                        h1: ({ node, ...props }) => <h1 className="text-2xl font-bold text-gray-900 dark:text-white mt-6 mb-3" {...props} />,
+                                        h2: ({ node, ...props }) => <h2 className="text-xl font-bold text-gray-900 dark:text-white mt-6 mb-3 p-3 bg-neutral-100 dark:bg-neutral-800 rounded-lg border-l-4 border-black dark:border-white" {...props} />,
+                                        h3: ({ node, ...props }) => <h3 className="text-lg font-bold text-gray-900 dark:text-white mt-4 mb-2" {...props} />,
+                                        p: ({ node, ...props }) => <p className="text-gray-700 dark:text-neutral-300 mb-3" {...props} />,
+                                        ul: ({ node, ...props }) => <ul className="list-disc list-inside space-y-1 mb-4" {...props} />,
+                                        li: ({ node, ...props }) => <li className="text-gray-700 dark:text-neutral-300" {...props} />,
+                                        strong: ({ node, ...props }) => <strong className="font-bold text-black dark:text-white bg-neutral-100 dark:bg-neutral-800 px-1 rounded" {...props} />,
+                                    }}
+                                >
+                                    {insight.analysis}
+                                </ReactMarkdown>
+                            </div>
+                        </>
+                    )}
                 </div>
             </div>
         );

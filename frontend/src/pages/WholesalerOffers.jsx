@@ -137,7 +137,7 @@ const WholesalerOffers = () => {
                         {offers.map((offer, idx) => (
                             <div key={idx} className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow">
                                 {/* Discount Badge */}
-                                <div className="bg-gradient-to-r from-red-500 to-pink-500 text-white px-4 py-2 text-center">
+                                <div className="bg-black dark:bg-neutral-700 text-white px-4 py-2 text-center">
                                     <span className="text-2xl font-bold">{offer.effectiveDiscount}% OFF</span>
                                 </div>
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MapPin, Navigation, Store, Phone, Mail, ExternalLink, Loader2, Tag, ArrowLeft } from 'lucide-react';
+import { MapPin, Navigation, Store, Phone, Mail, ExternalLink, Loader2, Tag, ArrowLeft, AlertCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
@@ -83,7 +83,7 @@ const NearbyShops = () => {
       if (result.success) {
         setShops(result.data.shops);
         if (result.data.shops.length === 0) {
-          toast('No shops found in this radius. Try increasing the search radius.', { icon: 'ℹ️' });
+          toast('No shops found in this radius. Try increasing the search radius.', { icon: <AlertCircle className="h-5 w-5 text-neutral-600" /> });
         } else {
           toast.success(`Found ${result.data.shops.length} shops nearby!`);
         }
@@ -132,9 +132,9 @@ const NearbyShops = () => {
 
       {/* Location Status */}
       {!userLocation && !gettingLocation && (
-        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
-          <p className="text-sm text-yellow-800 mb-3">
-            📍 Location not set. Please allow location access to find nearby shops.
+        <div className="bg-neutral-100 border border-neutral-200 rounded-lg p-4 mb-6">
+          <p className="text-sm text-neutral-800 mb-3">
+            Location not set. Please allow location access to find nearby shops.
           </p>
           <button
             onClick={getUserLocation}
@@ -147,10 +147,10 @@ const NearbyShops = () => {
       )}
 
       {gettingLocation && (
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+        <div className="bg-neutral-100 border border-neutral-200 rounded-lg p-4 mb-6">
           <div className="flex items-center gap-3">
-            <Loader2 className="h-5 w-5 text-blue-600 animate-spin" />
-            <p className="text-sm text-blue-800">Getting your location...</p>
+            <Loader2 className="h-5 w-5 text-neutral-600 animate-spin" />
+            <p className="text-sm text-neutral-800">Getting your location...</p>
           </div>
         </div>
       )}
@@ -213,8 +213,8 @@ const NearbyShops = () => {
                           <p className="text-sm text-gray-600">{shop.name}</p>
                         </div>
                       </div>
-                      <div className="bg-green-100 px-3 py-1 rounded-full">
-                        <p className="text-sm font-semibold text-green-700">
+                      <div className="bg-neutral-100 px-3 py-1 rounded-full border border-neutral-200">
+                        <p className="text-sm font-semibold text-neutral-700">
                           {shop.distance} km
                         </p>
                       </div>
@@ -269,7 +269,7 @@ const NearbyShops = () => {
                       </button>
                       <button
                         onClick={() => navigate(`/hot-deals?shop_id=${shop.id}`)}
-                        className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-orange-600 to-red-600 text-white rounded-lg hover:from-orange-700 hover:to-red-700 transition-all"
+                        className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-black dark:bg-white text-white dark:text-black rounded-lg hover:bg-neutral-900 dark:hover:bg-neutral-100 transition-all shadow-md"
                       >
                         <Tag className="h-4 w-4" />
                         <span>Hot Deals</span>

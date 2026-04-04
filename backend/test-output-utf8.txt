@@ -1,0 +1,83 @@
+﻿Connecting to MongoDB...
+node : FAILED: Validation 
+or processing error:
+At line:1 char:1
++ node 
+test-inventory-fix.js > 
+test-output.txt 2>&1
++ ~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo        
+      : NotSpecified: (F  
+  AILED: Validation or    
+ processing error::Str    
+ing) [], RemoteExcept    
+ion
+    + FullyQualifiedError 
+   Id : NativeCommandErr  
+  or
+ 
+MongooseServerSelectionErr
+or: connect ECONNREFUSED 
+::1:27017
+    at 
+_handleConnectionErrors (C
+:\Users\91703\OneDrive\Des
+ktop\smartkirana\Smart-Kir
+ana\backend\node_modules\m
+ongoose\lib\connection.js:
+1169:11)
+    at 
+NativeConnection.openUri (
+C:\Users\91703\OneDrive\De
+sktop\smartkirana\Smart-Ki
+rana\backend\node_modules\
+mongoose\lib\connection.js
+:1100:11)
+    at async 
+testInventoryFix (C:\Users
+\91703\OneDrive\Desktop\sm
+artkirana\Smart-Kirana\bac
+kend\test-inventory-fix.js
+:13:9) {
+  errorLabelSet: Set(0) 
+{},
+  reason: 
+TopologyDescription {
+    type: 'Unknown',
+    servers: Map(1) { 
+'localhost:27017' => 
+[ServerDescription] },
+    stale: false,
+    compatible: true,
+    heartbeatFrequencyMS: 
+10000,
+    localThresholdMS: 15,
+    setName: null,
+    maxElectionId: null,
+    maxSetVersion: null,
+    commonWireVersion: 0,
+    logicalSessionTimeoutM
+inutes: null
+  },
+  code: undefined,
+  cause: 
+TopologyDescription {
+    type: 'Unknown',
+    servers: Map(1) { 
+'localhost:27017' => 
+[ServerDescription] },
+    stale: false,
+    compatible: true,
+    heartbeatFrequencyMS: 
+10000,
+    localThresholdMS: 15,
+    setName: null,
+    maxElectionId: null,
+    maxSetVersion: null,
+    commonWireVersion: 0,
+    logicalSessionTimeoutM
+inutes: null
+  }
+}
+Disconnected.

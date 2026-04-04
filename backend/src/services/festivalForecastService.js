@@ -9,9 +9,11 @@ const path = require('path');
 const Sale = require('../models/Sale');
 const Inventory = require('../models/Inventory');
 
+const festivalsCsvPath = path.join(__dirname, '../../smartkirana_festival_dataset_150.csv');
+
 class FestivalForecastService {
   constructor() {
-    this.festivalsData = null;
+    this.festivalsData = [];
     this.loadFestivalData();
   }
 
@@ -20,36 +22,48 @@ class FestivalForecastService {
    */
   loadFestivalData() {
     try {
-      const csvPath = path.join(__dirname, '../../smartkirana_festival_dataset_150.csv');
-      const csvContent = fs.readFileSync(csvPath, 'utf-8');
-      
-      const lines = csvContent.trim().split('\n');
-      const headers = lines[0].split(',');
-      
-      this.festivalsData = lines.slice(1).map(line => {
-        const values = this.parseCSVLine(line);
-        return {
-          festival_name: values[0],
-          region: values[1],
-          month: values[2],
-          date_2026: values[3],
-          type: values[4],
-          public_holiday: values[5],
-          top_selling_items: values[6].split(',').map(item => item.trim()),
-          demand_level: values[7],
-          estimated_demand_score: parseInt(values[8])
-        };
-      });
+      if (fs.existsSync(festivalsCsvPath)) {
+        const fileContent = fs.readFileSync(festivalsCsvPath, 'utf8');
+        const results = [];
+        const lines = fileContent.split('\n');
+        const headers = lines[0].split(',');
 
-      // Remove duplicates
-      const uniqueFestivals = new Map();
-      this.festivalsData.forEach(festival => {
-        const key = `${festival.festival_name}_${festival.month}`;
-        if (!uniqueFestivals.has(key)) {
-          uniqueFestivals.set(key, festival);
+        for (let i = 1; i < lines.length; i++) {
+          if (!lines[i].trim()) continue;
+          const values = this.parseCSVLine(lines[i]);
+          const obj = {};
+          headers.forEach((header, index) => {
+            obj[header.trim()] = values[index]?.trim();
+          });
+          results.push(obj);
         }
-      });
-      this.festivalsData = Array.from(uniqueFestivals.values());
+
+        // Map to structured data
+        this.festivalsData = results.map(values => ({
+          festival_name: values.festival_name,
+          region: values.region,
+          month: values.month,
+          date_2026: values.date_2026,
+          type: values.type,
+          public_holiday: values.public_holiday,
+          top_selling_items: values.top_selling_items ? values.top_selling_items.split(',').map(item => item.trim()) : [],
+          demand_level: values.demand_level,
+          estimated_demand_score: parseInt(values.estimated_demand_score || 0)
+        }));
+
+        // Remove duplicates
+        const uniqueFestivals = new Map();
+        this.festivalsData.forEach(festival => {
+          const key = `${festival.festival_name}_${festival.month}`;
+          if (!uniqueFestivals.has(key)) {
+            uniqueFestivals.set(key, festival);
+          }
+        });
+        this.festivalsData = Array.from(uniqueFestivals.values());
+        console.log(`✅ Loaded ${this.festivalsData.length} festival records from CSV`);
+      } else {
+        console.error('❌ Festival CSV dataset not found at:', festivalsCsvPath);
+      }
     } catch (error) {
       console.error('❌ Failed to load festival data:', error);
       this.festivalsData = [];
@@ -84,9 +98,12 @@ class FestivalForecastService {
    * Get month number from month string
    */
   getMonthNumber(monthStr) {
+    if (!monthStr) return null;
     const monthMap = {
       'Jan': 0, 'Feb': 1, 'Mar': 2, 'Apr': 3, 'May': 4, 'Jun': 5,
-      'Jul': 6, 'Aug': 7, 'Sep': 8, 'Oct': 9, 'Nov': 10, 'Dec': 11
+      'Jul': 6, 'Aug': 7, 'Sep': 8, 'Oct': 9, 'Nov': 10, 'Dec': 11,
+      'January': 0, 'February': 1, 'March': 2, 'April': 3, 'May': 4, 'June': 5,
+      'July': 6, 'August': 7, 'September': 8, 'October': 9, 'November': 10, 'December': 11
     };
 
     // Handle ranges like "Oct-Nov" or "Aug-Sep"
@@ -96,45 +113,69 @@ class FestivalForecastService {
     }
 
     // Handle single month
-    const month = monthStr.split('-')[0].trim();
+    const month = monthStr.trim();
     return monthMap[month] ?? null;
   }
 
   /**
    * Find nearest upcoming festival
    */
-  findUpcomingFestival(currentDate = new Date()) {
-    const currentMonth = currentDate.getMonth();
-    const currentDay = currentDate.getDate();
+  findUpcomingFestival() {
+    if (!this.festivalsData || this.festivalsData.length === 0) {
+        console.warn('⚠️ No festival data available to search');
+        return { festival: null };
+    }
 
-    let nearestFestival = null;
-    let minDistance = Infinity;
+    const today = new Date();
+    const currentMonth = today.getMonth(); // 0-11
+    const currentDay = today.getDate();
+    const currentYear = today.getFullYear();
 
-    for (const festival of this.festivalsData) {
+    console.log(`🔍 Searching for upcoming festivals from: ${currentYear}-${currentMonth + 1}-${currentDay}`);
+
+    let closestFestival = null;
+    let minDistance = 13; // Max distance in months
+
+    this.festivalsData.forEach(festival => {
       const festivalMonth = this.getMonthNumber(festival.month);
-      if (festivalMonth === null) continue;
+      if (festivalMonth === null) return;
 
-      // Calculate distance in months (considering year wrap)
+      const festivalDayMatch = festival.date_2026.match(/\d+/);
+      const festivalDay = festivalDayMatch ? parseInt(festivalDayMatch[0]) : 1;
+
       let distance;
-      if (festivalMonth >= currentMonth) {
+      if (festivalMonth > currentMonth) {
         distance = festivalMonth - currentMonth;
+      } else if (festivalMonth === currentMonth) {
+        // Only count as current month if the date hasn't passed (using a 1-day buffer)
+        if (festivalDay >= currentDay - 1) {
+          distance = 0;
+        } else {
+          distance = 12; // Already passed this month, look at next year
+        }
       } else {
-        distance = (12 - currentMonth) + festivalMonth;
+        distance = 12 - (currentMonth - festivalMonth);
       }
 
-      // If same month, check if festival is likely past
-      if (distance === 0 && currentDay > 20) {
-        distance = 12; // Consider next year
+      // Special case: if we are late in the month (>25th) and it's this month's festival
+      if (distance === 0 && currentDay > 25 && festivalDay < currentDay) {
+        distance = 12;
       }
 
       if (distance < minDistance) {
         minDistance = distance;
-        nearestFestival = festival;
+        closestFestival = festival;
       }
+    });
+
+    if (closestFestival) {
+        console.log(`🎯 Closest festival found: ${closestFestival.festival_name} in ${minDistance} months`);
+    } else {
+        console.warn('⚠️ No upcoming festival found within 12 months');
     }
 
     return {
-      festival: nearestFestival,
+      festival: closestFestival,
       months_away: minDistance,
       is_imminent: minDistance <= 1
     };
@@ -182,55 +223,6 @@ class FestivalForecastService {
     } catch (error) {
       console.error('Sales velocity calculation error:', error);
       return {};
-    }
-  }
-
-  /**
-   * Match festival items with retailer inventory
-   */
-  async matchInventoryWithFestival(userId, festivalItems) {
-    try {
-      const inventory = await Inventory.find({ user_id: userId });
-      const matches = [];
-
-      for (const festivalItem of festivalItems) {
-        const festivalItemLower = festivalItem.toLowerCase();
-        
-        // Find matching inventory items (fuzzy match)
-        const matchedItems = inventory.filter(invItem => {
-          const invItemLower = invItem.item_name.toLowerCase();
-          
-          // Exact match
-          if (invItemLower === festivalItemLower) return true;
-          
-          // Partial match (e.g., "cooking oil" matches "oil")
-          if (invItemLower.includes(festivalItemLower) || 
-              festivalItemLower.includes(invItemLower)) return true;
-          
-          // Category-based match
-          const keywords = festivalItemLower.split(' ');
-          return keywords.some(keyword => 
-            keyword.length > 3 && invItemLower.includes(keyword)
-          );
-        });
-
-        if (matchedItems.length > 0) {
-          matches.push({
-            festival_item: festivalItem,
-            matched_inventory: matchedItems.map(item => ({
-              item_name: item.item_name,
-              current_stock: item.stock_qty,
-              price: item.price_per_unit,
-              category: item.category
-            }))
-          });
-        }
-      }
-
-      return matches;
-    } catch (error) {
-      console.error('Inventory matching error:', error);
-      return [];
     }
   }
 
@@ -287,13 +279,10 @@ class FestivalForecastService {
   }
 
   /**
-   * Main forecasting function - SERVER-SIDE PROCESSING ONLY
-   * Returns structured, minimal data for LLM
-   * SUGGESTS ALL FESTIVAL ITEMS (whether in inventory or not)
+   * Main forecasting function
    */
   async getFestivalDemandForecast(userId) {
     try {
-      // Step 1: Find upcoming festival
       const { festival, months_away, is_imminent } = this.findUpcomingFestival();
 
       if (!festival) {
@@ -303,38 +292,24 @@ class FestivalForecastService {
         };
       }
 
-      // Step 2: Get current inventory
       const inventory = await Inventory.find({ user_id: userId });
-      
-      // Step 3: Calculate sales velocity (server-side)
       const salesVelocity = await this.calculateSalesVelocity(userId, 30);
-
-      // Step 4: Generate forecast for ALL festival items
       const forecastItems = [];
 
       for (const festivalItem of festival.top_selling_items) {
         const festivalItemLower = festivalItem.toLowerCase();
         
-        // Check if item exists in inventory (fuzzy match)
         const inventoryItem = inventory.find(inv => {
           const invItemLower = inv.item_name.toLowerCase();
-          // Exact match
           if (invItemLower === festivalItemLower) return true;
-          // Partial match
-          if (invItemLower.includes(festivalItemLower) || 
-              festivalItemLower.includes(invItemLower)) return true;
-          // Keyword match
+          if (invItemLower.includes(festivalItemLower) || festivalItemLower.includes(invItemLower)) return true;
           const keywords = festivalItemLower.split(' ');
-          return keywords.some(keyword => 
-            keyword.length > 3 && invItemLower.includes(keyword)
-          );
+          return keywords.some(keyword => keyword.length > 3 && invItemLower.includes(keyword));
         });
 
-        // Get sales velocity if item exists
         const itemNameLower = inventoryItem ? inventoryItem.item_name.toLowerCase() : festivalItemLower;
         const velocity = salesVelocity[itemNameLower] || { velocity_score: 0, sales_count: 0, total_quantity: 0 };
 
-        // Build reasoning signals
         const signals = {
           is_imminent,
           months_away,
@@ -345,48 +320,25 @@ class FestivalForecastService {
           in_inventory: !!inventoryItem
         };
 
-        // Calculate confidence
         const confidence = this.calculateConfidence(signals);
-
-        // Build concise reasoning
         const reasons = [];
-        if (is_imminent) {
-          reasons.push('Festival approaching soon');
-        } else if (months_away <= 2) {
-          reasons.push(`Festival in ${months_away} month(s)`);
-        }
-
-        if (festival.demand_level === 'High') {
-          reasons.push('High seasonal demand');
-        }
+        if (is_imminent) reasons.push('Festival approaching soon');
+        else if (months_away <= 2) reasons.push(`Festival in ${months_away} month(s)`);
+        if (festival.demand_level === 'High') reasons.push('High seasonal demand');
 
         if (inventoryItem) {
-          // Item is in inventory
-          if (velocity.sales_count > 0) {
-            reasons.push(`Recent sales: ${velocity.total_quantity.toFixed(1)} units`);
-          }
-          
-          if (inventoryItem.stock_qty === 0) {
-            reasons.push('Currently out of stock');
-          } else if (inventoryItem.stock_qty < 10) {
-            reasons.push('Low stock');
-          }
+          if (velocity.sales_count > 0) reasons.push(`Recent sales: ${velocity.total_quantity.toFixed(1)} units`);
+          if (inventoryItem.stock_qty === 0) reasons.push('Currently out of stock');
+          else if (inventoryItem.stock_qty < 10) reasons.push('Low stock');
         } else {
-          // Item NOT in inventory - suggest to add
           reasons.push('Not in inventory - consider adding');
         }
 
-        // Determine action
         let action;
-        if (!inventoryItem) {
-          action = 'Add to inventory';
-        } else if (inventoryItem.stock_qty === 0) {
-          action = 'Restock urgently';
-        } else if (inventoryItem.stock_qty < 10) {
-          action = 'Restock recommended';
-        } else {
-          action = 'Monitor stock';
-        }
+        if (!inventoryItem) action = 'Add to inventory';
+        else if (inventoryItem.stock_qty === 0) action = 'Restock urgently';
+        else if (inventoryItem.stock_qty < 10) action = 'Restock recommended';
+        else action = 'Monitor stock';
 
         forecastItems.push({
           item_name: inventoryItem ? inventoryItem.item_name : festivalItem,
@@ -399,13 +351,9 @@ class FestivalForecastService {
         });
       }
 
-      // Sort by confidence (High > Medium > Low)
       const confidenceOrder = { 'High': 3, 'Medium': 2, 'Low': 1 };
-      forecastItems.sort((a, b) => 
-        confidenceOrder[b.confidence] - confidenceOrder[a.confidence]
-      );
+      forecastItems.sort((a, b) => confidenceOrder[b.confidence] - confidenceOrder[a.confidence]);
 
-      // Return ONLY structured, minimal data
       return {
         has_forecast: true,
         festival_name: festival.festival_name,
@@ -413,7 +361,7 @@ class FestivalForecastService {
         months_away: months_away,
         is_imminent: is_imminent,
         demand_level: festival.demand_level,
-        forecast_items: forecastItems.slice(0, 10), // Limit to top 10
+        forecast_items: forecastItems.slice(0, 10),
         total_matched_items: forecastItems.length,
         summary: {
           high_confidence: forecastItems.filter(i => i.confidence === 'High').length,
@@ -421,40 +369,10 @@ class FestivalForecastService {
           low_confidence: forecastItems.filter(i => i.confidence === 'Low').length
         }
       };
-
     } catch (error) {
       console.error('Festival forecast error:', error);
-      return {
-        has_forecast: false,
-        error: error.message
-      };
+      return { has_forecast: false, error: error.message };
     }
-  }
-
-  /**
-   * Get festival calendar (upcoming festivals for planning)
-   */
-  getUpcomingFestivals(count = 5) {
-    const currentDate = new Date();
-    const festivals = [];
-
-    for (let i = 0; i < count; i++) {
-      const { festival, months_away } = this.findUpcomingFestival(
-        new Date(currentDate.getFullYear(), currentDate.getMonth() + i, 1)
-      );
-      
-      if (festival && !festivals.find(f => f.festival_name === festival.festival_name)) {
-        festivals.push({
-          festival_name: festival.festival_name,
-          month: festival.month,
-          months_away: months_away,
-          demand_level: festival.demand_level,
-          type: festival.type
-        });
-      }
-    }
-
-    return festivals;
   }
 }
 

@@ -302,8 +302,8 @@ const Inventory = () => {
     };
 
     const categories = [
-        'Electronics', 'Clothing', 'Food & Beverages', 'Books', 'Home & Garden',
-        'Sports', 'Beauty & Health', 'Automotive', 'Office Supplies', 'Other'
+        'Grains & Oils', 'Beverages', 'Snacks', 'Dairy', 'Veg & Fruits', 
+        'Personal Care', 'Household', 'Cleaning', 'Spices', 'Kitchen Essentials', 'Other'
     ];
 
     // Filter inventory based on selected filters
@@ -1038,15 +1038,16 @@ const Inventory = () => {
                                                             onChange={(e) => handleEditBillItem(index, 'category', e.target.value)}
                                                             className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-green-500 focus:border-transparent"
                                                         >
-                                                            <option value="Food & Beverages">Food & Beverages</option>
-                                                            <option value="Electronics">Electronics</option>
-                                                            <option value="Clothing">Clothing</option>
-                                                            <option value="Books">Books</option>
-                                                            <option value="Home & Garden">Home & Garden</option>
-                                                            <option value="Sports">Sports</option>
-                                                            <option value="Beauty & Health">Beauty & Health</option>
-                                                            <option value="Automotive">Automotive</option>
-                                                            <option value="Office Supplies">Office Supplies</option>
+                                                            <option value="Grains & Oils">Grains & Oils</option>
+                                                            <option value="Beverages">Beverages</option>
+                                                            <option value="Snacks">Snacks</option>
+                                                            <option value="Dairy">Dairy</option>
+                                                            <option value="Veg & Fruits">Veg & Fruits</option>
+                                                            <option value="Personal Care">Personal Care</option>
+                                                            <option value="Household">Household</option>
+                                                            <option value="Cleaning">Cleaning</option>
+                                                            <option value="Spices">Spices</option>
+                                                            <option value="Kitchen Essentials">Kitchen Essentials</option>
                                                             <option value="Other">Other</option>
                                                         </select>
                                                     </td>
