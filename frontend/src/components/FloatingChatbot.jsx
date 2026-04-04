@@ -359,7 +359,7 @@ const FloatingChatbot = ({ isCustomerMode = false, retailerId = null, retailerNa
             {!isOpen && (
                 <button
                     onClick={() => setIsOpen(true)}
-                    className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 bg-gradient-to-r from-purple-600 to-blue-600 text-white p-4 rounded-full shadow-2xl hover:shadow-purple-500/50 transition-all duration-300 hover:scale-110 z-50 group"
+                    className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 bg-black dark:bg-white text-white dark:text-black text-white p-4 rounded-full shadow-2xl hover:shadow-neutral-500/50 transition-all duration-300 hover:scale-110 z-50 group"
                     style={{
                         animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite'
                     }}
@@ -380,7 +380,7 @@ const FloatingChatbot = ({ isCustomerMode = false, retailerId = null, retailerNa
             {isOpen && (
                 <div className="fixed bottom-4 right-4 left-4 sm:left-auto sm:bottom-6 sm:right-6 w-auto sm:w-96 max-w-full h-[600px] max-h-[calc(100vh-2rem)] bg-white rounded-2xl shadow-2xl flex flex-col z-50 border border-gray-200 overflow-hidden">
                     {/* Header */}
-                    <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white p-3 sm:p-4 flex items-center justify-between">
+                    <div className="bg-black dark:bg-white text-white dark:text-black text-white p-3 sm:p-4 flex items-center justify-between">
                         <div className="flex items-center space-x-2 min-w-0 flex-shrink">
                             <div className="relative flex-shrink-0">
                                 <MessageCircle className="h-5 w-5 sm:h-6 sm:w-6" />
@@ -445,7 +445,7 @@ const FloatingChatbot = ({ isCustomerMode = false, retailerId = null, retailerNa
                                 <div
                                     className={`max-w-[85%] sm:max-w-[80%] rounded-2xl px-3 py-2 sm:px-4 ${
                                         message.type === 'user'
-                                            ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white'
+                                            ? 'bg-black dark:bg-white text-white dark:text-black text-white'
                                             : message.isStockError
                                             ? 'bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-black dark:text-white'
                                             : message.isError
@@ -547,14 +547,14 @@ const FloatingChatbot = ({ isCustomerMode = false, retailerId = null, retailerNa
                                     language === 'te' ? 'మీ ప్రశ్న అడగండి...' :
                                     'Ask your question...'
                                 }
-                                className="flex-1 min-w-0 border border-gray-300 rounded-lg px-2 py-2 sm:px-4 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                className="flex-1 min-w-0 border border-gray-300 rounded-lg px-2 py-2 sm:px-4 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white focus:border-transparent"
                                 disabled={isLoading || isListening}
                             />
 
                             <button
                                 onClick={sendMessage}
                                 disabled={isLoading || !inputMessage.trim() || isListening || pendingConfirmation}
-                                className="bg-gradient-to-r from-purple-600 to-blue-600 text-white p-1.5 sm:p-2 rounded-lg hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
+                                className="bg-black dark:bg-white text-white dark:text-black text-white p-1.5 sm:p-2 rounded-lg hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
                                 title={pendingConfirmation ? 'Please confirm or cancel the pending action first' : 'Send message'}
                             >
                                 <Send className="h-4 w-4 sm:h-5 sm:w-5" />
@@ -574,10 +574,10 @@ const FloatingChatbot = ({ isCustomerMode = false, retailerId = null, retailerNa
             <style jsx>{`
                 @keyframes pulse {
                     0%, 100% {
-                        box-shadow: 0 0 0 0 rgba(147, 51, 234, 0.7);
+                        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.5);
                     }
                     50% {
-                        box-shadow: 0 0 0 20px rgba(147, 51, 234, 0);
+                        box-shadow: 0 0 0 20px rgba(0, 0, 0, 0);
                     }
                 }
             `}</style>

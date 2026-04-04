@@ -69,7 +69,7 @@ const CustomerChatbotPage = () => {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-neutral-200 dark:border-neutral-700 mx-auto mb-4"></div>
           <p className="text-gray-600">Loading your shopping experience...</p>
         </div>
       </div>
@@ -108,7 +108,7 @@ const CustomerChatbotPage = () => {
                   <p className="text-sm font-medium text-gray-900">{customerInfo.name}</p>
                   <p className="text-xs text-gray-500">Customer</p>
                 </div>
-                <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
+                <div className="w-10 h-10 bg-black dark:bg-white rounded-full flex items-center justify-center">
                   <User className="w-5 h-5 text-white" />
                 </div>
               </div>
@@ -133,7 +133,7 @@ const CustomerChatbotPage = () => {
                   disabled={isDisabled}
                   className={`flex items-center space-x-2 py-4 px-1 border-b-2 transition-colors whitespace-nowrap ${
                     isActive
-                      ? 'border-blue-500 text-blue-600'
+                      ? 'border-neutral-200 dark:border-neutral-700 text-black dark:text-white'
                       : isDisabled
                       ? 'border-transparent text-gray-400 cursor-not-allowed'
                       : 'border-transparent text-gray-600 hover:text-gray-900 hover:border-gray-300'
@@ -176,12 +176,12 @@ const CustomerChatbotPage = () => {
             {activeView === 'orders' && (
               <div className="space-y-6">
                 {pendingOrder ? (
-                  <div className="bg-green-50 border border-green-200 rounded-lg p-6">
+                  <div className="bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-lg p-6">
                     <div className="flex items-center space-x-3 mb-4">
-                      <CheckCircle className="w-6 h-6 text-green-600" />
+                      <CheckCircle className="w-6 h-6 text-black dark:text-white" />
                       <div>
-                        <h3 className="font-semibold text-green-900">Order Placed Successfully!</h3>
-                        <p className="text-green-700">Order ID: {pendingOrder.order_id}</p>
+                        <h3 className="font-semibold text-black dark:text-white">Order Placed Successfully!</h3>
+                        <p className="text-black dark:text-white">Order ID: {pendingOrder.order_id}</p>
                       </div>
                     </div>
                     <div className="bg-white rounded-lg p-4">
@@ -191,7 +191,7 @@ const CustomerChatbotPage = () => {
                     </div>
                     <button
                       onClick={() => navigate('/customer-requests')}
-                      className="mt-4 w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors"
+                      className="mt-4 w-full bg-black dark:bg-white text-white py-2 px-4 rounded-lg hover:bg-black dark:bg-white transition-colors"
                     >
                       View All Orders
                     </button>
@@ -204,7 +204,7 @@ const CustomerChatbotPage = () => {
                       <p className="text-sm mt-2">Start shopping with our AI assistant to place your first order</p>
                       <button
                         onClick={() => setActiveView('chatbot')}
-                        className="mt-4 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors"
+                        className="mt-4 bg-black dark:bg-white text-white py-2 px-4 rounded-lg hover:bg-black dark:bg-white transition-colors"
                       >
                         Start Shopping
                       </button>
@@ -229,7 +229,7 @@ const CustomerChatbotPage = () => {
             {selectedRetailer && (
               <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
                 <div className="flex items-center space-x-3 mb-4">
-                  <Store className="w-6 h-6 text-blue-600" />
+                  <Store className="w-6 h-6 text-black dark:text-white" />
                   <h3 className="font-semibold text-gray-900">Current Store</h3>
                 </div>
                 <div className="space-y-3">
@@ -254,7 +254,7 @@ const CustomerChatbotPage = () => {
                 </div>
                 <button
                   onClick={() => setActiveView('stores')}
-                  className="mt-4 w-full text-sm text-blue-600 hover:text-blue-800 font-medium"
+                  className="mt-4 w-full text-sm text-black dark:text-white hover:text-black dark:text-white font-medium"
                 >
                   Change Store
                 </button>
@@ -270,7 +270,7 @@ const CustomerChatbotPage = () => {
                   disabled={!selectedRetailer}
                   className="w-full flex items-center space-x-3 p-3 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-left"
                 >
-                  <Bot className="w-5 h-5 text-blue-600" />
+                  <Bot className="w-5 h-5 text-black dark:text-white" />
                   <div>
                     <p className="font-medium text-gray-900">Start Chat</p>
                     <p className="text-sm text-gray-600">Talk to AI assistant</p>
@@ -281,7 +281,7 @@ const CustomerChatbotPage = () => {
                   onClick={() => setActiveView('orders')}
                   className="w-full flex items-center space-x-3 p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors text-left"
                 >
-                  <Package className="w-5 h-5 text-green-600" />
+                  <Package className="w-5 h-5 text-black dark:text-white" />
                   <div>
                     <p className="font-medium text-gray-900">View Orders</p>
                     <p className="text-sm text-gray-600">Track your purchases</p>
@@ -292,7 +292,7 @@ const CustomerChatbotPage = () => {
                   onClick={() => navigate('/customer-requests')}
                   className="w-full flex items-center space-x-3 p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors text-left"
                 >
-                  <MessageSquare className="w-5 h-5 text-purple-600" />
+                  <MessageSquare className="w-5 h-5 text-black dark:text-white" />
                   <div>
                     <p className="font-medium text-gray-900">Messages</p>
                     <p className="text-sm text-gray-600">Contact retailers</p>
@@ -302,9 +302,9 @@ const CustomerChatbotPage = () => {
             </div>
 
             {/* Help Section */}
-            <div className="bg-blue-50 rounded-lg border border-blue-200 p-6">
-              <h3 className="font-semibold text-blue-900 mb-3">Need Help?</h3>
-              <div className="space-y-2 text-sm text-blue-800">
+            <div className="bg-neutral-100 dark:bg-neutral-800 rounded-lg border border-neutral-200 dark:border-neutral-700 p-6">
+              <h3 className="font-semibold text-black dark:text-white mb-3">Need Help?</h3>
+              <div className="space-y-2 text-sm text-black dark:text-white">
                 <p>• Say "I want to make curry for 4 people"</p>
                 <p>• List items: "Buy 2kg rice, 1 litre milk"</p>
                 <p>• Mix requests: "Make dosa and buy tea"</p>
@@ -313,7 +313,7 @@ const CustomerChatbotPage = () => {
               <button
                 onClick={() => setActiveView('chatbot')}
                 disabled={!selectedRetailer}
-                className="mt-4 w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors text-sm"
+                className="mt-4 w-full bg-black dark:bg-white text-white py-2 px-4 rounded-lg hover:bg-black dark:bg-white disabled:opacity-50 transition-colors text-sm"
               >
                 Try AI Assistant
               </button>
