@@ -226,16 +226,18 @@ const DiscountCampaigns = () => {
             </div>
           ) : (
             <>
-              <div className="bg-black dark:bg-white text-white dark:text-black dark:text-black   border border-neutral-200 dark:border-neutral-700 dark:border-neutral-200 dark:border-neutral-700 rounded-lg p-4">
-                <div className="flex items-start gap-3">
-                  <Zap className="h-6 w-6 text-black dark:text-white dark:text-white flex-shrink-0 mt-1" />
+              <div className="bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-xl p-6 mb-6">
+                <div className="flex items-start gap-4">
+                  <div className="p-2 bg-black dark:bg-white rounded-lg">
+                    <Zap className="h-5 w-5 text-white dark:text-black" />
+                  </div>
                   <div>
-                    <h3 className="font-semibold text-indigo-900 dark:text-white mb-1">
-                      🤖 AI Discount Recommendations
+                    <h3 className="text-lg font-bold text-black dark:text-white mb-1">
+                      AI Discount Recommendations
                     </h3>
-                    <p className="text-sm text-black dark:text-white dark:text-white">
-                      Our AI analyzed your inventory and found {recommendations.length} items that need discounts.
-                      Apply with 1-click or customize the discount percentage.
+                    <p className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                      Our AI analyzed your inventory and found <span className="font-bold text-black dark:text-white">{recommendations.length} items</span> that need discounts.
+                      Apply with 1-click or customize the discount percentage below.
                     </p>
                   </div>
                 </div>
@@ -433,43 +435,51 @@ const DiscountCampaigns = () => {
         <div className="space-y-6">
           {/* Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div className="card bg-black dark:bg-white text-white dark:text-black dark:text-black  dark:to-blue-800/20">
+            <div className="card bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-black dark:text-white dark:text-blue-400">Total Campaigns</p>
-                  <p className="text-3xl font-bold text-blue-900 dark:text-blue-300">{analytics.total_campaigns}</p>
+                  <p className="text-sm font-medium text-neutral-500 dark:text-neutral-400">Total Campaigns</p>
+                  <p className="text-3xl font-bold text-black dark:text-white">{analytics.total_campaigns}</p>
                 </div>
-                <BarChart3 className="h-12 w-12 text-black dark:text-white dark:text-blue-400 opacity-50" />
+                <div className="p-3 bg-blue-50 dark:bg-blue-900/30 rounded-xl">
+                  <BarChart3 className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+                </div>
               </div>
             </div>
 
-            <div className="card bg-black dark:bg-white text-white dark:text-black dark:text-black  dark:to-green-800/20">
+            <div className="card bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-green-600 dark:text-green-400">Total Revenue</p>
-                  <p className="text-3xl font-bold text-green-900 dark:text-green-300">₹{analytics.total_revenue}</p>
+                  <p className="text-sm font-medium text-neutral-500 dark:text-neutral-400">Total Revenue</p>
+                  <p className="text-3xl font-bold text-black dark:text-white">₹{analytics.total_revenue}</p>
                 </div>
-                <DollarSign className="h-12 w-12 text-green-600 dark:text-green-400 opacity-50" />
+                <div className="p-3 bg-green-50 dark:bg-green-900/30 rounded-xl">
+                  <DollarSign className="h-6 w-6 text-green-600 dark:text-green-400" />
+                </div>
               </div>
             </div>
 
-            <div className="card bg-black dark:bg-white text-white dark:text-black dark:text-black  dark:to-purple-800/20">
+            <div className="card bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-black dark:text-white dark:text-purple-400">Total Views</p>
-                  <p className="text-3xl font-bold text-purple-900 dark:text-purple-300">{analytics.total_views}</p>
+                  <p className="text-sm font-medium text-neutral-500 dark:text-neutral-400">Total Views</p>
+                  <p className="text-3xl font-bold text-black dark:text-white">{analytics.total_views}</p>
                 </div>
-                <Eye className="h-12 w-12 text-black dark:text-white dark:text-purple-400 opacity-50" />
+                <div className="p-3 bg-purple-50 dark:bg-purple-900/30 rounded-xl">
+                  <Eye className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+                </div>
               </div>
             </div>
 
-            <div className="card bg-black dark:bg-white text-white dark:text-black dark:text-black  dark:to-orange-800/20">
+            <div className="card bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-orange-600 dark:text-orange-400">Total Sales</p>
-                  <p className="text-3xl font-bold text-orange-900 dark:text-orange-300">{analytics.total_sales}</p>
+                  <p className="text-sm font-medium text-neutral-500 dark:text-neutral-400">Total Sales</p>
+                  <p className="text-3xl font-bold text-black dark:text-white">{analytics.total_sales}</p>
                 </div>
-                <ShoppingCart className="h-12 w-12 text-orange-600 dark:text-orange-400 opacity-50" />
+                <div className="p-3 bg-orange-50 dark:bg-orange-900/30 rounded-xl">
+                  <ShoppingCart className="h-6 w-6 text-orange-600 dark:text-orange-400" />
+                </div>
               </div>
             </div>
           </div>

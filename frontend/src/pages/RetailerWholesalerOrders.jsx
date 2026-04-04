@@ -110,14 +110,14 @@ const RetailerWholesalerOrders = () => {
 
     const getStatusColor = (status) => {
         const colors = {
-            'REQUESTED': 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
-            'ACCEPTED': 'bg-neutral-200 dark:bg-neutral-700 text-black dark:text-white dark:bg-blue-900 dark:text-blue-200',
-            'PACKED': 'bg-neutral-200 dark:bg-neutral-700 text-black dark:text-white dark:bg-purple-900 dark:text-purple-200',
-            'DISPATCHED': 'bg-neutral-200 dark:bg-neutral-700 text-black dark:text-white dark:bg-indigo-900 dark:text-white',
-            'DELIVERED': 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-            'CANCELLED': 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
+            'REQUESTED': 'bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-400',
+            'ACCEPTED': 'bg-black text-white dark:bg-white dark:text-black',
+            'PACKED': 'bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white',
+            'DISPATCHED': 'bg-neutral-800 text-white dark:bg-neutral-200 dark:text-black',
+            'DELIVERED': 'bg-neutral-100 text-black dark:bg-neutral-800 dark:text-white font-bold',
+            'CANCELLED': 'bg-neutral-100 text-neutral-400 dark:bg-neutral-900 dark:text-neutral-600 line-through'
         };
-        return colors[status] || 'bg-gray-100 text-gray-800';
+        return colors[status] || 'bg-neutral-100 text-neutral-800';
     };
 
     const renderOrderCard = (order) => (
@@ -179,17 +179,17 @@ const RetailerWholesalerOrders = () => {
             )}
 
             {(order.status === 'ACCEPTED' || order.status === 'PACKED' || order.status === 'DISPATCHED' || order.status === 'DELIVERED') && !order.addedToInventory && (
-                <button onClick={() => openAddToInventoryModal(order)} className="w-full px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 font-semibold flex items-center justify-center space-x-2">
+                <button onClick={() => openAddToInventoryModal(order)} className="w-full px-4 py-3 bg-black dark:bg-white text-white dark:text-black rounded-lg hover:opacity-80 transition-all font-semibold flex items-center justify-center space-x-2">
                     <Plus className="h-5 w-5" />
                     <span>{order.status === 'DELIVERED' ? 'Add Delivered Items to Inventory' : 'Add to My Inventory'}</span>
                 </button>
             )}
 
             {order.addedToInventory && order.status !== 'DELIVERED' && (
-                <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-3">
+                <div className="bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-lg p-3">
                     <div className="flex items-center space-x-2">
-                        <Check className="h-5 w-5 text-green-600" />
-                        <p className="text-sm text-green-800 dark:text-green-200">✅ Items added to your inventory. Waiting for delivery.</p>
+                        <Check className="h-5 w-5 text-black dark:text-white" />
+                        <p className="text-sm text-black dark:text-white">Items added to your inventory. Waiting for delivery.</p>
                     </div>
                 </div>
             )}
@@ -213,28 +213,28 @@ const RetailerWholesalerOrders = () => {
             )}
 
             {order.status === 'DELIVERED' && order.addedToInventory && (
-                <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-3">
+                <div className="bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-lg p-3">
                     <div className="flex items-center space-x-2">
-                        <Check className="h-5 w-5 text-green-600" />
-                        <p className="text-sm text-green-800 dark:text-green-200">✅ Order delivered on {new Date(order.actualDeliveryDate).toLocaleDateString()} and added to inventory</p>
+                        <Check className="h-5 w-5 text-black dark:text-white" />
+                        <p className="text-sm text-black dark:text-white">Order delivered on {new Date(order.actualDeliveryDate).toLocaleDateString()} and added to inventory</p>
                     </div>
                 </div>
             )}
 
             {order.status === 'DELIVERED' && !order.addedToInventory && (
-                <div className="bg-neutral-100 dark:bg-neutral-800 dark:bg-blue-900/20 border border-neutral-200 dark:border-neutral-700 dark:border-neutral-200 dark:border-neutral-700 rounded-lg p-3 mb-3">
+                <div className="bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-lg p-3 mb-3">
                     <div className="flex items-center space-x-2">
                         <Package className="h-5 w-5 text-black dark:text-white" />
-                        <p className="text-sm text-black dark:text-white dark:text-blue-200">📦 Order delivered on {new Date(order.actualDeliveryDate).toLocaleDateString()}. Add items to your inventory now!</p>
+                        <p className="text-sm text-black dark:text-white">Order delivered on {new Date(order.actualDeliveryDate).toLocaleDateString()}. Add items to your inventory now!</p>
                     </div>
                 </div>
             )}
 
             {order.status === 'CANCELLED' && (
-                <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-3">
+                <div className="bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-lg p-3 opacity-50">
                     <div className="flex items-center space-x-2">
-                        <AlertCircle className="h-5 w-5 text-red-600" />
-                        <p className="text-sm text-red-800 dark:text-red-200">❌ Order was cancelled</p>
+                        <AlertCircle className="h-5 w-5 text-neutral-400" />
+                        <p className="text-sm text-neutral-600 dark:text-neutral-400 font-medium">Order was cancelled</p>
                     </div>
                 </div>
             )}
@@ -317,13 +317,13 @@ const RetailerWholesalerOrders = () => {
                                                 {item.costPrice && item.sellingPrice && (
                                                     <div className="col-span-3">
                                                         <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Profit Analysis</label>
-                                                        <div className="px-3 py-2 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-md">
-                                                            <p className="text-sm font-semibold text-green-700 dark:text-green-300">
+                                                        <div className="px-3 py-2 bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-md">
+                                                            <p className="text-sm font-bold text-black dark:text-white">
                                                                 Margin: {((parseFloat(item.sellingPrice) - parseFloat(item.costPrice)) / parseFloat(item.costPrice) * 100).toFixed(1)}%
-                                                                <span className="ml-2">|</span>
-                                                                <span className="ml-2">Profit: ₹{(parseFloat(item.sellingPrice) - parseFloat(item.costPrice)).toFixed(2)}/{item.unit}</span>
-                                                                <span className="ml-2">|</span>
-                                                                <span className="ml-2">Total: ₹{((parseFloat(item.sellingPrice) - parseFloat(item.costPrice)) * parseFloat(item.quantity)).toFixed(2)}</span>
+                                                                <span className="mx-2">|</span>
+                                                                Profit: ₹{(parseFloat(item.sellingPrice) - parseFloat(item.costPrice)).toFixed(2)}/{item.unit}
+                                                                <span className="mx-2">|</span>
+                                                                Total: ₹{((parseFloat(item.sellingPrice) - parseFloat(item.costPrice)) * parseFloat(item.quantity)).toFixed(2)}
                                                             </p>
                                                         </div>
                                                     </div>

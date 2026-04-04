@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Package, Plus, Upload, Camera, Sparkles, ArrowLeft, Edit, Trash2, Save, X, TrendingUp, AlertCircle, CheckCircle } from 'lucide-react';
+import { 
+    Package, Plus, Upload, Camera, Sparkles, ArrowLeft, Edit, Trash2, Save, X, 
+    TrendingUp, AlertCircle, CheckCircle, MapPin, Search 
+} from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import toast from 'react-hot-toast';
 
 const WholesalerInventory = () => {
@@ -290,9 +294,9 @@ const WholesalerInventory = () => {
 
     const getStockStatus = (availableQty, minOrderQty) => {
         const ratio = availableQty / minOrderQty;
-        if (ratio < 2) return { label: 'Low Stock', color: 'red', icon: AlertCircle };
-        if (ratio < 5) return { label: 'Medium Stock', color: 'yellow', icon: Package };
-        return { label: 'Good Stock', color: 'green', icon: CheckCircle };
+        if (ratio < 2) return { label: 'Low Stock', color: 'neutral', icon: AlertCircle };
+        if (ratio < 5) return { label: 'Medium Stock', color: 'neutral', icon: Package };
+        return { label: 'Good Stock', color: 'neutral', icon: CheckCircle };
     };
 
     const calculateProfit = (selling, cost) => {
@@ -331,9 +335,9 @@ const WholesalerInventory = () => {
                             const profitInfo = calculateProfit(product.pricePerUnit, product.costPrice);
 
                             return (
-                                <div key={product._id} className={`bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border-2 transition-all ${isEditing ? 'border-black dark:border-white ring-4 ring-primary-100 dark:ring-primary-900/50' : 'border-transparent hover:shadow-xl'}`}>
+                                <div key={product._id} className={`bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border-2 transition-all ${isEditing ? 'border-black dark:border-white ring-4 ring-neutral-100 dark:ring-neutral-900/50' : 'border-transparent hover:shadow-xl'}`}>
                                     {/* Card Header */}
-                                    <div className={`px-6 py-4 ${product.isActive ? 'bg-black dark:bg-white text-white dark:text-black dark:text-black' : 'bg-gray-400'}`}>
+                                    <div className={`px-6 py-4 ${product.isActive ? 'bg-black dark:bg-white text-white dark:text-black' : 'bg-neutral-400'}`}>
                                         <div className="flex justify-between items-start">
                                             <div className="flex-1">
                                                 {isEditing ? (
@@ -341,17 +345,17 @@ const WholesalerInventory = () => {
                                                         type="text"
                                                         value={editForm.productName}
                                                         onChange={(e) => setEditForm({ ...editForm, productName: e.target.value })}
-                                                        className="w-full px-3 py-2 text-lg font-bold bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/70"
+                                                        className="w-full px-3 py-2 text-lg font-bold bg-neutral-800 border border-neutral-700 rounded-lg text-white placeholder-neutral-400"
                                                         placeholder="Product Name"
                                                     />
                                                 ) : (
-                                                    <h3 className="text-xl font-bold text-white mb-1">{product.productName}</h3>
+                                                    <h3 className="text-xl font-bold text-white dark:text-black mb-1">{product.productName}</h3>
                                                 )}
                                                 {isEditing ? (
                                                     <select
                                                         value={editForm.category}
                                                         onChange={(e) => setEditForm({ ...editForm, category: e.target.value })}
-                                                        className="mt-2 px-3 py-1 text-sm bg-white/20 border border-white/30 rounded-lg text-white"
+                                                        className="mt-2 px-3 py-1 text-sm bg-neutral-800 border border-neutral-700 rounded-lg text-white"
                                                     >
                                                         <option value="Grains">Grains</option>
                                                         <option value="Pulses">Pulses</option>
@@ -370,18 +374,18 @@ const WholesalerInventory = () => {
                                             <div className="flex items-center space-x-2 ml-3">
                                                 {!isEditing && (
                                                     <>
-                                                        <button
-                                                            onClick={() => startEditing(product)}
-                                                            className="p-2 bg-white/20 hover:bg-white/30 rounded-lg transition-colors"
-                                                        >
-                                                            <Edit className="h-4 w-4 text-white" />
-                                                        </button>
-                                                        <button
-                                                            onClick={() => deleteProduct(product._id)}
-                                                            className="p-2 bg-white/20 hover:bg-red-500 rounded-lg transition-colors"
-                                                        >
-                                                            <Trash2 className="h-4 w-4 text-white" />
-                                                        </button>
+                                                            <button
+                                                                onClick={() => startEditing(product)}
+                                                                className="p-2 bg-neutral-800 hover:bg-neutral-700 rounded-lg transition-colors border border-neutral-700"
+                                                            >
+                                                                <Edit className="h-4 w-4 text-white" />
+                                                            </button>
+                                                            <button
+                                                                onClick={() => deleteProduct(product._id)}
+                                                                className="p-2 bg-neutral-800 hover:bg-black rounded-lg transition-colors border border-neutral-700"
+                                                            >
+                                                                <Trash2 className="h-4 w-4 text-white" />
+                                                            </button>
                                                     </>
                                                 )}
                                             </div>
@@ -391,34 +395,34 @@ const WholesalerInventory = () => {
                                     {/* Card Body */}
                                     <div className="p-6 space-y-4">
                                         {/* Stock Status Badge */}
-                                        <div className={`flex items-center space-x-2 px-3 py-2 rounded-lg bg-${stockStatus.color}-50 dark:bg-${stockStatus.color}-900/20 border border-${stockStatus.color}-200 dark:border-${stockStatus.color}-800`}>
-                                            <StockIcon className={`h-5 w-5 text-${stockStatus.color}-600`} />
-                                            <span className={`text-sm font-semibold text-${stockStatus.color}-800 dark:text-${stockStatus.color}-200`}>{stockStatus.label}</span>
+                                        <div className="flex items-center space-x-2 px-3 py-2 rounded-lg bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
+                                            <StockIcon className="h-5 w-5 text-neutral-900 dark:text-neutral-100" />
+                                            <span className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">{stockStatus.label}</span>
                                         </div>
 
                                         {/* Pricing Section */}
                                         <div className="grid grid-cols-2 gap-3">
-                                            <div className="bg-black dark:bg-white text-white dark:text-black dark:text-black   p-4 rounded-lg border border-green-200 dark:border-green-800">
-                                                <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">Selling Price</p>
+                                            <div className="bg-neutral-100 dark:bg-neutral-900 p-4 rounded-lg border border-neutral-200 dark:border-neutral-800">
+                                                <p className="text-xs text-neutral-500 mb-1">Selling Price</p>
                                                 {isEditing ? (
                                                     <input
                                                         type="number"
                                                         step="0.01"
                                                         value={editForm.pricePerUnit}
                                                         onChange={(e) => setEditForm({ ...editForm, pricePerUnit: e.target.value })}
-                                                        className="w-full px-2 py-1 text-lg font-bold bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded text-gray-900 dark:text-white"
+                                                        className="w-full px-2 py-1 text-lg font-bold bg-white dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 rounded text-neutral-900 dark:text-white"
                                                     />
                                                 ) : (
-                                                    <p className="text-2xl font-bold text-green-700 dark:text-green-400">₹{product.pricePerUnit}</p>
+                                                    <p className="text-2xl font-bold text-neutral-900 dark:text-white">₹{product.pricePerUnit}</p>
                                                 )}
                                                 <p className="text-xs text-gray-500 mt-1">per {product.unit}</p>
                                             </div>
 
                                             {profitInfo && (
-                                                <div className="bg-black dark:bg-white text-white dark:text-black dark:text-black   p-4 rounded-lg border border-neutral-200 dark:border-neutral-700 dark:border-neutral-200 dark:border-neutral-700">
-                                                    <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">Profit Margin</p>
-                                                    <p className="text-2xl font-bold text-black dark:text-white dark:text-purple-400">{profitInfo.margin}%</p>
-                                                    <p className="text-xs text-gray-500 mt-1">₹{profitInfo.profit} profit</p>
+                                                <div className="bg-neutral-100 dark:bg-neutral-900 p-4 rounded-lg border border-neutral-200 dark:border-neutral-800">
+                                                    <p className="text-xs text-neutral-500 mb-1">Profit Margin</p>
+                                                    <p className="text-2xl font-bold text-neutral-900 dark:text-white">{profitInfo.margin}%</p>
+                                                    <p className="text-xs text-neutral-600 mt-1">₹{profitInfo.profit} profit</p>
                                                 </div>
                                             )}
                                         </div>
@@ -490,17 +494,17 @@ const WholesalerInventory = () => {
 
                                         {/* Expiry Date */}
                                         {(product.expiryDate || isEditing) && (
-                                            <div className="bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg p-3">
-                                                <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">Expiry Date</p>
+                                            <div className="bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg p-3">
+                                                <p className="text-xs text-neutral-500 mb-1">Expiry Date</p>
                                                 {isEditing ? (
                                                     <input
                                                         type="date"
                                                         value={editForm.expiryDate}
                                                         onChange={(e) => setEditForm({ ...editForm, expiryDate: e.target.value })}
-                                                        className="w-full px-2 py-1 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded text-gray-900 dark:text-white"
+                                                        className="w-full px-2 py-1 bg-white dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 rounded text-neutral-900 dark:text-white"
                                                     />
                                                 ) : (
-                                                    <p className="text-sm font-semibold text-orange-700 dark:text-orange-300">{new Date(product.expiryDate).toLocaleDateString()}</p>
+                                                    <p className="text-sm font-semibold text-neutral-900 dark:text-white">{new Date(product.expiryDate).toLocaleDateString()}</p>
                                                 )}
                                             </div>
                                         )}
@@ -552,9 +556,9 @@ const WholesalerInventory = () => {
                                                 ) : (
                                                     <div className="space-y-1">
                                                         {product.bulkDiscounts.map((discount, idx) => (
-                                                            <div key={idx} className="flex justify-between items-center bg-neutral-100 dark:bg-neutral-800 dark:bg-blue-900/20 px-3 py-2 rounded text-sm">
-                                                                <span className="text-gray-700 dark:text-gray-300">≥ {discount.minQty} {product.unit}</span>
-                                                                <span className="font-semibold text-black dark:text-white dark:text-blue-300">₹{discount.price}/{product.unit}</span>
+                                                            <div key={idx} className="flex justify-between items-center bg-neutral-100 dark:bg-neutral-800 px-3 py-2 rounded text-sm border border-neutral-200 dark:border-neutral-700">
+                                                                <span className="text-neutral-700 dark:text-neutral-300">≥ {discount.minQty} {product.unit}</span>
+                                                                <span className="font-semibold text-neutral-900 dark:text-white">₹{discount.price}/{product.unit}</span>
                                                             </div>
                                                         ))}
                                                     </div>
@@ -564,16 +568,16 @@ const WholesalerInventory = () => {
 
                                         {/* Analytics (if available) */}
                                         {product.totalOrders > 0 && !isEditing && (
-                                            <div className="bg-black dark:bg-white text-white dark:text-black dark:text-black   border border-neutral-200 dark:border-neutral-700 dark:border-neutral-200 dark:border-neutral-700 rounded-lg p-3">
-                                                <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">Performance</p>
+                                            <div className="bg-neutral-900 dark:bg-neutral-100 text-white dark:text-black border border-neutral-700 dark:border-neutral-200 rounded-lg p-3">
+                                                <p className="text-xs text-neutral-400 dark:text-neutral-500 mb-2">Performance</p>
                                                 <div className="grid grid-cols-2 gap-2 text-sm">
                                                     <div>
-                                                        <p className="text-xs text-gray-500">Total Orders</p>
-                                                        <p className="font-bold text-black dark:text-white dark:text-white">{product.totalOrders}</p>
+                                                        <p className="text-xs text-neutral-500">Total Orders</p>
+                                                        <p className="font-bold">{product.totalOrders}</p>
                                                     </div>
                                                     <div>
-                                                        <p className="text-xs text-gray-500">Qty Sold</p>
-                                                        <p className="font-bold text-black dark:text-white dark:text-white">{product.totalQuantitySold} {product.unit}</p>
+                                                        <p className="text-xs text-neutral-500">Qty Sold</p>
+                                                        <p className="font-bold">{product.totalQuantitySold} {product.unit}</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -585,7 +589,7 @@ const WholesalerInventory = () => {
                                                 <button
                                                     onClick={() => saveProduct(product._id)}
                                                     disabled={isLoading}
-                                                    className="flex-1 flex items-center justify-center space-x-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 font-semibold"
+                                                    className="flex-1 flex items-center justify-center space-x-2 px-4 py-2 bg-black dark:bg-white text-white dark:text-black rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200 disabled:opacity-50 font-semibold"
                                                 >
                                                     <Save className="h-4 w-4" />
                                                     <span>{isLoading ? 'Saving...' : 'Save Changes'}</span>
@@ -610,7 +614,7 @@ const WholesalerInventory = () => {
                                                         onChange={(e) => setEditForm({ ...editForm, isActive: e.target.checked })}
                                                         className="rounded"
                                                     />
-                                                    <span className={`text-sm font-semibold ${editForm.isActive ? 'text-green-600' : 'text-red-600'}`}>
+                                                    <span className={`text-sm font-semibold ${editForm.isActive ? 'text-neutral-900 dark:text-white' : 'text-neutral-500'}`}>
                                                         {editForm.isActive ? 'Active' : 'Inactive'}
                                                     </span>
                                                 </label>
@@ -675,26 +679,26 @@ const WholesalerInventory = () => {
                                     </button>
                                 )}
 
-                                {aiRecommendations && (
-                                    <div className="bg-black dark:bg-white text-white dark:text-black dark:text-black   border-2 border-neutral-200 dark:border-neutral-700 dark:border-neutral-200 dark:border-neutral-700 rounded-lg p-5">
-                                        <h4 className="font-bold text-purple-900 dark:text-purple-200 mb-4 flex items-center text-lg"><Sparkles className="h-6 w-6 mr-2" />AI Business Recommendations</h4>
+                                    {aiRecommendations && (
+                                        <div className="bg-neutral-900 border-2 border-neutral-700 rounded-lg p-5">
+                                            <h4 className="font-bold text-white mb-4 flex items-center text-lg"><Sparkles className="h-6 w-6 mr-2" />AI Business Recommendations</h4>
                                         <div className="grid grid-cols-2 gap-4 text-sm">
                                             <div className="bg-white dark:bg-gray-800 p-3 rounded-lg">
-                                                <p className="text-gray-600 dark:text-gray-400 text-xs mb-1">Recommended Selling Price</p>
-                                                <p className="text-2xl font-bold text-green-600">₹{aiRecommendations.recommendedPrice}</p>
+                                                <p className="text-gray-400 text-xs mb-1">Recommended Selling Price</p>
+                                                <p className="text-2xl font-bold text-white">₹{aiRecommendations.recommendedPrice}</p>
                                                 {productForm.costPrice && <p className="text-xs text-gray-500 mt-1">Profit: ₹{(parseFloat(aiRecommendations.recommendedPrice) - parseFloat(productForm.costPrice)).toFixed(2)}</p>}
                                             </div>
                                             <div className="bg-white dark:bg-gray-800 p-3 rounded-lg">
                                                 <p className="text-gray-600 dark:text-gray-400 text-xs mb-1">Min Order Quantity</p>
                                                 <p className="text-2xl font-bold text-black dark:text-white">{aiRecommendations.recommendedMinOrder} {productForm.unit}</p>
                                             </div>
-                                            <div className="bg-white dark:bg-gray-800 p-3 rounded-lg">
-                                                <p className="text-gray-600 dark:text-gray-400 text-xs mb-1">Expected Profit Margin</p>
-                                                <p className="text-2xl font-bold text-black dark:text-white">{aiRecommendations.profitMargin}%</p>
+                                            <div className="bg-neutral-800 p-3 rounded-lg">
+                                                <p className="text-gray-400 text-xs mb-1">Expected Profit Margin</p>
+                                                <p className="text-2xl font-bold text-white">{aiRecommendations.profitMargin}%</p>
                                             </div>
                                             <div className="bg-white dark:bg-gray-800 p-3 rounded-lg">
-                                                <p className="text-gray-600 dark:text-gray-400 text-xs mb-1">Sales Velocity</p>
-                                                <p className="text-lg font-bold text-orange-600">{aiRecommendations.salesVelocity || 'Medium'}</p>
+                                                <p className="text-gray-400 text-xs mb-1">Sales Velocity</p>
+                                                <p className="text-lg font-bold text-white">{aiRecommendations.salesVelocity || 'Medium'}</p>
                                             </div>
                                         </div>
                                         <div className="mt-4 space-y-3">
@@ -707,9 +711,9 @@ const WholesalerInventory = () => {
                                                 <p className="text-gray-700 dark:text-gray-300 text-sm">{aiRecommendations.targetRetailers}</p>
                                             </div>
                                             {aiRecommendations.expiryConsiderations && (
-                                                <div className="bg-red-50 dark:bg-red-900/20 p-3 rounded-lg border border-red-200 dark:border-red-800">
-                                                    <p className="font-semibold text-red-900 dark:text-red-200 mb-1">⏰ Expiry Management</p>
-                                                    <p className="text-red-700 dark:text-red-300 text-sm">{
+                                                <div className="bg-neutral-800 p-3 rounded-lg border border-neutral-700">
+                                                    <p className="font-semibold text-white mb-1">⏰ Expiry Management</p>
+                                                    <p className="text-gray-300 text-sm">{
                                                         typeof aiRecommendations.expiryConsiderations === 'object'
                                                             ? aiRecommendations.expiryConsiderations.managementStrategy || JSON.stringify(aiRecommendations.expiryConsiderations)
                                                             : aiRecommendations.expiryConsiderations

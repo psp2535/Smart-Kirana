@@ -1,35 +1,32 @@
-const OpenAI = require('openai');
+const { GoogleGenerativeAI } = require('@google/generative-ai');
 
 /**
- * OpenAI Service
- * Provides AI-powered business insights using OpenAI GPT
+ * Google Gemini Service
+ * Provides AI-powered business insights using Google Gemini 1.5 Pro
  */
 
-// Initialize OpenAI with API key from environment
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY || ''
+// Initialize Gemini with API key from environment
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
+const model = genAI.getGenerativeModel({ 
+    model: 'gemini-2.0-flash',
+    generationConfig: {
+        temperature: 0.7,
+        maxOutputTokens: 4096,
+    }
 });
 
-class OpenAIService {
-  constructor() {
-    this.model = 'gpt-4o-mini'; // Fast and cost-effective
-  }
-
+class GeminiService {
   /**
    * Generate AI response with context
    */
   async generateResponse(prompt, context = {}) {
     try {
       const fullPrompt = this.buildPromptWithContext(prompt, context);
-      const completion = await openai.chat.completions.create({
-        model: this.model,
-        messages: [{ role: 'user', content: fullPrompt }],
-        temperature: 0.7,
-        max_tokens: 2000
-      });
-      return completion.choices[0].message.content;
+      const result = await model.generateContent(fullPrompt);
+      const response = await result.response;
+      return response.text();
     } catch (error) {
-      console.error('OpenAI API Error:', error);
+      console.error('Gemini API Error:', error);
       throw new Error('Failed to generate AI response: ' + error.message);
     }
   }
@@ -43,45 +40,43 @@ class OpenAIService {
       : '';
 
     const prompt = `
-You are a business analytics AI assistant. Analyze the following sales and inventory data to provide demand forecasting insights.
+You are a business analytics AI assistant. Analyze the following sales and inventory data to provide demand forecasting insights for a retail store.
 
-SALES DATA (Recent ${salesData.length} transactions):
+SALES DATA:
 ${JSON.stringify(salesData, null, 2)}
 
-INVENTORY DATA (Current stock levels):
+INVENTORY DATA:
 ${JSON.stringify(inventoryData, null, 2)}${expiryContext}
 
-CRITICAL: Structure your response EXACTLY in this order:
+CRITICAL: Structure your response EXACTLY in this order with clear HEADINGS and TABLES:
 
-## 🎯 Quick Actions
-List 3-5 immediate, actionable steps the retailer should take TODAY. Be specific with numbers and items.
-${expiringItems.length > 0 ? '- **URGENT**: Offer discounts on expiring items to sell them before expiry!' : ''}
-- Action 1
-- Action 2
-- Action 3
+# 📊 Demand Forecasting Report
+
+## 🎯 Quick Actions (Today)
+| Priority | Action Item | Target Item | Reason |
+| :--- | :--- | :--- | :--- |
+| 🔴 High | [Action] | [Item] | [Reason] |
+| 🟡 Medium | [Action] | [Item] | [Reason] |
+| 🟢 Low | [Action] | [Item] | [Reason] |
 
 ## 💰 Visual Summary
-Provide key metrics and numbers:
-- Total Revenue: ₹X
-- Top Selling Item: [name]
-- Stock Alerts: X items
-${expiringItems.length > 0 ? `- ⚠️ Expiring Soon: ${expiringItems.length} items` : ''}
+| Metric | Value | Status |
+| :--- | :--- | :--- |
+| Total Revenue | ₹${salesData.reduce((sum, s) => sum + s.total_amount, 0)} | 📈 Trending |
+| Top Selling | [Top Item Name] | 🔥 Hot Item |
+| Stock Alerts | ${inventoryData.filter(i => i.stock_qty < 10).length} Items | ⚠️ Critical |
+${expiringItems.length > 0 ? `| Expiring Soon | ${expiringItems.length} Items | 🔴 Urgent |` : ''}
+
+## 📊 Detailed Demand Analysis
+- **Top 5 Items**: [List them with their sales velocity]
+- **Sales Trends**: Identify which product categories are growing vs shrinking.
+- **Stock Recommendations**: For each high-demand item, recommend a specific reorder quantity.
 
 ## 💡 Strategic Recommendations
-Provide 3-4 strategic insights for long-term growth:
-1. Recommendation 1
-2. Recommendation 2
+1. **Growth Strategy**: [Strategic advice based on top categories]
+2. **Stock Optimization**: [Advice on how to manage current inventory levels]
 
-## 📊 Demand Forecasts
-Provide detailed forecasting:
-- **Top Selling Items**: List the top 5 items by sales volume and revenue
-- **Sales Trends**: Identify which products are trending up or down
-- **Stock Recommendations**: For each high-demand item, calculate recommended stock levels
-${expiringItems.length > 0 ? '- **Expiring Items Strategy**: Suggest discount percentages and promotional campaigns for items expiring soon' : ''}
-- **Reorder Points**: Suggest when to reorder based on current stock and sales velocity
-- **Demand Patterns**: Identify any patterns (daily, weekly trends)
-
-Use clear formatting with bullet points and specific numbers.
+Use clear formatting, bold text, and specific numbers from the data. Respond in English.
 `;
 
     return await this.generateResponse(prompt);
@@ -94,44 +89,37 @@ Use clear formatting with bullet points and specific numbers.
     const prompt = `
 You are a pricing strategy AI assistant. Analyze the following business data to maximize revenue and profitability.
 
-SALES DATA:
-${JSON.stringify(salesData.slice(0, 50), null, 2)}
-
-INVENTORY WITH PRICING:
-${JSON.stringify(inventoryData, null, 2)}
-
-PROFIT METRICS:
+PROFITS & MARGINS:
 ${JSON.stringify(profitData, null, 2)}
 
-CRITICAL: Structure your response EXACTLY in this order:
+CRITICAL: Structure your response EXACTLY in this order with clear HEADINGS and TABLES:
 
-## 🎯 Quick Actions
-List 3-5 immediate pricing or sales actions to take TODAY:
-- Action 1
-- Action 2
-- Action 3
+# 💸 Revenue Optimization Analysis
 
-## 💰 Visual Summary
-Provide key revenue metrics:
-- Total Revenue: ₹X
-- Average Profit Margin: X%
-- High-Margin Items: X items
+## 🎯 Immediate Pricing Actions
+| Item Name | Current Price | Recommended Price | Potential Profit Increase |
+| :--- | :--- | :--- | :--- |
+| [Item] | ₹[Price] | ₹[New Price] | +₹[Amount] |
+| [Item] | ₹[Price] | ₹[New Price] | +₹[Amount] |
 
-## 💡 Strategic Recommendations
-Provide 3-4 strategic pricing insights:
-1. Recommendation 1
-2. Recommendation 2
+## 💰 Profitability Summary
+| Metric | Current Value | Optimal Target |
+| :--- | :--- | :--- |
+| Average Margin | ${profitData.avgProfitMargin || 'X'}% | [Target]% |
+| Revenue Velocity | ₹[Amount]/day | ₹[Target]/day |
+| High-Margin Inventory | [Count] Items | [Count] Items |
 
-## 📊 Revenue Optimization Details
-Provide detailed analysis:
-- **Price Analysis**: Evaluate current pricing vs market demand
-- **Margin Opportunities**: Identify products with potential for price increases
-- **Competitive Pricing**: Suggest optimal price points for maximum revenue
-- **Bundle Opportunities**: Recommend product bundling strategies
-- **Discount Strategy**: When to offer discounts without hurting margins
-- **High-Margin Focus**: Which products to push for better profitability
+## 💡 Pricing Strategy Recommendations
+1. **Bundle Opportunity**: [Suggest a bundle of two related items at a discount]
+2. **Upsell Strategy**: [Which items should be pushed at the counter?]
+3. **Discount Logic**: [Strategy for clearing slow-moving stock]
 
-Format with clear sections, specific price recommendations, and expected revenue impact.
+## 📊 Revenue Detail Analysis
+- **Margin Opportunities**: Identify products where prices are too low relative to demand.
+- **Customer Value**: Which customer segments are contributing most to high-margin sales?
+- **Competitor Response**: Recommended price levels to stay competitive while maximizing profit.
+
+Use clear formatting and specific numbers. Respond in English.
 `;
 
     return await this.generateResponse(prompt);
@@ -142,51 +130,41 @@ Format with clear sections, specific price recommendations, and expected revenue
    */
   async analyzeExpenseForecast(expensesData, currentMonth, currentSeason) {
     const prompt = `
-You are a financial forecasting AI assistant for a business in India. Analyze expenses and predict future costs.
+You are a financial forecasting AI assistant for a business in India. Analyze expenses and predict future costs with seasonal context.
 
 CURRENT DATE: ${new Date().toLocaleDateString('en-IN')}
-CURRENT MONTH: ${currentMonth}
-CURRENT SEASON: ${currentSeason}
+SEASON: ${currentSeason}
 
-EXPENSE HISTORY (Last 3 months):
+EXPENSE HISTORY:
 ${JSON.stringify(expensesData, null, 2)}
 
-CRITICAL: Structure your response EXACTLY in this order:
+CRITICAL: Structure your response EXACTLY in this order with clear HEADINGS and TABLES:
 
-## 🎯 Quick Actions
-List 3-5 immediate cost-saving actions to take TODAY:
-- Action 1
-- Action 2
-- Action 3
+# 📉 Expense & Financial Forecast
 
-## 💰 Visual Summary
-Provide key expense metrics:
-- Total Expenses: ₹X
-- Highest Category: [category name]
-- Month-over-Month Change: +/-X%
+## 🎯 Immediate Cost Actions
+| Priority | Cost Saving Measure | Category | Estimated Savings |
+| :--- | :--- | :--- | :--- |
+| 🔵 Medium | [Action] | [Category] | ₹[Amount] |
+| 🟢 Low | [Action] | [Category] | ₹[Amount] |
 
-## 💡 Strategic Recommendations
-Provide 3-4 strategic cost optimization insights:
-1. Recommendation 1
-2. Recommendation 2
+## 💰 Expense Summary
+| Metric | Monthly Average | Current Trend |
+| :--- | :--- | :--- |
+| Total Expenses | ₹[Amount] | [Up/Down] |
+| Top Category | [Name] | [Value]% |
+| Seasonal Variance | ₹[Amount] | ${currentSeason} Impact |
 
-## 📊 Expense Forecast Details
-Provide detailed analysis:
-- **Expense Breakdown**: Categorize and analyze current expenses (Sales vs Operating)
-- **Monthly Trends**: Identify spending patterns and trends
-- **Seasonal Impact**: How Indian seasons and festivals affect expenses (consider monsoon, festivals, holidays)
-- **Weather Considerations**: Impact of current season on operational costs (AC, heating, logistics)
-- **Next Month Forecast**: Predict total expenses for next month with justification
-- **Cost Optimization**: Suggest ways to reduce unnecessary expenses
-- **Budget Recommendations**: Recommend monthly budgets for each category
+## 💡 Strategic Financial Recommendations
+1. **Seasonal Buffer**: [Advice on saving for upcoming peak months]
+2. **Category Optimization**: [How to reduce the highest expense category]
 
-Consider Indian context:
-- Festival seasons (Diwali, Holi, etc.)
-- Monsoon season impacts
-- Summer AC costs
-- Regional factors
+## 📊 Detailed Expense Analysis
+- **Monthly Trends**: Breakdown of how spending has changed over the last 3 months.
+- **Seasonal Forecast**: How the current "${currentSeason}" season will impact next month's utility/logistics bills.
+- **Budget Targets**: Recommended spending limits for the next 30 days to maintain profitability.
 
-Format with specific numbers, percentages, and actionable advice.
+Use clear formatting and specific numbers. Respond in English.
 `;
 
     return await this.generateResponse(prompt);
@@ -213,6 +191,55 @@ Be professional, friendly, and actionable in your advice.
   }
 
   /**
+   * Wholesaler Business Insights
+   */
+  async analyzeWholesalerInsights(inventory, productPerformance, retailerAnalysis) {
+    const prompt = `
+You are a high-level wholesale business consultant. Analyze the provided wholesale data and generate a professional, actionable report.
+
+PRODUCT PERFORMANCE:
+${JSON.stringify(productPerformance, null, 2)}
+
+RETAILER (CUSTOMER) ANALYSIS:
+${JSON.stringify(retailerAnalysis, null, 2)}
+
+CRITICAL: Structure your response EXACTLY in this order with clear HEADINGS and TABLES:
+
+# 🏭 Wholesaler Business Analysis
+
+## 🎯 Top Priority Actions
+| Priority | Action | Target Product/Retailer | Reason |
+| :--- | :--- | :--- | :--- |
+| 🔴 Critical | [Action] | [Target] | [Expiry/Stock Issue] |
+| 🟡 Warning | [Action] | [Target] | [Low Sales Velocity] |
+
+## 📦 Inventory & Stock Movement
+| Product Name | Movement | Stock Status | Recommendation |
+| :--- | :--- | :--- | :--- |
+| [Item] | [Fast/Slow] | [Low/Over] | [Restock/Clearance] |
+
+## 💰 Pricing & Profit Optimization
+| Item Name | Current Price | Recommended | Strategy |
+| :--- | :--- | :--- | :--- |
+| [Item] | ₹[Price] | ₹[New] | [Bulk Discount / Margin Hike] |
+
+## 🤝 Targeted Retailer Offers
+| Retailer Name | Suggested Deal | Product | Campaign Message |
+| :--- | :--- | :--- | :--- |
+| [Name] | [X]% OFF | [Item] | [Concise Campaign Text] |
+
+## 💡 Strategic Business Advice
+1. **Inventory Management**: [Advice on turnover and warehousing]
+2. **Retailer Relationship**: [Advice on how to improve loyalty with top retailers]
+3. **Growth Opportunity**: [Identify untapped categories]
+
+Use professional, precise language. Respond in English.
+`;
+
+    return await this.generateResponse(prompt);
+  }
+
+  /**
    * Build prompt with context
    */
   buildPromptWithContext(prompt, context) {
@@ -229,4 +256,4 @@ Be professional, friendly, and actionable in your advice.
   }
 }
 
-module.exports = new OpenAIService();
+module.exports = new GeminiService();

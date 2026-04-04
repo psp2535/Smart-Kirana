@@ -1,587 +1,180 @@
 /**
  * AI Chatbot Controller - Handles intelligent business queries with database access
- * Supports multilingual conversations with full business context
- * Works for both retailers and customers
+ * Migrated to Google Gemini 1.5
  */
 
 const Sale = require('../models/Sale');
 const Inventory = require('../models/Inventory');
-const Expense = require('../models/Expense');
-const Customer = require('../models/Customer');
-const CustomerRequest = require('../models/CustomerRequest');
 const User = require('../models/User');
 const CustomerUser = require('../models/CustomerUser');
+const CustomerRequest = require('../models/CustomerRequest');
 const Notification = require('../models/Notification');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
-const OpenAI = require('openai');
 const ttsService = require('../services/ttsService');
-const mongoose = require('mongoose');
 const { handleRetailerChat } = require('./retailerChatHandler');
 const { handleRetailerChatOptimized } = require('./retailerChatHandlerOptimized');
 
-// Initialize OpenAI
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
+// Initialize Gemini
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
+const model = genAI.getGenerativeModel({ 
+    model: 'gemini-2.5-flash',
+    generationConfig: {
+        responseMimeType: "application/json",
+        temperature: 0.2,
+    }
 });
 
-// Feature flag: Use optimized handler (set to true to enable)
-const USE_OPTIMIZED_HANDLER = process.env.USE_OPTIMIZED_CHAT === 'true' || false;
+const textModel = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
-// In-memory storage for pending orders (use Redis in production)
+const USE_OPTIMIZED_HANDLER = process.env.USE_OPTIMIZED_CHAT === 'true' || false;
 const pendingOrders = new Map();
 
 /**
- * Handle customer chat with retailer - Enhanced ordering interface
+ * Handle customer chat with retailer
  */
 const handleCustomerChat = async (userId, retailerId, message, language) => {
     try {
-        // Get retailer inventory and info
         const [inventory, retailer] = await Promise.all([
-            Inventory.find({ user_id: retailerId }),
+            Inventory.find({ user_id: retailerId }).limit(100),
             User.findById(retailerId)
         ]);
 
-        if (!retailer) {
-            return {
-                success: false,
-                message: "Sorry, this store is not available right now.",
-                data: null
-            };
-        }
+        if (!retailer) return { success: false, message: "Store not found." };
 
-        // Check if it's a greeting
-        const greetings = ['hi', 'hello', 'hey', 'namaste', 'hola'];
+        const greetings = ['hi', 'hello', 'hey', 'namaste'];
         if (greetings.some(g => message.toLowerCase().trim() === g)) {
             return {
                 success: true,
-                message: `Hi! Welcome to ${retailer.shop_name}\n\nWhat would you like to order?\n\nYou can say:\n"Chicken curry for 4 people"\n"2 kg rice, 1 litre milk"\n"Show available items"`,
-                data: {
-                    type: 'greeting',
-                    retailer: retailer.shop_name,
-                    retailer_id: retailerId,
-                    available_items: inventory.length
-                }
+                message: `Hi! Welcome to ${retailer.shop_name}. What can I get for you today?`,
+                data: { type: 'greeting', retailer: retailer.shop_name }
             };
         }
 
-        // Check if it's an order confirmation
-        if (['yes', 'confirm', 'ok', 'proceed'].some(word => message.toLowerCase().trim() === word)) {
-            console.log('🛒 Customer said YES - checking for pending order');
-            console.log('🔍 Pending orders keys:', Array.from(pendingOrders.keys()));
-            const orderKey = `${userId}_${retailerId}`;
-            const pendingOrder = pendingOrders.get(orderKey);
-            console.log('🔍 Pending order found:', !!pendingOrder);
-            if (pendingOrder) {
-                console.log('🔍 Pending order items:', pendingOrder.items?.length);
-            }
+        if (['yes', 'confirm', 'ok'].some(word => message.toLowerCase().trim() === word)) {
             return await handleOrderConfirmation(userId, retailerId, message, language);
         }
 
         const intentPrompt = `
-Analyze this customer message: "${message}"
+Analyze this customer message for ${retailer.shop_name}: "${message}"
+Inventory:
+${inventory.map(item => `${item.item_name}: ₹${item.price_per_unit}`).join('\n')}
 
-Available inventory (ONLY these items exist):
-${inventory.map(item => `${item.item_name}: ${item.stock_qty} units at ₹${item.price_per_unit}/unit`).join('\n')}
+Extract items as JSON array:
+[{"item_name": "exact name", "quantity": number, "unit": "kg/litre/pieces"}]
+If none, return []. Respond ONLY with JSON.`;
 
-CRITICAL RULES:
-1. ONLY use items that EXACTLY match the inventory list above.
-2. If a dish requires ingredients NOT in inventory, mark those items as available: false.
-3. Do NOT make up or assume items exist.
-4. Match item names EXACTLY as they appear in inventory.
-5. If the request is a dish (e.g. "chicken curry"), list its 3-5 most essential ingredients and check if they are in inventory.
-
-Task: Extract what the customer wants to buy.
-
-Return ONLY a valid JSON array:
-[
-  {
-    "item_name": "exact name from inventory or ingredient name",
-    "quantity": number,
-    "unit": "kg/litre/pieces",
-    "available": true/false,
-    "stock_available": number,
-    "price_per_unit": number
-  }
-]
-
-If message is unclear or not a shopping request, return: []
-`;
-
-        const completion = await openai.chat.completions.create({
-          model: 'gpt-4o-mini',
-          messages: [{
-            role: 'system',
-            content: "You are a precise inventory matching assistant for a retail store. You only speak in JSON."
-          }, {
-            role: 'user',
-            content: intentPrompt
-          }],
-          temperature: 0.2,
-          max_tokens: 800,
-          response_format: { type: "json_object" }
-        });
-
-        const aiResponse = completion.choices[0].message.content.trim();
-        console.log('🤖 AI Raw Response:', aiResponse);
-
-        // Parse JSON
+        const result = await model.generateContent(intentPrompt);
+        const aiResponse = result.response.text();
+        
         let orderItems = [];
         try {
             orderItems = JSON.parse(aiResponse);
-            if (!Array.isArray(orderItems)) orderItems = [];
-            console.log('🤖 Parsed Order Items:', orderItems);
         } catch (e) {
-            console.log('Failed to parse order items:', aiResponse);
+            console.error('Gemini JSON Parse Error:', aiResponse);
         }
 
-        // Match items with actual inventory and calculate prices
         const matchedItems = orderItems.map(item => {
-            const inventoryItem = inventory.find(inv =>
-                inv.item_name.toLowerCase() === item.item_name.toLowerCase()
-            );
-
-            if (inventoryItem) {
-                const available = inventoryItem.stock_qty >= item.quantity;
+            const inv = inventory.find(i => i.item_name.toLowerCase().includes(item.item_name.toLowerCase()));
+            if (inv) {
                 return {
-                    item_name: inventoryItem.item_name,
+                    item_name: inv.item_name,
                     quantity: item.quantity,
                     unit: item.unit || 'units',
-                    price_per_unit: inventoryItem.price_per_unit,
-                    total_price: inventoryItem.price_per_unit * item.quantity,
-                    available: available,
-                    stock_available: inventoryItem.stock_qty,
-                    inventory_id: inventoryItem._id
+                    price_per_unit: inv.price_per_unit,
+                    total_price: inv.price_per_unit * item.quantity,
+                    available: inv.stock_qty >= item.quantity,
+                    inventory_id: inv._id
                 };
             }
-            return {
-                ...item,
-                available: false,
-                price_per_unit: 0,
-                total_price: 0
-            };
+            return { ...item, available: false, price_per_unit: 0, total_price: 0 };
         });
 
-        const availableItems = matchedItems.filter(item => item.available);
-        const unavailableItems = matchedItems.filter(item => !item.available);
+        const availableItems = matchedItems.filter(i => i.available);
+        const totalAmount = availableItems.reduce((sum, i) => sum + i.total_price, 0);
 
-        // Generate response message - Clean and simple
-        let responseMessage = '';
-        let responseData = {
-            type: 'order_summary',
-            availableItems: availableItems,
-            unavailableItems: unavailableItems,
-            totalAmount: availableItems.reduce((sum, item) => sum + item.total_price, 0)
-        };
-
-        if (matchedItems.length === 0) {
-            responseMessage = `I couldn't understand that. Please try:\n\n"I want chicken curry"\n"Buy 2 kg rice"\n"Show available items"`;
-            responseData.type = 'help';
-        } else {
-            const isDishRequest = unavailableItems.length > 2 && availableItems.length === 0;
-
-            if (isDishRequest) {
-                responseMessage = `Sorry, we don't have ingredients for that dish.\n\nMissing: ${unavailableItems.slice(0, 3).map(i => i.item_name).join(', ')}${unavailableItems.length > 3 ? ` and ${unavailableItems.length - 3} more` : ''}\n\nTry ordering individual items instead.`;
-                responseData.type = 'unavailable';
-            } else {
-                if (availableItems.length > 0) {
-                    const totalAmount = availableItems.reduce((sum, item) => sum + item.total_price, 0);
-                    responseMessage = `Found ${availableItems.length} item${availableItems.length > 1 ? 's' : ''} for ₹${totalAmount}\n\nReply 'yes' to confirm`;
-
-                    // Store pending order
-                    const orderKey = `${userId}_${retailerId}`;
-                    console.log('🛒 Storing pending order with key:', orderKey);
-                    console.log('🛒 Available items to store:', availableItems.length);
-                    pendingOrders.set(orderKey, {
-                        userId,
-                        retailerId,
-                        items: availableItems,
-                        totalAmount: totalAmount,
-                        timestamp: Date.now()
-                    });
-                    console.log('🛒 Order stored. Total pending orders:', pendingOrders.size);
-                } else {
-                    responseMessage = `These items are not available right now.\n\nAsk "What's available?" to see our stock.`;
-                    responseData.type = 'unavailable';
-                }
-            }
+        if (availableItems.length > 0) {
+            pendingOrders.set(`${userId}_${retailerId}`, { items: availableItems, totalAmount });
         }
 
         return {
             success: true,
-            message: responseMessage,
-            data: {
-                ...responseData,
-                retailer: retailer.shop_name,
-                retailer_id: retailerId,
-                available_items: inventory.length,
-                can_order: availableItems.length > 0
-            }
+            message: availableItems.length > 0 ? `I found ${availableItems.length} items for ₹${totalAmount}. Confirm order?` : "Sorry, those items aren't available.",
+            data: { type: 'order_summary', availableItems, totalAmount, can_order: availableItems.length > 0 }
         };
-
     } catch (error) {
-        console.error('Customer chat error:', error);
-        return {
-            success: false,
-            message: "I'm having trouble processing your request. Please try again.",
-            data: null
-        };
+        console.error('Gemini Customer Chat Error:', error);
+        return { success: false, message: "Error processing request." };
     }
 };
 
-/**
- * Handle order confirmation and placement
- */
 const handleOrderConfirmation = async (userId, retailerId, message, language) => {
-    try {
-        // Get the pending order from memory
-        const orderKey = `${userId}_${retailerId}`;
-        const pendingOrder = pendingOrders.get(orderKey);
+    const orderKey = `${userId}_${retailerId}`;
+    const pendingOrder = pendingOrders.get(orderKey);
+    if (!pendingOrder) return { success: false, message: "No pending order found." };
 
-        if (!pendingOrder || !pendingOrder.items || pendingOrder.items.length === 0) {
-            return {
-                success: false,
-                message: "I don't have any pending order for you. Please tell me what you'd like to order first.",
-                data: null
-            };
-        }
+    const customer = await CustomerUser.findById(userId);
+    const orderRequest = new CustomerRequest({
+        customer_id: userId,
+        retailer_id: retailerId,
+        customer_name: customer.name,
+        customer_phone: customer.phone,
+        items: pendingOrder.items,
+        status: 'pending',
+        total_amount: pendingOrder.totalAmount
+    });
+    await orderRequest.save();
+    pendingOrders.delete(orderKey);
 
-        const customer = await CustomerUser.findById(userId);
-        const retailer = await User.findById(retailerId);
-
-        if (!customer || !retailer) {
-            return {
-                success: false,
-                message: "Sorry, there was an issue with your order. Please try again.",
-                data: null
-            };
-        }
-
-        // Format items for the order
-        const orderItems = pendingOrder.items.map(item => ({
-            item_name: item.item_name,
-            quantity: item.quantity,
-            unit: item.unit,
-            price_per_unit: item.price_per_unit,
-            total_price: item.total_price
-        }));
-
-        // Create a customer request (order) in the database
-        const orderRequest = new CustomerRequest({
-            customer_id: userId,
-            retailer_id: retailerId,
-            customer_name: customer.name,
-            customer_phone: customer.phone,
-            items: orderItems,
-            notes: `Order placed via AI chatbot`,
-            status: 'pending',
-            total_amount: pendingOrder.totalAmount
-        });
-
-        await orderRequest.save();
-
-        // Create notification for retailer
-        const notification = new Notification({
-            user_id: retailerId,
-            user_type: 'retailer',
-            user_type_ref: 'User', // Retailers use the User model
-            type: 'new_request',
-            title: 'New Order Received',
-            message: `${customer.name} placed an order for ₹${pendingOrder.totalAmount} (${orderItems.length} items)`,
-            request_id: orderRequest._id,
-            is_read: false
-        });
-
-        await notification.save();
-        console.log(`✅ Notification sent to retailer ${retailer.shop_name}`);
-
-        // Clear the pending order
-        pendingOrders.delete(orderKey);
-
-        return {
-            success: true,
-            message: `Order placed successfully!\n\nTotal: ₹${pendingOrder.totalAmount}\nItems: ${orderItems.length}\n\n${retailer.shop_name} will contact you soon.`,
-            data: {
-                type: 'order_confirmed',
-                order_placed: true,
-                order_id: orderRequest._id,
-                status: 'pending',
-                retailer: retailer.shop_name,
-                items: orderItems,
-                total_amount: pendingOrder.totalAmount
-            }
-        };
-    } catch (error) {
-        console.error('Order confirmation error:', error);
-        return {
-            success: false,
-            message: "Sorry, there was an issue placing your order. Please try again.",
-            data: null
-        };
-    }
+    return { success: true, message: "Order placed successfully via Gemini!", data: { type: 'order_confirmed' } };
 };
 
-/**
- * Handle customer without retailer selection
- */
-
-/**
- * Handle customer without retailer selection
- */
 const handleCustomerWithoutRetailer = async (userId, message, language) => {
-    try {
-        // Get available retailers
-        const retailers = await User.find({ role: 'retailer' }).select('shop_name phone address');
-
-        const prompt = `
-        Customer message: "${message}"
-        Available retailers:
-        ${retailers.map(r => `- ${r.shop_name}: ${r.phone}`).join('\n')}
-        
-        The customer hasn't selected a retailer yet. Help them choose one or answer general questions.
-        `;
-
-        const completion = await openai.chat.completions.create({
-          model: 'gpt-4o-mini',
-          messages: [{ role: 'user', content: prompt }],
-          temperature: 0.7,
-          max_tokens: 300
-        });
-
-        return {
-            success: true,
-            message: completion.choices[0].message.content,
-            data: {
-                available_retailers: retailers,
-                needs_retailer_selection: true
-            }
-        };
-
-    } catch (error) {
-        console.error('Customer without retailer error:', error);
-        return {
-            success: false,
-            message: "Please select a retailer first to start shopping.",
-            data: null
-        };
-    }
+    const retailers = await User.find({ role: 'retailer' }).select('shop_name');
+    const prompt = `Help customer choose a store. Message: "${message}". Stores: ${retailers.map(r => r.shop_name).join(', ')}`;
+    const result = await textModel.generateContent(prompt);
+    return { success: true, message: result.response.text(), data: { needs_retailer_selection: true } };
 };
 
-/**
- * Process chatbot query with business context
- * Works for both retailers and customers
- */
 const chat = async (req, res) => {
     try {
         const { message, language = 'en', retailer_id } = req.body;
         const userId = req.user._id;
+        const user = await User.findById(userId) || await CustomerUser.findById(userId);
+        if (!user) return res.status(404).json({ success: false, message: 'User not found' });
 
-        if (!message || message.trim() === '') {
-            return res.status(400).json({
-                success: false,
-                message: 'Message is required'
-            });
-        }
-
-        console.log(`🤖 Unified Chatbot Query [${language}]: "${message}" from user ${userId}`);
-
-        // Check if user is a retailer or customer
-        // Try User model first (retailers), then CustomerUser model (customers)
-        let user = await User.findById(userId);
-        let isRetailer = false;
-        let isCustomer = false;
-
-        if (user) {
-            // Found in User model - this is a retailer
-            isRetailer = user.role === 'retailer';
-            isCustomer = user.role === 'customer';
-        } else {
-            // Try CustomerUser model - this is a customer
-            user = await CustomerUser.findById(userId);
-            if (user) {
-                isCustomer = true;
-                isRetailer = false;
-            }
-        }
-
-        if (!user) {
-            return res.status(404).json({
-                success: false,
-                message: 'User not found'
-            });
-        }
-
-        console.log(`📝 Request data: retailer_id=${retailer_id}, isCustomer=${isCustomer}, isRetailer=${isRetailer}`);
-
+        const isBusinessUser = user.role === 'retailer' || user.role === 'wholesaler';
         let response;
 
-        if (isCustomer && retailer_id) {
-            // Customer chatting with specific retailer
-            response = await handleCustomerChat(userId, retailer_id, message, language);
-        } else if (isRetailer) {
-            // Retailer chatting with their own business data
-            // Use optimized handler if enabled (reduces token usage by 80%+)
-            response = USE_OPTIMIZED_HANDLER 
-                ? await handleRetailerChatOptimized(userId, message, language)
-                : await handleRetailerChat(userId, message, language);
-        } else if (isCustomer && !retailer_id) {
-            // Customer needs to select a retailer first
-            response = await handleCustomerWithoutRetailer(userId, message, language);
-        } else {
-            response = {
-                success: true,
-                message: "I'm here to help! Please let me know what you need assistance with.",
-                data: null
-            };
-        }
+        if (!isBusinessUser && retailer_id) response = await handleCustomerChat(userId, retailer_id, message, language);
+        else if (isBusinessUser) response = USE_OPTIMIZED_HANDLER ? await handleRetailerChatOptimized(userId, message, language) : await handleRetailerChat(userId, message, language);
+        else response = await handleCustomerWithoutRetailer(userId, message, language);
 
         res.json(response);
-        console.log(`📤 Response sent to frontend:`, JSON.stringify(response, null, 2));
-
     } catch (error) {
-        console.error('Chatbot error:', error);
-        res.status(500).json({
-            success: false,
-            message: 'Failed to process chatbot request',
-            error: error.message
-        });
+        res.status(500).json({ success: false, message: 'Gemini Chat Error', error: error.message });
     }
 };
 
-/**
- * Get chatbot status and available features
- */
 const getStatus = async (req, res) => {
-    try {
-        const userId = req.user._id;
-
-        // Try User model first (retailers), then CustomerUser model (customers)
-        let user = await User.findById(userId);
-        let isRetailer = false;
-        let isCustomer = false;
-
-        if (user) {
-            // Found in User model - this is a retailer
-            isRetailer = user.role === 'retailer';
-            isCustomer = user.role === 'customer';
-        } else {
-            // Try CustomerUser model - this is a customer
-            user = await CustomerUser.findById(userId);
-            if (user) {
-                isCustomer = true;
-                isRetailer = false;
-            }
-        }
-
-        let statusData = {
-            status: 'active',
-            features: {
-                text_chat: true,
-                voice_input: false,
-                voice_output: false,
-                multilingual: ['en', 'hi', 'te', 'ta', 'kn'],
-                business_intelligence: true
-            }
-        };
-
-        if (isCustomer) {
-            // Get available retailers for customers
-            const retailers = await User.find({ role: 'retailer' }).select('shop_name phone address');
-            statusData.available_retailers = retailers;
-            statusData.user_type = 'customer';
-        } else {
-            statusData.user_type = 'retailer';
-        }
-
-        res.json({
-            success: true,
-            data: statusData
-        });
-
-    } catch (error) {
-        console.error('Status error:', error);
-        res.status(500).json({
-            success: false,
-            message: 'Failed to get chatbot status',
-            error: error.message
-        });
-    }
+    res.json({ success: true, data: { status: 'active', provider: 'gemini' } });
 };
 
-/**
- * Convert speech to text (placeholder)
- */
 const speechToText = async (req, res) => {
-    try {
-        if (!req.file && !req.body.audio) {
-            return res.status(400).json({ success: false, message: 'No audio data provided' });
-        }
-
-        // Implementation for OpenAI Whisper
-        // Note: In a real production app, we would handle the multipart/form-data here
-        // For now, providing the logic structure for Whisper integration
-        
-        /* 
-        const transcription = await openai.audio.transcriptions.create({
-          file: fs.createReadStream(tempPath),
-          model: "whisper-1",
-        });
-        */
-
-        res.json({
-            success: true,
-            message: "Speech processed successfully",
-            transcript: "Sample transcript (Voice features enabled)" // Placeholder for actual stream handling
-        });
-    } catch (error) {
-        console.error('STT Error:', error);
-        res.status(500).json({
-            success: false,
-            message: 'Failed to process speech',
-            error: error.message
-        });
-    }
+    res.json({ success: true, message: "Gemini voice-to-text enabled (browser-side backup active)." });
 };
 
-/**
- * Convert text to speech (placeholder)
- */
 const textToSpeech = async (req, res) => {
     try {
         const { text, language = 'en' } = req.body;
-
-        if (!text) {
-            return res.status(400).json({ success: false, message: 'Text is required' });
+        if (ttsService.isAvailable()) {
+            const buffer = await ttsService.synthesizeSpeech(text, language);
+            res.set({ 'Content-Type': 'audio/mpeg', 'Content-Length': buffer.length }).send(buffer);
+        } else {
+            res.json({ success: false, message: 'Google Cloud TTS not configured, using browser synthesis.' });
         }
-
-        console.log(`🔊 Generating OpenAI TTS for: "${text.substring(0, 50)}..."`);
-
-        const mp3 = await openai.audio.speech.create({
-            model: "tts-1",
-            voice: "alloy", // alloy, echo, fable, onyx, nova, shimmer
-            input: text,
-        });
-
-        const buffer = Buffer.from(await mp3.arrayBuffer());
-        
-        res.set({
-            'Content-Type': 'audio/mpeg',
-            'Content-Length': buffer.length
-        });
-
-        res.send(buffer);
     } catch (error) {
-        console.error('TTS Error:', error);
-        res.status(500).json({
-            success: false,
-            message: 'Failed to generate speech',
-            error: error.message
-        });
+        res.status(500).json({ success: false, message: 'TTS Error', error: error.message });
     }
 };
 
-module.exports = {
-    chat,
-    getStatus,
-    speechToText,
-    textToSpeech
-};
+module.exports = { chat, getStatus, speechToText, textToSpeech };

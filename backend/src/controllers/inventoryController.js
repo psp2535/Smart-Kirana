@@ -110,7 +110,8 @@ const inventoryController = {
         min_stock_level, 
         category, 
         description,
-        unit // NEW: Support for kg, litre, piece
+        unit, // NEW: Support for kg, litre, piece
+        expiry_date
       } = req.body;
 
       // Validate quantity
@@ -186,7 +187,8 @@ const inventoryController = {
         min_stock_level: min_stock_level || 5,
         category: category || 'Other',
         description: description || '',
-        unit: unit || 'piece' // Default to piece for backward compatibility
+        unit: unit || 'piece', // Default to piece for backward compatibility
+        expiry_date: expiry_date || null
       });
 
       await item.save();
@@ -235,7 +237,8 @@ const inventoryController = {
         min_stock_level, 
         category, 
         description,
-        unit // NEW: Support for kg, litre, piece
+        unit, // NEW: Support for kg, litre, piece
+        expiry_date
       } = req.body;
 
       // Validate quantity if provided
@@ -252,7 +255,7 @@ const inventoryController = {
       }
 
       // Handle backward compatibility and validation
-      let updateData = { item_name, min_stock_level, category, description, unit };
+      let updateData = { item_name, min_stock_level, category, description, unit, expiry_date };
       
       // Normalize stock quantity if provided
       if (stock_qty !== undefined && stock_qty !== null && stock_qty !== '') {

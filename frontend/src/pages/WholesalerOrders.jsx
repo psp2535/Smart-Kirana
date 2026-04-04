@@ -62,14 +62,14 @@ const WholesalerOrders = () => {
 
     const getStatusColor = (status) => {
         const colors = {
-            'REQUESTED': 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
-            'ACCEPTED': 'bg-neutral-200 dark:bg-neutral-700 text-black dark:text-white dark:bg-blue-900 dark:text-blue-200',
-            'PACKED': 'bg-neutral-200 dark:bg-neutral-700 text-black dark:text-white dark:bg-purple-900 dark:text-purple-200',
-            'DISPATCHED': 'bg-neutral-200 dark:bg-neutral-700 text-black dark:text-white dark:bg-indigo-900 dark:text-white',
-            'DELIVERED': 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-            'CANCELLED': 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
+            'REQUESTED': 'bg-black text-white dark:bg-white dark:text-black',
+            'ACCEPTED': 'bg-neutral-200 text-neutral-800 dark:bg-neutral-700 dark:text-neutral-200',
+            'PACKED': 'bg-neutral-300 text-neutral-900 dark:bg-neutral-600 dark:text-neutral-100',
+            'DISPATCHED': 'bg-neutral-400 text-neutral-900 dark:bg-neutral-500 dark:text-neutral-100',
+            'DELIVERED': 'bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-400',
+            'CANCELLED': 'bg-neutral-100 text-neutral-400 dark:bg-neutral-800 dark:text-neutral-500'
         };
-        return colors[status] || 'bg-gray-100 text-gray-800';
+        return colors[status] || 'bg-neutral-100 text-neutral-800';
     };
 
     const getOrdersByStatus = (status) => {
@@ -175,10 +175,10 @@ const WholesalerOrders = () => {
 
                                 {order.status === 'REQUESTED' && (
                                     <div className="flex space-x-3">
-                                        <button onClick={() => updateOrderStatus(order._id, 'ACCEPTED', 'Order accepted by wholesaler')} className="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center justify-center space-x-2">
+                                        <button onClick={() => updateOrderStatus(order._id, 'ACCEPTED', 'Order accepted by wholesaler')} className="flex-1 px-4 py-2 bg-black dark:bg-white text-white dark:text-black rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200 flex items-center justify-center space-x-2 transition-all">
                                             <Check className="h-5 w-5" /><span>Accept Order</span>
                                         </button>
-                                        <button onClick={() => updateOrderStatus(order._id, 'CANCELLED', 'Order cancelled by wholesaler')} className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 flex items-center justify-center space-x-2">
+                                        <button onClick={() => updateOrderStatus(order._id, 'CANCELLED', 'Order cancelled by wholesaler')} className="flex-1 px-4 py-2 bg-neutral-100 dark:bg-neutral-700 text-neutral-800 dark:text-neutral-200 rounded-lg hover:bg-neutral-200 dark:hover:bg-neutral-600 flex items-center justify-center space-x-2 transition-all border border-neutral-300 dark:border-neutral-500">
                                             <X className="h-5 w-5" /><span>Reject Order</span>
                                         </button>
                                     </div>
@@ -197,14 +197,14 @@ const WholesalerOrders = () => {
                                 )}
 
                                 {order.status === 'DISPATCHED' && (
-                                    <button onClick={() => updateOrderStatus(order._id, 'DELIVERED', 'Order delivered successfully')} className="w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center justify-center space-x-2">
+                                    <button onClick={() => updateOrderStatus(order._id, 'DELIVERED', 'Order delivered successfully')} className="w-full px-4 py-2 bg-black dark:bg-white text-white dark:text-black rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200 flex items-center justify-center space-x-2 transition-all">
                                         <Check className="h-5 w-5" /><span>Mark as Delivered</span>
                                     </button>
                                 )}
 
                                 {order.status === 'DELIVERED' && (
-                                    <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-3">
-                                        <p className="text-sm text-green-800 dark:text-green-200 text-center">✅ Order completed</p>
+                                    <div className="bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-lg p-3">
+                                        <p className="text-sm text-neutral-800 dark:text-neutral-200 text-center font-medium">Order completed</p>
                                     </div>
                                 )}
                             </div>

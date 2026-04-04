@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Flame, TrendingDown, Clock, MapPin, Search, Filter, Tag, ArrowLeft } from 'lucide-react';
+import { Flame, TrendingDown, Clock, MapPin, Search, Filter, Tag, ArrowLeft, AlertCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
@@ -90,7 +90,7 @@ const HotDeals = () => {
             item_name: selectedDeal.item_name,
             quantity: quantity
           }],
-          notes: `🔥 HOT DEAL REQUEST - ${selectedDeal.discount_percentage}% OFF! Original Price: ₹${selectedDeal.original_price}, Deal Price: ₹${selectedDeal.discounted_price}`,
+          notes: `HOT DEAL REQUEST - ${selectedDeal.discount_percentage}% OFF! Original Price: ₹${selectedDeal.original_price}, Deal Price: ₹${selectedDeal.discounted_price}`,
           is_hot_deal: true,
           hot_deal_info: {
             discount_percentage: selectedDeal.discount_percentage,
@@ -108,7 +108,7 @@ const HotDeals = () => {
       );
 
       if (response.data.success) {
-        toast.success('🎉 Hot deal request sent to retailer!');
+        toast.success('Hot deal request sent to retailer!');
         setShowQuantityModal(false);
         setSelectedDeal(null);
         setQuantity(1);
@@ -161,7 +161,7 @@ const HotDeals = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black dark:border-white"></div>
       </div>
     );
   }
@@ -176,7 +176,7 @@ const HotDeals = () => {
       />
 
       {/* Header */}
-      <div className="bg-gradient-to-r from-red-600 to-orange-600 text-white py-8 px-4">
+      <div className="bg-black dark:bg-neutral-900 text-white py-8 px-4 border-b border-neutral-800">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center gap-3 mb-2">
             <button
@@ -186,10 +186,10 @@ const HotDeals = () => {
             >
               <ArrowLeft className="h-6 w-6 text-white" />
             </button>
-            <Flame className="h-10 w-10 animate-pulse" />
-            <h1 className="text-4xl font-bold">🔥 Hot Deals</h1>
+            <Flame className="h-10 w-10 text-white" />
+            <h1 className="text-4xl font-bold">Hot Deals</h1>
           </div>
-          <p className="text-red-100 text-lg ml-14">
+          <p className="text-gray-400 text-lg ml-14">
             Limited time offers on expiring & clearance items - Save up to 75%!
           </p>
           <div className="mt-4 ml-14 flex items-center gap-2 text-sm">
@@ -257,15 +257,15 @@ const HotDeals = () => {
             {filteredDeals.map((deal) => (
               <div
                 key={deal.item_id}
-                className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all border-2 border-transparent hover:border-red-500"
+                className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all border-2 border-transparent hover:border-black dark:hover:border-white"
               >
                 {/* Discount Badge */}
                 <div className="relative">
                   <div className="absolute top-4 right-4 z-10">
                     <div className={`px-4 py-2 rounded-full font-bold text-white shadow-lg ${
-                      deal.discount_percentage >= 50 ? 'bg-red-600' :
-                      deal.discount_percentage >= 30 ? 'bg-orange-600' :
-                      'bg-yellow-600'
+                      deal.discount_percentage >= 50 ? 'bg-black' :
+                      deal.discount_percentage >= 30 ? 'bg-neutral-800' :
+                      'bg-neutral-600'
                     }`}>
                       {deal.discount_percentage}% OFF
                     </div>
@@ -282,8 +282,8 @@ const HotDeals = () => {
                   )}
 
                   {/* Placeholder Image */}
-                  <div className="h-48 bg-gradient-to-br from-red-100 to-orange-100 dark:from-red-900/20 dark:to-orange-900/20 flex items-center justify-center">
-                    <Tag className="h-20 w-20 text-red-300 dark:text-red-700" />
+                  <div className="h-48 bg-neutral-100 dark:bg-neutral-900/50 flex items-center justify-center">
+                    <Tag className="h-20 w-20 text-neutral-400 dark:text-neutral-600" />
                   </div>
                 </div>
 
@@ -300,7 +300,7 @@ const HotDeals = () => {
                   </h3>
 
                   <div className="flex items-baseline gap-2 mb-3">
-                    <span className="text-3xl font-bold text-green-600 dark:text-green-400">
+                    <span className="text-3xl font-bold text-neutral-900 dark:text-white">
                       ₹{deal.discounted_price}
                     </span>
                     <span className="text-lg text-gray-500 dark:text-gray-400 line-through">
@@ -308,9 +308,9 @@ const HotDeals = () => {
                     </span>
                   </div>
 
-                  <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-3 mb-3">
-                    <p className="text-sm font-semibold text-green-800 dark:text-green-300">
-                      💰 You Save: ₹{deal.savings}
+                  <div className="bg-neutral-50 dark:bg-neutral-900/20 border border-neutral-200 dark:border-neutral-800 rounded-lg p-3 mb-3">
+                    <p className="text-sm font-semibold text-neutral-800 dark:text-neutral-300">
+                      You Save: ₹{deal.savings}
                     </p>
                   </div>
 
@@ -324,8 +324,8 @@ const HotDeals = () => {
                       <span>Offer ends in {deal.ends_in_days} day{deal.ends_in_days !== 1 ? 's' : ''}</span>
                     </div>
                     {deal.stock_qty <= 10 && (
-                      <div className="flex items-center gap-2 text-red-600 dark:text-red-400 font-semibold">
-                        <Flame className="h-4 w-4" />
+                      <div className="flex items-center gap-2 text-neutral-800 dark:text-neutral-200 font-semibold px-2 py-1 bg-neutral-100 dark:bg-neutral-800 rounded-md inline-flex">
+                        <AlertCircle className="h-4 w-4" />
                         <span>Only {deal.stock_qty} left!</span>
                       </div>
                     )}
@@ -333,7 +333,7 @@ const HotDeals = () => {
 
                   <button 
                     onClick={() => handleDealClick(deal)}
-                    className="w-full mt-4 bg-gradient-to-r from-red-600 to-orange-600 text-white py-3 rounded-lg font-bold hover:from-red-700 hover:to-orange-700 transition-all shadow-md"
+                    className="w-full mt-4 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 py-3 rounded-lg font-bold hover:bg-neutral-800 dark:hover:bg-neutral-100 transition-all shadow-md"
                   >
                     Grab This Deal!
                   </button>
@@ -345,13 +345,13 @@ const HotDeals = () => {
       </div>
 
       {/* Info Banner */}
-      <div className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-8 px-4 mt-12">
+      <div className="bg-neutral-900 text-white py-8 px-4 mt-12 border-t border-neutral-800">
         <div className="max-w-7xl mx-auto text-center">
           <h2 className="text-2xl font-bold mb-2">Why These Deals?</h2>
-          <p className="text-indigo-100 max-w-2xl mx-auto">
+          <p className="text-gray-400 max-w-2xl mx-auto">
             These items are nearing expiry or need to be cleared quickly. 
             The shop offers massive discounts to avoid waste - you get amazing prices, 
-            they avoid losses. It's a win-win! 🎉
+            they avoid losses. It's a win-win!
           </p>
         </div>
       </div>
@@ -363,7 +363,7 @@ const HotDeals = () => {
             {/* Modal Header */}
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                <Flame className="h-6 w-6 text-red-600" />
+                <Tag className="h-6 w-6 text-neutral-900 dark:text-white" />
                 Grab This Deal!
               </h3>
               <button
@@ -378,30 +378,30 @@ const HotDeals = () => {
 
             {/* Deal Info */}
             <div className="mb-6">
-              <div className="bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20 rounded-lg p-4 mb-4">
+              <div className="bg-neutral-50 dark:bg-neutral-900/40 rounded-lg p-4 mb-4 border border-neutral-200 dark:border-neutral-800">
                 <h4 className="font-bold text-lg text-gray-900 dark:text-white mb-2">
                   {selectedDeal.item_name}
                 </h4>
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="text-2xl font-bold text-green-600 dark:text-green-400">
+                  <span className="text-2xl font-bold text-neutral-900 dark:text-white">
                     ₹{selectedDeal.discounted_price}
                   </span>
                   <span className="text-sm text-gray-500 dark:text-gray-400 line-through">
                     ₹{selectedDeal.original_price}
                   </span>
-                  <span className="px-2 py-1 bg-red-600 text-white rounded-full text-xs font-bold">
+                  <span className="px-2 py-1 bg-neutral-900 text-white rounded-full text-xs font-bold">
                     {selectedDeal.discount_percentage}% OFF
                   </span>
                 </div>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
-                  💰 You save ₹{selectedDeal.savings} per item
+                  You save ₹{selectedDeal.savings} per item
                 </p>
               </div>
 
               {/* Stock Info */}
-              <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-3 mb-4">
-                <p className="text-sm text-yellow-800 dark:text-yellow-300">
-                  📦 Available Stock: {selectedDeal.stock_qty} items
+              <div className="bg-neutral-100 border border-neutral-200 rounded-lg p-3 mb-4">
+                <p className="text-sm text-neutral-800 font-medium">
+                  Available Stock: {selectedDeal.stock_qty} items
                 </p>
               </div>
 
@@ -416,18 +416,18 @@ const HotDeals = () => {
                   max={selectedDeal.stock_qty}
                   value={quantity}
                   onChange={(e) => setQuantity(parseInt(e.target.value) || 1)}
-                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg text-lg font-semibold text-center bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-neutral-300 dark:border-neutral-600 rounded-lg text-lg font-semibold text-center bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white focus:ring-2 focus:ring-black dark:focus:ring-white focus:border-transparent"
                 />
                 <div className="flex justify-between mt-2">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600"
+                    className="px-4 py-2 bg-neutral-200 dark:bg-neutral-700 text-neutral-700 dark:text-neutral-300 rounded-lg hover:bg-neutral-300 dark:hover:bg-neutral-600"
                   >
                     -
                   </button>
                   <button
                     onClick={() => setQuantity(Math.min(selectedDeal.stock_qty, quantity + 1))}
-                    className="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600"
+                    className="px-4 py-2 bg-neutral-200 dark:bg-neutral-700 text-neutral-700 dark:text-neutral-300 rounded-lg hover:bg-neutral-300 dark:hover:bg-neutral-600"
                   >
                     +
                   </button>
@@ -435,23 +435,23 @@ const HotDeals = () => {
               </div>
 
               {/* Total Calculation */}
-              <div className="mt-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
+              <div className="mt-4 bg-neutral-100 border border-neutral-200 rounded-lg p-4">
                 <div className="flex justify-between items-center mb-2">
-                  <span className="text-sm text-gray-600 dark:text-gray-400">Quantity:</span>
-                  <span className="font-semibold text-gray-900 dark:text-white">{quantity}</span>
+                  <span className="text-sm text-neutral-600">Quantity:</span>
+                  <span className="font-semibold text-neutral-900">{quantity}</span>
                 </div>
                 <div className="flex justify-between items-center mb-2">
-                  <span className="text-sm text-gray-600 dark:text-gray-400">Price per item:</span>
-                  <span className="font-semibold text-gray-900 dark:text-white">₹{selectedDeal.discounted_price}</span>
+                  <span className="text-sm text-neutral-600">Price per item:</span>
+                  <span className="font-semibold text-neutral-900">₹{selectedDeal.discounted_price}</span>
                 </div>
-                <div className="border-t border-green-200 dark:border-green-800 pt-2 mt-2">
+                <div className="border-t border-neutral-200 dark:border-neutral-800 pt-2 mt-2">
                   <div className="flex justify-between items-center">
                     <span className="font-bold text-gray-900 dark:text-white">Total:</span>
-                    <span className="text-2xl font-bold text-green-600 dark:text-green-400">
+                    <span className="text-2xl font-bold text-black dark:text-white">
                       ₹{(selectedDeal.discounted_price * quantity).toFixed(2)}
                     </span>
                   </div>
-                  <p className="text-xs text-green-700 dark:text-green-400 mt-1">
+                  <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-1">
                     Total savings: ₹{(selectedDeal.savings * quantity).toFixed(2)}
                   </p>
                 </div>
@@ -469,7 +469,7 @@ const HotDeals = () => {
               <button
                 onClick={handleGrabDeal}
                 disabled={sendingRequest}
-                className="flex-1 px-4 py-3 bg-gradient-to-r from-red-600 to-orange-600 text-white rounded-lg font-bold hover:from-red-700 hover:to-orange-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 px-4 py-3 bg-black dark:bg-white text-white dark:text-black rounded-lg font-bold hover:bg-neutral-900 dark:hover:bg-neutral-100 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {sendingRequest ? 'Sending...' : 'Send Request'}
               </button>

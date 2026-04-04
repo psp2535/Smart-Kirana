@@ -11,10 +11,15 @@ import {
   ShoppingCart,
   CreditCard,
   AlertCircle,
-  UserPlus
+  UserPlus,
+  Bell,
+  Sun,
+  Moon
 } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { salesAPI, expensesAPI, inventoryAPI, customersAPI, profitAnalyticsAPI } from '../services/api';
+import { salesAPI, expensesAPI, inventoryAPI, customersAPI, profitAnalyticsAPI, notificationsAPI } from '../services/api';
+import FloatingChatbot from '../components/FloatingChatbot';
+import { useTheme } from '../contexts/ThemeContext';
 
 const Dashboard = () => {
   const { t } = useTranslation();
@@ -26,8 +31,12 @@ const Dashboard = () => {
   const [customers, setCustomers] = useState([]);
   const [profitData, setProfitData] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [recentActivities, setRecentActivities] = useState([]);
+  const { theme, toggleTheme } = useTheme();
+  const [notifications, setNotifications] = useState([]);
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
   const [chartData, setChartData] = useState([]);
+  const [recentActivities, setRecentActivities] = useState([]);
 
   const handleQuickAction = (path) => {
     navigate(path);
@@ -35,7 +44,31 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchAll();
+    fetchNotifications();
   }, []);
+
+  const fetchNotifications = async () => {
+    try {
+      const res = await notificationsAPI.getNotifications();
+      if (res?.success) {
+        setNotifications(res.data);
+        const countRes = await notificationsAPI.getUnreadCount();
+        if (countRes?.success) setUnreadCount(countRes.count);
+      }
+    } catch (err) {
+      console.error('Fetch notifications error:', err);
+    }
+  };
+
+  const markAllAsRead = async () => {
+    try {
+      await notificationsAPI.markAllRead();
+      setUnreadCount(0);
+      setNotifications(notifications.map(n => ({ ...n, isRead: true })));
+    } catch (err) {
+      console.error('Mark all read error:', err);
+    }
+  };
 
   const fetchAll = async () => {
     try {
@@ -154,6 +187,24 @@ const Dashboard = () => {
         status: 'issue'
       });
     }
+
+    const now = new Date();
+    const expiringSoon = inventoryData.filter(item => {
+      if (!item.expiry_date) return false;
+      const days = Math.ceil((new Date(item.expiry_date) - now) / (1000 * 60 * 60 * 24));
+      return days <= 30 && days >= 0;
+    });
+
+    if (expiringSoon.length > 0) {
+      activities.push({
+        id: 'expiring-soon',
+        type: 'inventory',
+        icon: AlertCircle,
+        message: `${expiringSoon.length} items expiring within 30 days`,
+        time: new Date(),
+        status: 'issue'
+      });
+    }
     
     customersData.slice(0, 2).forEach(customer => {
       activities.push({
@@ -241,37 +292,70 @@ const Dashboard = () => {
   return (
     <div className="space-y-8 animate-fadeIn text-black dark:text-white pb-10">
       {/* Header */}
-      <div className="flex flex-col space-y-4 md:flex-row md:justify-between md:items-end md:space-y-0">
-        <div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight">{t('dashboard.title')}</h1>
-          <p className="mt-2 text-sm text-neutral-500 font-medium uppercase tracking-widest">{t('dashboard.subtitle')}</p>
+      <div className="flex flex-col space-y-4 md:flex-row md:justify-between md:items-center md:space-y-0">
+        <div className="flex-1 text-center md:text-left">
+          <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-gray-900 dark:text-white uppercase">{t('dashboard.title')}</h1>
+          <p className="mt-2 text-[10px] font-bold text-neutral-500 uppercase tracking-[0.2em]">{t('dashboard.subtitle')}</p>
         </div>
-        <div className="relative w-full md:w-72">
-          <input
-            type="text"
-            placeholder={t('dashboard.searchPlaceholder')}
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-3 bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 rounded-xl focus:ring-0 focus:border-black dark:focus:border-white transition-colors"
-          />
-          <Search className="absolute left-3 top-3.5 h-5 w-5 text-neutral-400" />
-          {searchQuery && searchResults.length > 0 && (
-            <div className="absolute top-14 left-0 right-0 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl shadow-2xl max-h-64 overflow-y-auto z-20">
-              {searchResults.map((result, idx) => (
-                <div key={idx} className="px-4 py-3 hover:bg-neutral-100 dark:hover:bg-neutral-800 cursor-pointer border-b border-neutral-100 dark:border-neutral-800 last:border-0 transition-colors">
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">{result.type}</span>
-                      <p className="text-sm font-medium">{result.name}</p>
-                    </div>
-                    <span className="text-sm font-semibold">
-                      {result.type === 'Inventory' ? `${result.amount} units` : result.type === 'Customer' ? result.amount : `₹${result.amount}`}
-                    </span>
-                  </div>
+        
+        <div className="flex items-center justify-center space-x-4">
+          <button 
+            onClick={toggleTheme} 
+            className="p-2.5 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-neutral-800 rounded-2xl transition-colors"
+            title={theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+          >
+            {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+          </button>
+
+          <div className="relative">
+            <button 
+              onClick={() => setShowNotifications(!showNotifications)}
+              className="p-2.5 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-neutral-800 rounded-2xl transition-colors relative"
+            >
+              <Bell className="h-5 w-5" />
+              {unreadCount > 0 && (
+                <span className="absolute top-2 right-2 h-2.5 w-2.5 bg-red-500 rounded-full border-2 border-white dark:border-neutral-900"></span>
+              )}
+            </button>
+            
+            {showNotifications && (
+              <div className="absolute right-0 mt-3 w-80 bg-white dark:bg-neutral-900 rounded-[2rem] shadow-2xl border border-neutral-100 dark:border-neutral-800 z-50 overflow-hidden">
+                <div className="px-6 py-5 border-b border-neutral-50 dark:border-neutral-800 flex items-center justify-between">
+                  <h3 className="font-black text-sm uppercase tracking-widest text-neutral-900 dark:text-white">Notifications</h3>
+                  {unreadCount > 0 && (
+                    <button onClick={markAllAsRead} className="text-[10px] font-bold text-neutral-500 hover:text-black dark:hover:text-white uppercase transition-colors">Mark All Read</button>
+                  )}
                 </div>
-              ))}
-            </div>
-          )}
+                <div className="max-h-96 overflow-y-auto">
+                  {notifications.length === 0 ? (
+                    <div className="px-6 py-12 text-center">
+                      <Bell className="h-8 w-8 text-neutral-200 dark:text-neutral-800 mx-auto mb-3" />
+                      <p className="text-xs text-neutral-400 font-bold uppercase tracking-tighter">Your inbox is clean</p>
+                    </div>
+                  ) : (
+                    notifications.map(notification => (
+                      <div key={notification._id} className={`px-6 py-5 hover:bg-neutral-50 dark:hover:bg-neutral-800/50 transition-colors border-b border-neutral-50 dark:border-neutral-800 last:border-0 ${!notification.isRead ? 'bg-neutral-50/50 dark:bg-neutral-800/20' : ''}`}>
+                        <p className="text-sm font-bold text-gray-900 dark:text-white leading-tight mb-1">{notification.title}</p>
+                        <p className="text-xs text-neutral-500 dark:text-neutral-400 line-clamp-2 leading-relaxed opacity-80">{notification.message}</p>
+                        <p className="text-[10px] text-neutral-400 font-black mt-2 uppercase tracking-widest">{timeAgo(notification.createdAt)}</p>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="relative w-full md:w-64 hidden md:block">
+            <input
+              type="text"
+              placeholder={t('dashboard.searchPlaceholder')}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-10 pr-4 py-2.5 bg-neutral-100 dark:bg-neutral-800 border-none rounded-2xl focus:ring-1 focus:ring-black dark:focus:ring-white transition-all text-sm font-medium"
+            />
+            <Search className="absolute left-3.5 top-3 h-4 w-4 text-neutral-400" />
+          </div>
         </div>
       </div>
 
@@ -367,6 +451,28 @@ const Dashboard = () => {
                      </p>
                    </div>
                 )}
+                {(() => {
+                    const now = new Date();
+                    const expiringSoon = inventory.filter(i => {
+                      if (!i.expiry_date) return false;
+                      const days = Math.ceil((new Date(i.expiry_date) - now) / (1000 * 60 * 60 * 24));
+                      return days <= 30 && days >= 0;
+                    });
+                    
+                    if (expiringSoon.length > 0) {
+                      return (
+                        <div className="p-5 rounded-2xl bg-orange-50 dark:bg-orange-900/20 border border-orange-100 dark:border-orange-800">
+                          <p className="text-[10px] uppercase tracking-widest font-extrabold text-orange-600 dark:text-orange-400 mb-2 flex items-center">
+                            <AlertCircle className="w-3 h-3 mr-1" /> Expiry Warning
+                          </p>
+                          <p className="text-sm font-medium leading-relaxed">
+                            <span className="font-bold text-black dark:text-white">{expiringSoon.length}</span> items are expiring soon. Consider running a clearance sale to minimize waste.
+                          </p>
+                        </div>
+                      );
+                    }
+                    return null;
+                 })()}
                 {profitData?.salesCount > 0 && (
                   <div className="p-5 rounded-2xl bg-neutral-50 dark:bg-neutral-800/50 border border-neutral-100 dark:border-neutral-800">
                      <p className="text-[10px] uppercase tracking-widest font-extrabold text-neutral-400 mb-2">Velocity</p>
@@ -449,6 +555,7 @@ const Dashboard = () => {
         </div>
 
       </div>
+      <FloatingChatbot />
     </div>
   );
 };

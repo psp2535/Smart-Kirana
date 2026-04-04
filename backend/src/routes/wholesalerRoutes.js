@@ -12,6 +12,7 @@ router.post('/orders/:orderId/add-to-my-inventory', authenticateToken, wholesale
 router.get('/:wholesalerId/inventory', authenticateToken, wholesalerController.getWholesalerInventory);
 
 // Wholesaler routes - manage orders and inventory
+router.get('/dashboard/stats', authenticateToken, wholesalerController.getWholesalerStats);
 router.get('/orders/wholesaler', authenticateToken, wholesalerController.getWholesalerOrders);
 router.patch('/orders/:orderId/status', authenticateToken, wholesalerController.updateOrderStatus);
 router.get('/inventory/my', authenticateToken, wholesalerController.getMyInventory);

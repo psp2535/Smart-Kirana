@@ -21,6 +21,49 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
     return R * c;
 }
 
+// Get wholesaler dashboard stats
+exports.getWholesalerStats = async (req, res) => {
+    try {
+        const wholesalerId = req.user._id;
+
+        // Get total orders
+        const orders = await WholesalerOrder.find({ wholesaler_id: wholesalerId });
+        
+        let totalRevenue = 0;
+        let totalCost = 0;
+        let pendingOrdersCount = 0;
+
+        orders.forEach(order => {
+            if (order.status !== 'CANCELLED') {
+                totalRevenue += order.total_amount || 0;
+                // Assuming a fixed margin for now as we don't track wholesaler COGS per item yet
+                // Or we can calculate based on inventory if we had purchase price
+                totalCost += (order.total_amount || 0) * 0.85; 
+            }
+            if (order.status === 'REQUESTED') {
+                pendingOrdersCount++;
+            }
+        });
+
+        res.status(200).json({
+            success: true,
+            stats: {
+                totalRevenue,
+                totalCost,
+                netProfit: totalRevenue - totalCost,
+                pendingOrders: pendingOrdersCount,
+                totalOrders: orders.length
+            }
+        });
+    } catch (error) {
+        console.error('Get wholesaler stats error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error fetching wholesaler statistics'
+        });
+    }
+};
+
 // Get nearby wholesalers (for retailers)
 exports.getNearbyWholesalers = async (req, res) => {
     try {
@@ -721,13 +764,13 @@ exports.addToMyInventory = async (req, res) => {
         for (const item of items) {
             // Check if product already exists in retailer inventory
             const existing = await Inventory.findOne({
-                user: req.user._id,
-                product_name: item.productName
+                user_id: req.user._id,
+                item_name: item.productName
             });
 
             if (existing) {
                 // Update quantity and prices
-                existing.quantity += item.quantity;
+                existing.stock_qty += item.quantity;
                 if (item.costPrice) existing.cost_price = item.costPrice;
                 if (item.sellingPrice) existing.selling_price = item.sellingPrice;
                 if (item.expiryDate) existing.expiry_date = item.expiryDate;
@@ -736,15 +779,16 @@ exports.addToMyInventory = async (req, res) => {
             } else {
                 // Create new inventory item
                 await Inventory.create({
-                    user: req.user._id,
-                    product_name: item.productName,
+                    user_id: req.user._id,
+                    item_name: item.productName,
                     category: item.category,
-                    quantity: item.quantity,
+                    stock_qty: item.quantity,
                     unit: item.unit,
                     cost_price: item.costPrice || 0,
                     selling_price: item.sellingPrice,
+                    price_per_unit: item.sellingPrice, // Added this to satisfy required field
                     expiry_date: item.expiryDate || undefined,
-                    low_stock_threshold: Math.max(10, item.quantity * 0.2)
+                    min_stock_level: Math.max(10, item.quantity * 0.2)
                 });
                 addedCount++;
             }
