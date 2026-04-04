@@ -165,3 +165,4 @@ app.listen(PORT, () => {
   console.log(`📊 Database: ${process.env.MONGODB_URI || 'mongodb://localhost:27017/smartkirana'}`);
   console.log('✅ Ready for Phase 2-6 development');
   console.log('🔗 API Documentation: http://localhost:' + PORT);
+});

@@ -13,7 +13,7 @@ async function migrateInventoryPricing() {
     console.log('🔄 Starting inventory pricing migration...');
     
     // Connect to MongoDB
-    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/biznova');
+    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/Smart Kirana');
     console.log('✅ Connected to MongoDB');
 
     // Find all inventory items that don't have cost_price or selling_price

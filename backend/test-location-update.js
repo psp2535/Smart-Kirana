@@ -12,7 +12,7 @@ const User = require('./src/models/User');
 async function testLocationUpdate() {
   try {
     console.log('🔌 Connecting to MongoDB...');
-    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/biznova');
+    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/Smart Kirana');
     console.log('✅ Connected to MongoDB');
 
     // Find a retailer

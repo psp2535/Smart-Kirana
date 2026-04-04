@@ -11,7 +11,7 @@ const CustomerRequest = require('./src/models/CustomerRequest');
 async function testPaymentConfirmation() {
   try {
     console.log('🔌 Connecting to MongoDB...');
-    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/biznova');
+    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/Smart Kirana');
     console.log('✅ Connected to MongoDB');
 
     // Find a billed request
