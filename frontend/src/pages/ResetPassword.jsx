@@ -139,7 +139,7 @@ const ResetPassword = () => {
         {/* Header */}
         <div className="bg-gradient-to-r from-primary-600 to-primary-700 px-8 py-6 text-center">
           <div className="mx-auto w-16 h-16 bg-white rounded-full flex items-center justify-center mb-4 animate-scaleIn">
-            <Lock className="h-8 w-8 text-primary-600" />
+            <Lock className="h-8 w-8 text-black dark:text-white" />
           </div>
           <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2">
             Reset Password
@@ -166,7 +166,7 @@ const ResetPassword = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter new password"
-                    className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+                    className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black dark:ring-white focus:border-transparent transition-all"
                     disabled={isLoading}
                   />
                   <button
@@ -213,7 +213,7 @@ const ResetPassword = () => {
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     placeholder="Confirm new password"
-                    className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+                    className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black dark:ring-white focus:border-transparent transition-all"
                     disabled={isLoading}
                   />
                   <button
@@ -282,7 +282,7 @@ const ResetPassword = () => {
                 <button
                   type="button"
                   onClick={() => navigate('/login')}
-                  className="text-sm text-primary-600 hover:text-primary-700 font-medium flex items-center justify-center gap-1 mx-auto"
+                  className="text-sm text-black dark:text-white hover:text-black dark:text-white font-medium flex items-center justify-center gap-1 mx-auto"
                 >
                   <ArrowLeft className="h-4 w-4" />
                   Back to Login
@@ -299,7 +299,7 @@ const ResetPassword = () => {
                 Your password has been updated successfully. You can now log in with your new password.
               </p>
               <div className="flex items-center justify-center gap-2 text-sm text-gray-500">
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary-600"></div>
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-black dark:border-white"></div>
                 <span>Redirecting to login...</span>
               </div>
             </div>

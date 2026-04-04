@@ -318,12 +318,12 @@ const CustomerDashboard = () => {
 
   const getStatusBadge = (status) => {
     const statusConfig = {
-      pending: { color: 'bg-yellow-100 text-yellow-800', icon: Clock, text: t('customerDashboard.status.pending') },
-      processing: { color: 'bg-blue-100 text-blue-800', icon: Package, text: t('customerDashboard.status.processing') },
-      billed: { color: 'bg-purple-100 text-purple-800', icon: CheckCircle, text: t('customerDashboard.status.billed') },
-      payment_confirmed: { color: 'bg-green-100 text-green-800', icon: CheckCircle, text: t('customerDashboard.status.payment_confirmed') },
-      completed: { color: 'bg-green-100 text-green-800', icon: CheckCircle, text: t('customerDashboard.status.completed') },
-      cancelled: { color: 'bg-red-100 text-red-800', icon: XCircle, text: t('customerDashboard.status.cancelled') }
+      pending: { color: 'bg-neutral-200 dark:bg-neutral-700 text-neutral-800 dark:text-neutral-200', icon: Clock, text: t('customerDashboard.status.pending') },
+      processing: { color: 'bg-neutral-200 dark:bg-neutral-700 text-neutral-800 dark:text-neutral-200', icon: Package, text: t('customerDashboard.status.processing') },
+      billed: { color: 'bg-neutral-200 dark:bg-neutral-700 text-neutral-800 dark:text-neutral-200', icon: CheckCircle, text: t('customerDashboard.status.billed') },
+      payment_confirmed: { color: 'bg-neutral-200 dark:bg-neutral-700 text-neutral-800 dark:text-neutral-200', icon: CheckCircle, text: t('customerDashboard.status.payment_confirmed') },
+      completed: { color: 'bg-neutral-200 dark:bg-neutral-700 text-neutral-800 dark:text-neutral-200', icon: CheckCircle, text: t('customerDashboard.status.completed') },
+      cancelled: { color: 'bg-neutral-200 dark:bg-neutral-700 text-neutral-800 dark:text-neutral-200', icon: XCircle, text: t('customerDashboard.status.cancelled') }
     };
 
     const config = statusConfig[status] || statusConfig.pending;
@@ -547,13 +547,13 @@ const CustomerDashboard = () => {
           },
           success: {
             iconTheme: {
-              primary: '#10B981',
+              primary: '#171717',
               secondary: '#FFFFFF',
             },
           },
           error: {
             iconTheme: {
-              primary: '#EF4444',
+              primary: '#171717',
               secondary: '#FFFFFF',
             },
           },
@@ -576,7 +576,7 @@ const CustomerDashboard = () => {
                 >
                   {user.name?.[0] || 'C'}
                 </div>
-                <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 rounded-full border-2 border-white dark:border-gray-900"></div>
+                <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-black dark:bg-white rounded-full border-2 border-white dark:border-gray-900"></div>
                 {/* Tooltip */}
                 <div className="absolute left-0 top-12 bg-gray-900 text-white text-xs rounded-lg px-3 py-2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 pointer-events-none">
                   {user.name || 'Customer'}
@@ -631,8 +631,8 @@ const CustomerDashboard = () => {
               <button
                 onClick={handleLogout}
                 className={`px-3 py-1.5 text-sm font-medium rounded-lg transition-colors ${isDarkMode
-                  ? 'bg-red-600 hover:bg-red-700 text-white'
-                  : 'bg-red-600 hover:bg-red-700 text-white'
+                  ? 'bg-black dark:bg-white hover:bg-red-700 text-white'
+                  : 'bg-black dark:bg-white hover:bg-red-700 text-white'
                   }`}
               >
                 {t('customerDashboard.logout')}
@@ -650,8 +650,8 @@ const CustomerDashboard = () => {
             onClick={() => setActiveTab('home')}
             className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === 'home'
               ? isDarkMode
-                ? 'bg-blue-600 text-white shadow-lg'
-                : 'bg-blue-600 text-white shadow-lg'
+                ? 'bg-black dark:bg-white text-white dark:text-black shadow-lg'
+                : 'bg-black dark:bg-white text-white dark:text-black shadow-lg'
               : isDarkMode
                 ? 'text-gray-400 hover:text-white hover:bg-gray-800'
                 : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
@@ -665,8 +665,8 @@ const CustomerDashboard = () => {
             onClick={() => setActiveTab('message')}
             className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === 'message'
               ? isDarkMode
-                ? 'bg-blue-600 text-white shadow-lg'
-                : 'bg-blue-600 text-white shadow-lg'
+                ? 'bg-black dark:bg-white text-white dark:text-black shadow-lg'
+                : 'bg-black dark:bg-white text-white dark:text-black shadow-lg'
               : isDarkMode
                 ? 'text-gray-400 hover:text-white hover:bg-gray-800'
                 : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
@@ -680,8 +680,8 @@ const CustomerDashboard = () => {
             onClick={() => setActiveTab('my-requests')}
             className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === 'my-requests'
               ? isDarkMode
-                ? 'bg-blue-600 text-white shadow-lg'
-                : 'bg-blue-600 text-white shadow-lg'
+                ? 'bg-black dark:bg-white text-white dark:text-black shadow-lg'
+                : 'bg-black dark:bg-white text-white dark:text-black shadow-lg'
               : isDarkMode
                 ? 'text-gray-400 hover:text-white hover:bg-gray-800'
                 : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
@@ -690,7 +690,7 @@ const CustomerDashboard = () => {
             <ShoppingCart className="h-4 w-4" />
             <span>{t('customerDashboard.tabs.myOrders')}</span>
             {requests.length > 0 && (
-              <span className="px-1.5 py-0.5 text-xs font-bold bg-red-500 text-white rounded-full">
+              <span className="px-1.5 py-0.5 text-xs font-bold bg-black dark:bg-white text-white dark:text-black rounded-full">
                 {requests.length}
               </span>
             )}
@@ -751,7 +751,7 @@ const CustomerDashboard = () => {
                   </div>
                   <div className="text-white/80 group-hover:text-white transition-colors">
                     {requests.length > 0 && (
-                      <span className="px-3 py-1 bg-red-500 text-white rounded-full text-sm font-bold">
+                      <span className="px-3 py-1 bg-black dark:bg-white text-white dark:text-black rounded-full text-sm font-bold">
                         {requests.length}
                       </span>
                     )}
@@ -777,7 +777,7 @@ const CustomerDashboard = () => {
                     <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>{t('customerDashboard.stats.totalOrders')}</p>
                     <p className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{requests.length}</p>
                   </div>
-                  <ShoppingCart className={`h-8 w-8 ${isDarkMode ? 'text-blue-400' : 'text-blue-600'}`} />
+                  <ShoppingCart className={`h-8 w-8 ${isDarkMode ? 'text-black dark:text-white' : 'text-black dark:text-white'}`} />
                 </div>
               </div>
 
@@ -789,7 +789,7 @@ const CustomerDashboard = () => {
                       {requests.filter(r => r.status === 'pending').length}
                     </p>
                   </div>
-                  <Clock className={`h-8 w-8 ${isDarkMode ? 'text-yellow-400' : 'text-yellow-600'}`} />
+                  <Clock className={`h-8 w-8 ${isDarkMode ? 'text-black dark:text-white' : 'text-black dark:text-white'}`} />
                 </div>
               </div>
 
@@ -801,7 +801,7 @@ const CustomerDashboard = () => {
                       {requests.filter(r => r.status === 'completed').length}
                     </p>
                   </div>
-                  <CheckCircle className={`h-8 w-8 ${isDarkMode ? 'text-green-400' : 'text-green-600'}`} />
+                  <CheckCircle className={`h-8 w-8 ${isDarkMode ? 'text-black dark:text-white' : 'text-black dark:text-white'}`} />
                 </div>
               </div>
             </div>
@@ -836,8 +836,8 @@ const CustomerDashboard = () => {
                   onClick={() => setActiveTab('my-requests')}
                   className={`mt-4 w-full py-2 rounded-lg text-sm font-medium transition-colors ${
                     isDarkMode 
-                      ? 'bg-blue-600 hover:bg-blue-700 text-white' 
-                      : 'bg-blue-600 hover:bg-blue-700 text-white'
+                      ? 'bg-black dark:bg-white hover:bg-blue-700 text-white' 
+                      : 'bg-black dark:bg-white hover:bg-blue-700 text-white'
                   }`}
                 >
                   {t('customerDashboard.recentOrders.viewAll')}
@@ -879,8 +879,8 @@ const CustomerDashboard = () => {
                     onClick={() => handleSelectRetailer(retailer)}
                     className={`p-4 rounded-lg cursor-pointer transition-all border ${selectedRetailer?._id === retailer._id
                       ? isDarkMode
-                        ? 'bg-blue-600/10 border-blue-600'
-                        : 'bg-blue-50 border-blue-600'
+                        ? 'bg-black dark:bg-white/10 border-black dark:border-white'
+                        : 'bg-neutral-100 dark:bg-neutral-800 border-black dark:border-white'
                       : isDarkMode
                         ? 'bg-gray-800 border-gray-700 hover:border-gray-600'
                         : 'bg-gray-50 border-gray-200 hover:border-gray-300'
@@ -888,7 +888,7 @@ const CustomerDashboard = () => {
                   >
                     <div className="flex items-center space-x-3">
                       <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${selectedRetailer?._id === retailer._id
-                        ? 'bg-blue-600 text-white'
+                        ? 'bg-black dark:bg-white text-white dark:text-black'
                         : isDarkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-200 text-gray-700'
                         }`}>
                         <Store className="h-5 w-5" />
@@ -939,7 +939,7 @@ const CustomerDashboard = () => {
                     <button
                       type="button"
                       onClick={() => setShowInventory(!showInventory)}
-                      className={`flex items-center space-x-1 sm:space-x-2 text-xs sm:text-sm font-medium transition-colors ${isDarkMode ? 'text-primary-400 hover:text-primary-300' : 'text-primary-600 hover:text-primary-700'}`}
+                      className={`flex items-center space-x-1 sm:space-x-2 text-xs sm:text-sm font-medium transition-colors ${isDarkMode ? 'text-black dark:text-white hover:text-primary-300' : 'text-black dark:text-white hover:text-black dark:text-white'}`}
                     >
                       <Package className="h-4 w-4" />
                       <span>{showInventory ? t('customerDashboard.orderForm.hideInventory') : t('customerDashboard.orderForm.viewInventory', { count: retailerInventory.length })}</span>
@@ -963,20 +963,20 @@ const CustomerDashboard = () => {
                                   <span className={`text-xs ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
                                     {invItem.quantity} {invItem.unit || 'units'}
                                   </span>
-                                  <span className={`text-sm font-semibold ${isDarkMode ? 'text-green-400' : 'text-green-600'}`}>
+                                  <span className={`text-sm font-semibold ${isDarkMode ? 'text-black dark:text-white' : 'text-black dark:text-white'}`}>
                                     ₹{invItem.selling_price || invItem.price_per_unit || 0}/{invItem.unit || 'unit'}
                                   </span>
                                 </div>
                               </div>
                               <div className="flex items-center space-x-2">
                                 {invItem.stock_status === 'out_of_stock' && (
-                                  <span className="text-xs bg-red-100 text-red-800 px-2 py-0.5 rounded-full">{t('customerDashboard.orderForm.outOfStock')}</span>
+                                  <span className="text-xs bg-neutral-200 dark:bg-neutral-700 text-neutral-800 dark:text-neutral-200 px-2 py-0.5 rounded-full">{t('customerDashboard.orderForm.outOfStock')}</span>
                                 )}
                                 {invItem.stock_status === 'low_stock' && (
-                                  <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded-full">{t('customerDashboard.orderForm.lowStock')}</span>
+                                  <span className="text-xs bg-neutral-200 dark:bg-neutral-700 text-neutral-800 dark:text-neutral-200 px-2 py-0.5 rounded-full">{t('customerDashboard.orderForm.lowStock')}</span>
                                 )}
                                 {invItem.stock_status === 'in_stock' && (
-                                  <span className="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded-full">{t('customerDashboard.orderForm.inStock')}</span>
+                                  <span className="text-xs bg-neutral-200 dark:bg-neutral-700 text-neutral-800 dark:text-neutral-200 px-2 py-0.5 rounded-full">{t('customerDashboard.orderForm.inStock')}</span>
                                 )}
                               </div>
                             </div>
@@ -1005,8 +1005,8 @@ const CustomerDashboard = () => {
                                 placeholder={t('customerDashboard.orderForm.itemNamePlaceholder')}
                                 value={item.item_name}
                                 onChange={(e) => handleItemChange(index, 'item_name', e.target.value)}
-                                className={`w-full px-3 py-2 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 transition-colors ${availability && !availability.can_order
-                                  ? 'border-red-500 bg-red-50'
+                                className={`w-full px-3 py-2 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-black dark:ring-white transition-colors ${availability && !availability.can_order
+                                  ? 'border-black dark:border-white bg-neutral-100 dark:bg-neutral-800'
                                   : isDarkMode
                                     ? 'bg-gray-700 border border-gray-600 text-white placeholder-gray-400'
                                     : 'bg-white border border-gray-300 text-gray-900'
@@ -1029,15 +1029,15 @@ const CustomerDashboard = () => {
                                 min="0.001"
                                 step="0.001"
                                 max={availability && availability.can_order ? availability.available_quantity : undefined}
-                                className={`w-full sm:w-24 px-3 py-2 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 transition-colors ${availability && !availability.can_order
-                                  ? 'border-red-500 bg-red-50'
+                                className={`w-full sm:w-24 px-3 py-2 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-black dark:ring-white transition-colors ${availability && !availability.can_order
+                                  ? 'border-black dark:border-white bg-neutral-100 dark:bg-neutral-800'
                                   : isDarkMode
                                     ? 'bg-gray-700 border border-gray-600 text-white'
                                     : 'bg-white border border-gray-300 text-gray-900'
                                   }`}
                               />
                               {availability && availability.available_quantity > 0 && (
-                                <span className="absolute -top-2 -right-2 bg-blue-500 text-white text-xs px-1.5 py-0.5 rounded-full">
+                                <span className="absolute -top-2 -right-2 bg-black dark:bg-white text-white dark:text-black text-xs px-1.5 py-0.5 rounded-full">
                                   {t('customerDashboard.orderForm.max')}: {availability.available_quantity}
                                 </span>
                               )}
@@ -1046,7 +1046,7 @@ const CustomerDashboard = () => {
                               <button
                                 type="button"
                                 onClick={() => handleRemoveItem(index)}
-                                className={`px-3 py-2 rounded-lg transition-colors ${isDarkMode ? 'text-red-400 hover:text-red-300 hover:bg-gray-700' : 'text-red-600 hover:text-red-700 hover:bg-red-50'}`}
+                                className={`px-3 py-2 rounded-lg transition-colors ${isDarkMode ? 'text-black dark:text-white hover:text-red-300 hover:bg-gray-700' : 'text-black dark:text-white hover:text-black dark:text-white hover:bg-neutral-100 dark:bg-neutral-800'}`}
                               >
                                 <XCircle className="h-5 w-5" />
                               </button>
@@ -1054,7 +1054,7 @@ const CustomerDashboard = () => {
                           </div>
                           {/* Stock Status Message */}
                           {availability && (
-                            <div className={`mt-1 text-sm flex items-center justify-between ${availability.can_order ? 'text-green-700 bg-green-50' : 'text-red-700 bg-red-50'
+                            <div className={`mt-1 text-sm flex items-center justify-between ${availability.can_order ? 'text-black dark:text-white bg-neutral-100 dark:bg-neutral-800' : 'text-black dark:text-white bg-neutral-100 dark:bg-neutral-800'
                               } px-3 py-2 rounded-md`}>
                               <div className="flex items-center space-x-2">
                                 {availability.can_order ? (
@@ -1071,20 +1071,20 @@ const CustomerDashboard = () => {
                               </div>
                               <div className="text-sm font-semibold">
                                 {availability.status === 'available' && (
-                                  <span className="text-green-800">
+                                  <span className="text-neutral-800 dark:text-neutral-200">
                                     {t('customerDashboard.orderForm.stock')}: {availability.available_quantity} {availability.unit || 'units'}
                                   </span>
                                 )}
                                 {availability.status === 'insufficient_stock' && (
-                                  <span className="text-red-800">
+                                  <span className="text-neutral-800 dark:text-neutral-200">
                                     {t('customerDashboard.orderForm.only')} {availability.available_quantity} {availability.unit || 'units'} {t('customerDashboard.orderForm.available')}
                                   </span>
                                 )}
                                 {availability.status === 'out_of_stock' && (
-                                  <span className="text-red-800">{t('customerDashboard.orderForm.outOfStock')} (0 {t('customerDashboard.orderForm.available')})</span>
+                                  <span className="text-neutral-800 dark:text-neutral-200">{t('customerDashboard.orderForm.outOfStock')} (0 {t('customerDashboard.orderForm.available')})</span>
                                 )}
                                 {availability.status === 'not_found' && (
-                                  <span className="text-red-800">{t('customerDashboard.orderForm.notAvailable')}</span>
+                                  <span className="text-neutral-800 dark:text-neutral-200">{t('customerDashboard.orderForm.notAvailable')}</span>
                                 )}
                               </div>
                             </div>
@@ -1095,7 +1095,7 @@ const CustomerDashboard = () => {
                     <button
                       type="button"
                       onClick={handleAddItem}
-                      className={`mt-2 flex items-center space-x-1 text-sm font-medium transition-colors ${isDarkMode ? 'text-primary-400 hover:text-primary-300' : 'text-primary-600 hover:text-primary-700'}`}
+                      className={`mt-2 flex items-center space-x-1 text-sm font-medium transition-colors ${isDarkMode ? 'text-black dark:text-white hover:text-primary-300' : 'text-black dark:text-white hover:text-black dark:text-white'}`}
                     >
                       <Plus className="h-4 w-4" />
                       <span>{t('customerDashboard.orderForm.addItem')}</span>
@@ -1104,8 +1104,8 @@ const CustomerDashboard = () => {
 
                   {/* Order Summary */}
                   {Object.keys(itemAvailability).length > 0 && (
-                    <div className={`rounded-lg p-4 transition-colors ${isDarkMode ? 'bg-blue-900/30 border border-blue-700' : 'bg-blue-50 border border-blue-200'}`}>
-                      <h3 className={`text-sm font-semibold mb-3 flex items-center space-x-2 ${isDarkMode ? 'text-blue-300' : 'text-blue-900'}`}>
+                    <div className={`rounded-lg p-4 transition-colors ${isDarkMode ? 'bg-neutral-900 dark:bg-neutral-100/30 border border-blue-700' : 'bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700'}`}>
+                      <h3 className={`text-sm font-semibold mb-3 flex items-center space-x-2 ${isDarkMode ? 'text-blue-300' : 'text-black dark:text-white'}`}>
                         <Package className="h-4 w-4" />
                         <span>{t('customerDashboard.orderForm.orderSummary')}</span>
                       </h3>
@@ -1118,11 +1118,11 @@ const CustomerDashboard = () => {
                               <span className={`font-medium ${isDarkMode ? 'text-gray-200' : 'text-gray-900'}`}>{item.item_name} × {item.quantity}</span>
                               <div className="flex items-center space-x-2">
                                 {avail.can_order ? (
-                                  <span className={`font-semibold ${isDarkMode ? 'text-green-400' : 'text-green-700'}`}>
+                                  <span className={`font-semibold ${isDarkMode ? 'text-black dark:text-white' : 'text-black dark:text-white'}`}>
                                     ✓ {t('customerDashboard.orderForm.stock')}: {avail.available_quantity} {avail.unit || 'units'}
                                   </span>
                                 ) : (
-                                  <span className={`font-semibold ${isDarkMode ? 'text-red-400' : 'text-red-700'}`}>
+                                  <span className={`font-semibold ${isDarkMode ? 'text-black dark:text-white' : 'text-black dark:text-white'}`}>
                                     ✗ {avail.status === 'not_found' ? t('customerDashboard.orderForm.notAvailable') : `${t('customerDashboard.orderForm.only')} ${avail.available_quantity} ${t('customerDashboard.orderForm.available')}`}
                                   </span>
                                 )}
@@ -1132,7 +1132,7 @@ const CustomerDashboard = () => {
                         })}
                       </div>
                       {Object.values(itemAvailability).some(item => !item.can_order) && (
-                        <div className={`mt-3 p-2 rounded text-sm flex items-center space-x-2 ${isDarkMode ? 'bg-red-900/30 border border-red-700 text-red-300' : 'bg-red-100 border border-red-300 text-red-800'}`}>
+                        <div className={`mt-3 p-2 rounded text-sm flex items-center space-x-2 ${isDarkMode ? 'bg-neutral-900 dark:bg-neutral-100/30 border border-red-700 text-red-300' : 'bg-neutral-200 dark:bg-neutral-700 border border-red-300 text-neutral-800 dark:text-neutral-200'}`}>
                           <AlertCircle className="h-4 w-4" />
                           <span className="font-medium">Cannot proceed: Some items are unavailable or insufficient</span>
                         </div>
@@ -1150,7 +1150,7 @@ const CustomerDashboard = () => {
                       rows="3"
                       value={messageForm.notes}
                       onChange={(e) => setMessageForm({ ...messageForm, notes: e.target.value })}
-                      className={`w-full px-3 py-2 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 transition-colors ${isDarkMode ? 'bg-gray-700 border border-gray-600 text-white placeholder-gray-400' : 'bg-white border border-gray-300 text-gray-900'}`}
+                      className={`w-full px-3 py-2 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-black dark:ring-white transition-colors ${isDarkMode ? 'bg-gray-700 border border-gray-600 text-white placeholder-gray-400' : 'bg-white border border-gray-300 text-gray-900'}`}
                       placeholder="Any special requests or instructions..."
                     />
                   </div>
@@ -1257,7 +1257,7 @@ const CustomerDashboard = () => {
                       )}
                       <div className="flex justify-between font-semibold text-base mb-3">
                         <span className={isDarkMode ? 'text-white' : 'text-gray-900'}>Total</span>
-                        <span className="text-blue-600">₹{request.bill_details.total?.toFixed(2)}</span>
+                        <span className="text-black dark:text-white">₹{request.bill_details.total?.toFixed(2)}</span>
                       </div>
 
                       {/* Payment Confirmation Button - Only show if status is 'billed' */}
@@ -1273,8 +1273,8 @@ const CustomerDashboard = () => {
 
                       {/* Payment Confirmed Status */}
                       {request.payment_confirmation?.confirmed && (
-                        <div className={`mt-2 p-3 rounded-lg ${isDarkMode ? 'bg-green-900/30 border border-green-700' : 'bg-green-50 border border-green-200'}`}>
-                          <div className="flex items-center gap-2 text-green-700 dark:text-green-400">
+                        <div className={`mt-2 p-3 rounded-lg ${isDarkMode ? 'bg-neutral-900 dark:bg-neutral-100/30 border border-green-700' : 'bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700'}`}>
+                          <div className="flex items-center gap-2 text-black dark:text-white dark:text-black dark:text-white">
                             <CheckCircle className="h-4 w-4" />
                             <span className="font-semibold text-sm">Payment Confirmed</span>
                           </div>
@@ -1289,8 +1289,8 @@ const CustomerDashboard = () => {
 
                       {/* Waiting for Retailer - Only show if payment confirmed but not completed */}
                       {request.status === 'payment_confirmed' && (
-                        <div className={`mt-2 p-3 rounded-lg ${isDarkMode ? 'bg-blue-900/30 border border-blue-700' : 'bg-blue-50 border border-blue-200'}`}>
-                          <p className={`text-xs ${isDarkMode ? 'text-blue-300' : 'text-blue-800'}`}>
+                        <div className={`mt-2 p-3 rounded-lg ${isDarkMode ? 'bg-neutral-900 dark:bg-neutral-100/30 border border-blue-700' : 'bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700'}`}>
+                          <p className={`text-xs ${isDarkMode ? 'text-blue-300' : 'text-neutral-800 dark:text-neutral-200'}`}>
                             ⏳ Waiting for retailer to complete your order...
                           </p>
                         </div>
@@ -1322,7 +1322,7 @@ const CustomerDashboard = () => {
             <div className="flex justify-between items-center mb-6">
               <div>
                 <h3 className={`text-2xl font-bold flex items-center gap-2 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
-                  <FileText className="h-6 w-6 text-green-600" />
+                  <FileText className="h-6 w-6 text-black dark:text-white" />
                   {t('customerDashboard.billScanner.title')}
                 </h3>
                 <p className={`text-sm mt-1 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
@@ -1345,7 +1345,7 @@ const CustomerDashboard = () => {
             {!parsedBillItems ? (
               /* Step 1: Upload Image */
               <div className="space-y-6">
-                <div className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${isDarkMode ? 'border-gray-700 hover:border-green-600' : 'border-gray-300 hover:border-green-500'}`}>
+                <div className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${isDarkMode ? 'border-gray-700 hover:border-black dark:border-white' : 'border-gray-300 hover:border-black dark:border-white'}`}>
                   {imagePreview ? (
                     <div className="space-y-4">
                       <img 
@@ -1358,7 +1358,7 @@ const CustomerDashboard = () => {
                           setSelectedImage(null);
                           setImagePreview(null);
                         }}
-                        className="text-red-600 hover:text-red-700 text-sm font-medium"
+                        className="text-black dark:text-white hover:text-black dark:text-white text-sm font-medium"
                       >
                         {t('customerDashboard.billScanner.removeImage')}
                       </button>
@@ -1377,7 +1377,7 @@ const CustomerDashboard = () => {
                       />
                       <label
                         htmlFor="bill-upload-customer"
-                        className="mt-4 inline-block bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 cursor-pointer transition-colors"
+                        className="mt-4 inline-block bg-black dark:bg-white text-white dark:text-black px-6 py-2 rounded-lg hover:bg-green-700 cursor-pointer transition-colors"
                       >
                         {t('customerDashboard.billScanner.selectImage')}
                       </label>
@@ -1385,9 +1385,9 @@ const CustomerDashboard = () => {
                   )}
                 </div>
 
-                <div className={`rounded-lg p-4 ${isDarkMode ? 'bg-green-900/20 border border-green-800' : 'bg-green-50 border border-green-200'}`}>
-                  <h4 className={`font-semibold mb-2 ${isDarkMode ? 'text-green-400' : 'text-green-900'}`}>{t('customerDashboard.billScanner.whatWeExtract')}</h4>
-                  <ul className={`text-sm space-y-1 ${isDarkMode ? 'text-green-300' : 'text-green-800'}`}>
+                <div className={`rounded-lg p-4 ${isDarkMode ? 'bg-neutral-900 dark:bg-neutral-100/20 border border-green-800' : 'bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700'}`}>
+                  <h4 className={`font-semibold mb-2 ${isDarkMode ? 'text-black dark:text-white' : 'text-black dark:text-white'}`}>{t('customerDashboard.billScanner.whatWeExtract')}</h4>
+                  <ul className={`text-sm space-y-1 ${isDarkMode ? 'text-green-300' : 'text-neutral-800 dark:text-neutral-200'}`}>
                     <li>{t('customerDashboard.billScanner.extractItem1')}</li>
                     <li>{t('customerDashboard.billScanner.extractItem2')}</li>
                     <li>{t('customerDashboard.billScanner.extractItem3')}</li>
@@ -1428,11 +1428,11 @@ const CustomerDashboard = () => {
             ) : (
               /* Step 2: Review & Confirm Extracted Items */
               <div className="space-y-6">
-                <div className={`rounded-lg p-4 ${isDarkMode ? 'bg-blue-900/20 border border-blue-800' : 'bg-blue-50 border border-blue-200'}`}>
-                  <h4 className={`font-semibold ${isDarkMode ? 'text-blue-300' : 'text-blue-900'}`}>
+                <div className={`rounded-lg p-4 ${isDarkMode ? 'bg-neutral-900 dark:bg-neutral-100/20 border border-blue-800' : 'bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700'}`}>
+                  <h4 className={`font-semibold ${isDarkMode ? 'text-blue-300' : 'text-black dark:text-white'}`}>
                     {t('customerDashboard.billScanner.extracted', { count: parsedBillItems.length })}
                   </h4>
-                  <p className={`text-sm mt-1 ${isDarkMode ? 'text-blue-400' : 'text-blue-700'}`}>
+                  <p className={`text-sm mt-1 ${isDarkMode ? 'text-black dark:text-white' : 'text-black dark:text-white'}`}>
                     {t('customerDashboard.billScanner.reviewSubtitle')}
                   </p>
                 </div>
@@ -1476,7 +1476,7 @@ const CustomerDashboard = () => {
                           <td className="px-4 py-3">
                             <button
                               onClick={() => handleRemoveBillItem(index)}
-                              className="text-red-600 hover:text-red-700 text-sm font-medium"
+                              className="text-black dark:text-white hover:text-black dark:text-white text-sm font-medium"
                             >
                               {t('customerDashboard.billScanner.remove')}
                             </button>
@@ -1526,8 +1526,8 @@ const CustomerDashboard = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className={`relative mx-auto p-6 border w-full max-w-md shadow-2xl rounded-xl ${isDarkMode ? 'bg-gray-900 border-gray-800' : 'bg-white border-gray-200'}`}>
             <div className="flex items-start gap-3 mb-4">
-              <div className="flex-shrink-0 w-12 h-12 rounded-full bg-green-100 flex items-center justify-center">
-                <CheckCircle className="h-6 w-6 text-green-600" />
+              <div className="flex-shrink-0 w-12 h-12 rounded-full bg-neutral-200 dark:bg-neutral-700 flex items-center justify-center">
+                <CheckCircle className="h-6 w-6 text-black dark:text-white" />
               </div>
               <div className="flex-1">
                 <h3 className={`text-lg font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
@@ -1544,7 +1544,7 @@ const CustomerDashboard = () => {
               <p className={`text-sm font-semibold mb-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                 {t('customerDashboard.paymentModal.orderTotal')}
               </p>
-              <p className="text-2xl font-bold text-green-600">
+              <p className="text-2xl font-bold text-black dark:text-white">
                 ₹{selectedRequestForPayment.bill_details?.total?.toFixed(2) || '0.00'}
               </p>
             </div>
@@ -1552,7 +1552,7 @@ const CustomerDashboard = () => {
             {/* Payment Method Selection */}
             <div className="mb-6">
               <label htmlFor="paymentMethodCustomer" className={`block text-sm font-medium mb-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                {t('customerDashboard.paymentModal.paymentMethod')} <span className="text-red-600">{t('customerDashboard.paymentModal.required')}</span>
+                {t('customerDashboard.paymentModal.paymentMethod')} <span className="text-black dark:text-white">{t('customerDashboard.paymentModal.required')}</span>
               </label>
               <select
                 id="paymentMethodCustomer"
@@ -1570,12 +1570,12 @@ const CustomerDashboard = () => {
               
               {/* Show UPI ID when UPI is selected */}
               {paymentMethod === 'UPI' && selectedRequestForPayment.retailer_id?.upi_id && (
-                <div className={`mt-3 p-3 rounded-lg ${isDarkMode ? 'bg-blue-900/30 border border-blue-700' : 'bg-blue-50 border border-blue-200'}`}>
-                  <p className={`text-xs font-semibold mb-1 ${isDarkMode ? 'text-blue-300' : 'text-blue-900'}`}>
+                <div className={`mt-3 p-3 rounded-lg ${isDarkMode ? 'bg-neutral-900 dark:bg-neutral-100/30 border border-blue-700' : 'bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700'}`}>
+                  <p className={`text-xs font-semibold mb-1 ${isDarkMode ? 'text-blue-300' : 'text-black dark:text-white'}`}>
                     {t('customerDashboard.paymentModal.retailerUpiId')}
                   </p>
                   <div className="flex items-center justify-between">
-                    <p className={`font-mono font-bold text-sm ${isDarkMode ? 'text-blue-200' : 'text-blue-800'}`}>
+                    <p className={`font-mono font-bold text-sm ${isDarkMode ? 'text-blue-200' : 'text-neutral-800 dark:text-neutral-200'}`}>
                       {selectedRequestForPayment.retailer_id.upi_id}
                     </p>
                     <button
@@ -1584,20 +1584,20 @@ const CustomerDashboard = () => {
                         navigator.clipboard.writeText(selectedRequestForPayment.retailer_id.upi_id);
                         toast.success(t('customerDashboard.toast.upiIdCopied'));
                       }}
-                      className={`text-xs px-2 py-1 rounded ${isDarkMode ? 'bg-blue-700 hover:bg-blue-600 text-white' : 'bg-blue-600 hover:bg-blue-700 text-white'}`}
+                      className={`text-xs px-2 py-1 rounded ${isDarkMode ? 'bg-blue-700 hover:bg-black dark:bg-white text-white dark:text-black' : 'bg-black dark:bg-white hover:bg-blue-700 text-white'}`}
                     >
                       {t('customerDashboard.paymentModal.copy')}
                     </button>
                   </div>
-                  <p className={`text-xs mt-2 ${isDarkMode ? 'text-blue-400' : 'text-blue-700'}`}>
+                  <p className={`text-xs mt-2 ${isDarkMode ? 'text-black dark:text-white' : 'text-black dark:text-white'}`}>
                     {t('customerDashboard.paymentModal.sendToUpi', { amount: selectedRequestForPayment.bill_details?.total?.toFixed(2) })}
                   </p>
                 </div>
               )}
               
               {paymentMethod === 'UPI' && !selectedRequestForPayment.retailer_id?.upi_id && (
-                <div className={`mt-3 p-3 rounded-lg ${isDarkMode ? 'bg-yellow-900/30 border border-yellow-700' : 'bg-yellow-50 border border-yellow-200'}`}>
-                  <p className={`text-xs ${isDarkMode ? 'text-yellow-300' : 'text-yellow-800'}`}>
+                <div className={`mt-3 p-3 rounded-lg ${isDarkMode ? 'bg-neutral-900 dark:bg-neutral-100/30 border border-yellow-700' : 'bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700'}`}>
+                  <p className={`text-xs ${isDarkMode ? 'text-yellow-300' : 'text-neutral-800 dark:text-neutral-200'}`}>
                     {t('customerDashboard.paymentModal.noUpiWarning')}
                   </p>
                 </div>

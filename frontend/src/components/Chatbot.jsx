@@ -379,7 +379,7 @@ const Chatbot = ({ retailerId, retailerName, isCustomer = false }) => {
         return (
             <button
                 onClick={() => setIsOpen(true)}
-                className="fixed bottom-4 right-4 bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700 transition-colors z-50"
+                className="fixed bottom-4 right-4 bg-black dark:bg-white text-white dark:text-black p-4 rounded-full shadow-lg hover:bg-neutral-800 dark:hover:bg-neutral-200 transition-colors z-50"
             >
                 <MessageCircle className="w-6 h-6" />
             </button>
@@ -389,7 +389,7 @@ const Chatbot = ({ retailerId, retailerName, isCustomer = false }) => {
     return (
         <div className="fixed bottom-4 right-4 w-96 h-[600px] bg-white rounded-lg shadow-xl border border-gray-200 z-50 flex flex-col">
             {/* Header */}
-            <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-4 rounded-t-lg flex items-center justify-between">
+            <div className="bg-black dark:bg-white text-white dark:text-black text-white p-4 rounded-t-lg flex items-center justify-between">
                 <div className="flex items-center space-x-2">
                     <Sparkles className="w-5 h-5" />
                     <div>
@@ -430,7 +430,7 @@ const Chatbot = ({ retailerId, retailerName, isCustomer = false }) => {
                         className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
                     >
                         {message.sender === 'user' ? (
-                            <div className="max-w-[80%] px-4 py-2.5 rounded-2xl bg-blue-600 text-white shadow-sm">
+                            <div className="max-w-[80%] px-4 py-2.5 rounded-2xl bg-black dark:bg-white text-white dark:text-black shadow-sm">
                                 <p className="text-sm">{message.text}</p>
                                 <span className="text-xs opacity-70 mt-1 block">
                                     {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
@@ -439,36 +439,36 @@ const Chatbot = ({ retailerId, retailerName, isCustomer = false }) => {
                         ) : (
                             <div className="max-w-[85%] bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
                                 {/* Message Content */}
-                                <div className={`p-4 ${message.isError ? 'bg-red-50' : ''}`}>
-                                    <p className={`text-sm leading-relaxed whitespace-pre-line ${message.isError ? 'text-red-600 font-semibold' : 'text-gray-800'}`}>
+                                <div className={`p-4 ${message.isError ? 'bg-neutral-100 dark:bg-neutral-800' : ''}`}>
+                                    <p className={`text-sm leading-relaxed whitespace-pre-line ${message.isError ? 'text-black dark:text-white font-semibold' : 'text-gray-800'}`}>
                                         {message.text}
                                     </p>
                                 </div>
 
                                 {/* Stock Error Card */}
                                 {message.data && message.data.type === 'stock_error' && (
-                                    <div className="border-t border-red-200 bg-red-50 p-4">
+                                    <div className="border-t border-neutral-200 dark:border-neutral-700 bg-neutral-100 dark:bg-neutral-800 p-4">
                                         <div className="flex items-center space-x-2 mb-2">
-                                            <svg className="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <svg className="w-5 h-5 text-black dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                                             </svg>
-                                            <p className="text-sm font-bold text-red-700">Stock Not Available</p>
+                                            <p className="text-sm font-bold text-black dark:text-white">Stock Not Available</p>
                                         </div>
-                                        <div className="bg-white rounded-lg border border-red-200 p-3 space-y-2">
+                                        <div className="bg-white rounded-lg border border-neutral-200 dark:border-neutral-700 p-3 space-y-2">
                                             <div className="flex justify-between text-sm">
                                                 <span className="text-gray-600">Item:</span>
                                                 <span className="font-semibold text-gray-900">{message.data.item}</span>
                                             </div>
                                             <div className="flex justify-between text-sm">
                                                 <span className="text-gray-600">Requested:</span>
-                                                <span className="font-semibold text-red-600">{message.data.requested} units</span>
+                                                <span className="font-semibold text-black dark:text-white">{message.data.requested} units</span>
                                             </div>
                                             <div className="flex justify-between text-sm">
                                                 <span className="text-gray-600">Available:</span>
-                                                <span className="font-semibold text-green-600">{message.data.available} units</span>
+                                                <span className="font-semibold text-black dark:text-white">{message.data.available} units</span>
                                             </div>
                                         </div>
-                                        <p className="text-xs text-red-600 mt-2 text-center">
+                                        <p className="text-xs text-black dark:text-white mt-2 text-center">
                                             Please add more stock or reduce the quantity
                                         </p>
                                     </div>
@@ -476,14 +476,14 @@ const Chatbot = ({ retailerId, retailerName, isCustomer = false }) => {
 
                                 {/* Item Exists Confirmation Card - For Inventory */}
                                 {message.data && message.data.type === 'item_exists' && (
-                                    <div className="border-t border-gray-200 bg-gradient-to-br from-blue-50 to-indigo-50 p-4">
+                                    <div className="border-t border-gray-200 bg-neutral-50 dark:bg-neutral-900 p-4">
                                         <div className="flex items-center justify-between mb-3">
                                             <div>
-                                                <p className="text-xs font-semibold uppercase tracking-wide text-indigo-600">
+                                                <p className="text-xs font-semibold uppercase tracking-wide text-black dark:text-white">
                                                     📦 Item Already Exists
                                                 </p>
                                             </div>
-                                            <div className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-semibold">
+                                            <div className="bg-neutral-200 dark:bg-neutral-700 text-black dark:text-white px-3 py-1 rounded-full text-xs font-semibold">
                                                 ⚠️ Confirm
                                             </div>
                                         </div>
@@ -503,13 +503,13 @@ const Chatbot = ({ retailerId, retailerName, isCustomer = false }) => {
                                                     <tr className="border-b border-gray-100">
                                                         <td className="py-2.5 px-3 text-gray-700 font-medium">Stock</td>
                                                         <td className="py-2.5 px-3 text-center text-gray-600">{message.data.existing_item?.stock_qty || 0}</td>
-                                                        <td className="py-2.5 px-3 text-center text-blue-600 font-semibold">+{message.data.new_data?.quantity || 0}</td>
-                                                        <td className="py-2.5 px-3 text-center text-green-600 font-bold">{(message.data.existing_item?.stock_qty || 0) + (message.data.new_data?.quantity || 0)}</td>
+                                                        <td className="py-2.5 px-3 text-center text-black dark:text-white font-semibold">+{message.data.new_data?.quantity || 0}</td>
+                                                        <td className="py-2.5 px-3 text-center text-black dark:text-white font-bold">{(message.data.existing_item?.stock_qty || 0) + (message.data.new_data?.quantity || 0)}</td>
                                                     </tr>
                                                     <tr>
                                                         <td className="py-2.5 px-3 text-gray-700 font-medium">Price</td>
                                                         <td className="py-2.5 px-3 text-center text-gray-600">₹{message.data.existing_item?.price_per_unit || 0}</td>
-                                                        <td className="py-2.5 px-3 text-center text-blue-600 font-semibold">₹{message.data.new_data?.price_per_unit || 0}</td>
+                                                        <td className="py-2.5 px-3 text-center text-black dark:text-white font-semibold">₹{message.data.new_data?.price_per_unit || 0}</td>
                                                         <td className="py-2.5 px-3 text-center text-gray-600">₹{message.data.new_data?.price_per_unit || message.data.existing_item?.price_per_unit || 0}</td>
                                                     </tr>
                                                 </tbody>
@@ -523,7 +523,7 @@ const Chatbot = ({ retailerId, retailerName, isCustomer = false }) => {
                                                     setInputMessage('yes');
                                                     setTimeout(() => handleSendMessage(), 100);
                                                 }}
-                                                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors shadow-md flex items-center justify-center space-x-2"
+                                                className="w-full bg-black dark:bg-white hover:bg-neutral-800 dark:hover:bg-neutral-200 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors shadow-md flex items-center justify-center space-x-2"
                                             >
                                                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -543,14 +543,14 @@ const Chatbot = ({ retailerId, retailerName, isCustomer = false }) => {
 
                                 {/* Expense Preview Card - Before Confirmation */}
                                 {message.data && message.data.type === 'expense_preview' && (
-                                    <div className="border-t border-gray-200 bg-gradient-to-br from-purple-50 to-pink-50 p-4">
+                                    <div className="border-t border-gray-200 bg-neutral-50 dark:bg-neutral-900 border-t border-neutral-200 dark:border-neutral-800 p-4">
                                         <div className="flex items-center justify-between mb-3">
                                             <div>
-                                                <p className="text-xs font-semibold uppercase tracking-wide text-purple-600">
+                                                <p className="text-xs font-semibold uppercase tracking-wide text-black dark:text-white">
                                                     💸 Expense Preview
                                                 </p>
                                             </div>
-                                            <div className="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-xs font-semibold">
+                                            <div className="bg-neutral-200 dark:bg-neutral-700 text-black dark:text-white px-3 py-1 rounded-full text-xs font-semibold">
                                                 ⏳ Pending
                                             </div>
                                         </div>
@@ -564,7 +564,7 @@ const Chatbot = ({ retailerId, retailerName, isCustomer = false }) => {
                                                 </div>
                                                 <div className="flex justify-between items-center">
                                                     <span className="text-sm text-gray-600">Amount:</span>
-                                                    <span className="text-xl font-bold text-red-600">₹{message.data.amount}</span>
+                                                    <span className="text-xl font-bold text-black dark:text-white">₹{message.data.amount}</span>
                                                 </div>
                                                 <div className="flex justify-between items-center">
                                                     <span className="text-sm text-gray-600">Category:</span>
@@ -588,7 +588,7 @@ const Chatbot = ({ retailerId, retailerName, isCustomer = false }) => {
                                                     setInputMessage('yes');
                                                     setTimeout(() => handleSendMessage(), 100);
                                                 }}
-                                                className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors shadow-md flex items-center justify-center space-x-2"
+                                                className="w-full bg-black dark:bg-white hover:bg-neutral-800 dark:hover:bg-neutral-200 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors shadow-md flex items-center justify-center space-x-2"
                                             >
                                                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -608,14 +608,14 @@ const Chatbot = ({ retailerId, retailerName, isCustomer = false }) => {
 
                                 {/* Bill Preview Card - Before Confirmation */}
                                 {message.data && message.data.type === 'bill_preview' && message.data.sales && message.data.sales.length > 0 ? (
-                                    <div className="border-t border-gray-200 bg-gradient-to-br from-yellow-50 to-orange-50 p-4">
+                                    <div className="border-t border-gray-200 bg-neutral-50 dark:bg-neutral-900 p-4">
                                         <div className="flex items-center justify-between mb-3">
                                             <div>
-                                                <p className="text-xs font-semibold uppercase tracking-wide text-orange-600">
+                                                <p className="text-xs font-semibold uppercase tracking-wide text-black dark:text-white">
                                                     📋 Bill Preview (Not Created Yet)
                                                 </p>
                                             </div>
-                                            <div className="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs font-semibold">
+                                            <div className="bg-neutral-200 dark:bg-neutral-700 text-black dark:text-white px-3 py-1 rounded-full text-xs font-semibold">
                                                 ⏳ Pending
                                             </div>
                                         </div>
@@ -645,11 +645,11 @@ const Chatbot = ({ retailerId, retailerName, isCustomer = false }) => {
                                         </div>
 
                                         {/* Stock Info */}
-                                        <div className="mt-3 bg-blue-50 border border-blue-200 rounded-lg p-3">
-                                            <p className="text-xs font-semibold text-blue-700 mb-2">Stock Changes:</p>
+                                        <div className="mt-3 bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-lg p-3">
+                                            <p className="text-xs font-semibold text-black dark:text-white mb-2">Stock Changes:</p>
                                             <div className="space-y-1">
                                                 {message.data.sales.map((item, idx) => (
-                                                    <div key={idx} className="flex justify-between text-xs text-blue-600">
+                                                    <div key={idx} className="flex justify-between text-xs text-black dark:text-white">
                                                         <span>{item.item_name}</span>
                                                         <span>{item.current_stock} → {item.new_stock} units</span>
                                                     </div>
@@ -660,7 +660,7 @@ const Chatbot = ({ retailerId, retailerName, isCustomer = false }) => {
                                         {/* Total */}
                                         <div className="mt-3 pt-3 border-t border-gray-300 flex justify-between items-center">
                                             <span className="font-bold text-gray-900 text-base">Total Amount</span>
-                                            <span className="font-bold text-2xl text-orange-600">₹{message.data.total_amount}</span>
+                                            <span className="font-bold text-2xl text-black dark:text-white">₹{message.data.total_amount}</span>
                                         </div>
 
                                         {/* Confirmation Button */}
@@ -670,7 +670,7 @@ const Chatbot = ({ retailerId, retailerName, isCustomer = false }) => {
                                                     setInputMessage('yes');
                                                     setTimeout(() => handleSendMessage(), 100);
                                                 }}
-                                                className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors shadow-md flex items-center justify-center space-x-2"
+                                                className="w-full bg-black dark:bg-white hover:bg-neutral-800 dark:hover:bg-neutral-200 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors shadow-md flex items-center justify-center space-x-2"
                                             >
                                                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -687,15 +687,15 @@ const Chatbot = ({ retailerId, retailerName, isCustomer = false }) => {
                                         </div>
                                     </div>
                                 ) : message.data && message.data.type === 'bill_preview' ? (
-                                    <div className="border-t border-gray-200 bg-red-50 p-4">
-                                        <p className="text-sm text-red-600">Debug: Bill preview received but no items in sales array</p>
+                                    <div className="border-t border-gray-200 bg-neutral-100 dark:bg-neutral-800 p-4">
+                                        <p className="text-sm text-black dark:text-white">Debug: Bill preview received but no items in sales array</p>
                                         <pre className="text-xs mt-2 overflow-auto">{JSON.stringify(message.data, null, 2)}</pre>
                                     </div>
                                 ) : null}
 
                                 {/* Bill Card - Structured Table - After Confirmation */}
                                 {message.data && message.data.type === 'bill_created' && message.data.sales && (
-                                    <div className="border-t border-gray-200 bg-gradient-to-br from-green-50 to-blue-50 p-4">
+                                    <div className="border-t border-gray-200 bg-neutral-50 dark:bg-neutral-900 p-4">
                                         <div className="flex items-center justify-between mb-3">
                                             <div>
                                                 <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
@@ -706,12 +706,12 @@ const Chatbot = ({ retailerId, retailerName, isCustomer = false }) => {
                                                 </p>
                                             </div>
                                             <div className="flex items-center space-x-2">
-                                                <div className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
+                                                <div className="bg-neutral-200 dark:bg-neutral-700 text-black dark:text-white px-3 py-1 rounded-full text-xs font-semibold">
                                                     ✓ Paid
                                                 </div>
                                                 <button
                                                     onClick={() => printBill(message.data)}
-                                                    className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1 transition-colors shadow-sm"
+                                                    className="bg-black dark:bg-white hover:bg-neutral-800 dark:hover:bg-neutral-200 text-white px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1 transition-colors shadow-sm"
                                                     title="Print Bill"
                                                 >
                                                     <Printer className="w-3.5 h-3.5" />
@@ -746,12 +746,12 @@ const Chatbot = ({ retailerId, retailerName, isCustomer = false }) => {
 
                                         {/* Stock Updated Info */}
                                         {message.data.sales.some(item => item.new_stock !== undefined) && (
-                                            <div className="mt-3 bg-green-50 border border-green-200 rounded-lg p-3">
-                                                <p className="text-xs font-semibold text-green-700 mb-2">✓ Stock Updated:</p>
+                                            <div className="mt-3 bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-lg p-3">
+                                                <p className="text-xs font-semibold text-black dark:text-white mb-2">✓ Stock Updated:</p>
                                                 <div className="space-y-1">
                                                     {message.data.sales.map((item, idx) => (
                                                         item.new_stock !== undefined && (
-                                                            <div key={idx} className="flex justify-between text-xs text-green-600">
+                                                            <div key={idx} className="flex justify-between text-xs text-black dark:text-white">
                                                                 <span>{item.item_name}</span>
                                                                 <span>New stock: {item.new_stock} units</span>
                                                             </div>
@@ -764,7 +764,7 @@ const Chatbot = ({ retailerId, retailerName, isCustomer = false }) => {
                                         {/* Total */}
                                         <div className="mt-3 pt-3 border-t border-gray-300 flex justify-between items-center">
                                             <span className="font-bold text-gray-900 text-base">Grand Total</span>
-                                            <span className="font-bold text-2xl text-green-600">₹{message.data.total_amount}</span>
+                                            <span className="font-bold text-2xl text-black dark:text-white">₹{message.data.total_amount}</span>
                                         </div>
 
                                         {/* Footer Note */}
@@ -791,9 +791,9 @@ const Chatbot = ({ retailerId, retailerName, isCustomer = false }) => {
                     <div className="flex justify-start">
                         <div className="bg-white border border-gray-200 px-4 py-3 rounded-2xl shadow-md">
                             <div className="flex space-x-2">
-                                <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce"></div>
-                                <div className="w-2 h-2 bg-purple-500 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                                <div className="w-2 h-2 bg-pink-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                                <div className="w-2 h-2 bg-black dark:bg-white rounded-full animate-bounce"></div>
+                                <div className="w-2 h-2 bg-black dark:bg-white rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                                <div className="w-2 h-2 bg-black dark:bg-white rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
                             </div>
                         </div>
                     </div>
@@ -810,8 +810,8 @@ const Chatbot = ({ retailerId, retailerName, isCustomer = false }) => {
                         <button
                             onClick={toggleMute}
                             className={`p-3 rounded-xl transition-all ${isMuted
-                                ? 'bg-red-100 text-red-600 hover:bg-red-200'
-                                : 'bg-green-100 text-green-600 hover:bg-green-200'
+                                ? 'bg-neutral-200 dark:bg-neutral-700 text-black dark:text-white hover:bg-neutral-300 dark:bg-neutral-600'
+                                : 'bg-neutral-200 dark:bg-neutral-700 text-black dark:text-white hover:bg-neutral-300 dark:bg-neutral-600'
                                 }`}
                             title={isMuted ? 'Unmute' : 'Mute'}
                         >
@@ -833,8 +833,8 @@ const Chatbot = ({ retailerId, retailerName, isCustomer = false }) => {
                         onClick={toggleListening}
                         disabled={isLoading}
                         className={`p-3 rounded-xl transition-all ${isListening
-                            ? 'bg-red-500 text-white animate-pulse'
-                            : 'bg-blue-100 text-blue-600 hover:bg-blue-200'
+                            ? 'bg-black dark:bg-white text-white dark:text-black animate-pulse'
+                            : 'bg-neutral-200 dark:bg-neutral-700 text-black dark:text-white hover:bg-neutral-300 dark:bg-neutral-600'
                             }`}
                         title="Voice Input"
                     >
@@ -865,8 +865,8 @@ const Chatbot = ({ retailerId, retailerName, isCustomer = false }) => {
 
                 {/* Voice Status */}
                 {isListening && (
-                    <div className="mt-2 text-xs text-red-500 flex items-center">
-                        <div className="w-2 h-2 bg-red-500 rounded-full mr-2 animate-pulse"></div>
+                    <div className="mt-2 text-xs text-black dark:text-white flex items-center">
+                        <div className="w-2 h-2 bg-black dark:bg-white rounded-full mr-2 animate-pulse"></div>
                         Listening... Speak now
                     </div>
                 )}

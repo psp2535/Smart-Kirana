@@ -112,7 +112,7 @@ const Header = ({ onMenuClick }) => {
             {/* Profile dropdown */}
             <div className="relative">
               <div className="flex items-center space-x-2 sm:space-x-3 cursor-pointer group" onClick={() => setShowUserMenu(!showUserMenu)}>
-                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-black dark:bg-white text-white dark:text-black flex items-center justify-center font-bold text-sm sm:text-base group-hover:scale-105 transition-transform">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-black dark:bg-white text-white dark:text-black dark:text-black flex items-center justify-center font-bold text-sm sm:text-base group-hover:scale-105 transition-transform">
                   {user?.name?.charAt(0) || 'U'}
                 </div>
                 <div className="hidden sm:block text-right">

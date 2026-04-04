@@ -433,7 +433,7 @@ const CustomerChatbot = ({ retailerId, onOrderPlaced }) => {
           >
             <div
               className={`max-w-xs lg:max-w-md px-4 py-3 rounded-2xl ${message.type === 'user'
-                ? 'bg-blue-500 text-white'
+                ? 'bg-black dark:bg-white text-white dark:text-black'
                 : 'bg-gray-100 text-gray-800'
                 }`}
             >
@@ -457,14 +457,14 @@ const CustomerChatbot = ({ retailerId, onOrderPlaced }) => {
         {/* Order Summary */}
         {showOrderSummary && orderData && (
           <div className="mb-4">
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-              <h4 className="font-semibold text-blue-800 mb-3">Order Summary</h4>
+            <div className="bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-lg p-4">
+              <h4 className="font-semibold text-black dark:text-white mb-3">Order Summary</h4>
               {console.log('Order Summary rendered:', orderData)}
               
               {/* Available Items */}
               {orderData.available && orderData.available.length > 0 && (
                 <div className="mb-4">
-                  <h5 className="font-medium text-green-700 mb-2">Available Items:</h5>
+                  <h5 className="font-medium text-black dark:text-white mb-2">Available Items:</h5>
                   <div className="space-y-2">
                     {orderData.available.map((item, index) => (
                       <div key={index} className="flex items-center justify-between bg-white p-3 rounded border">
@@ -476,7 +476,7 @@ const CustomerChatbot = ({ retailerId, onOrderPlaced }) => {
                         </div>
                         <button
                           onClick={() => removeItem(item.item_name)}
-                          className="ml-2 p-1 text-red-500 hover:text-red-700 hover:bg-red-50 rounded"
+                          className="ml-2 p-1 text-black dark:text-white hover:text-black dark:text-white hover:bg-neutral-100 dark:bg-neutral-800 rounded"
                           title="Remove item"
                         >
                           <X className="w-4 h-4" />
@@ -496,10 +496,10 @@ const CustomerChatbot = ({ retailerId, onOrderPlaced }) => {
               {/* Unavailable Items */}
               {orderData.unavailable && orderData.unavailable.length > 0 && (
                 <div className="mb-4">
-                  <h5 className="font-medium text-red-700 mb-2">Unavailable Items:</h5>
+                  <h5 className="font-medium text-black dark:text-white mb-2">Unavailable Items:</h5>
                   <div className="space-y-1">
                     {orderData.unavailable.map((item, index) => (
-                      <div key={index} className="text-red-600 text-sm">
+                      <div key={index} className="text-black dark:text-white text-sm">
                         • {item.item_name} ({item.quantity} {item.unit})
                       </div>
                     ))}
@@ -510,10 +510,10 @@ const CustomerChatbot = ({ retailerId, onOrderPlaced }) => {
               {/* Low Stock Items */}
               {orderData.lowStock && orderData.lowStock.length > 0 && (
                 <div className="mb-4">
-                  <h5 className="font-medium text-orange-700 mb-2">Limited Stock:</h5>
+                  <h5 className="font-medium text-black dark:text-white mb-2">Limited Stock:</h5>
                   <div className="space-y-1">
                     {orderData.lowStock.map((item, index) => (
-                      <div key={index} className="text-orange-600 text-sm">
+                      <div key={index} className="text-black dark:text-white text-sm">
                         • {item.item_name}: Only {item.available_quantity} {item.unit} available
                       </div>
                     ))}
@@ -529,7 +529,7 @@ const CustomerChatbot = ({ retailerId, onOrderPlaced }) => {
                     setTimeout(() => sendMessage(), 100);
                   }}
                   disabled={isLoading || !orderData.available || orderData.available.length === 0}
-                  className="flex-1 bg-green-500 text-white py-3 px-4 rounded-lg hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed font-semibold flex items-center justify-center space-x-2 shadow-md"
+                  className="flex-1 bg-black dark:bg-white text-white dark:text-black py-3 px-4 rounded-lg hover:bg-black dark:bg-white disabled:opacity-50 disabled:cursor-not-allowed font-semibold flex items-center justify-center space-x-2 shadow-md"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -552,7 +552,7 @@ const CustomerChatbot = ({ retailerId, onOrderPlaced }) => {
                       console.log('Recipe button clicked!', orderData.available);
                       showRecipeProcess(orderData.available);
                     }}
-                    className="w-full bg-blue-50 text-blue-700 py-2 px-4 rounded-lg hover:bg-blue-100 border border-blue-200 flex items-center justify-center space-x-2"
+                    className="w-full bg-neutral-100 dark:bg-neutral-800 text-black dark:text-white py-2 px-4 rounded-lg hover:bg-neutral-200 dark:bg-neutral-700 border border-neutral-200 dark:border-neutral-700 flex items-center justify-center space-x-2"
                   >
                     <span>👨‍🍳</span>
                     <span>How to Cook with These Ingredients</span>
@@ -617,7 +617,7 @@ const CustomerChatbot = ({ retailerId, onOrderPlaced }) => {
                     navigator.clipboard.writeText(recipeContent);
                     alert('Recipe copied to clipboard!');
                   }}
-                  className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                  className="px-4 py-2 bg-black dark:bg-white text-white dark:text-black rounded-lg hover:bg-black dark:bg-white"
                 >
                   Copy Recipe
                 </button>
@@ -633,7 +633,7 @@ const CustomerChatbot = ({ retailerId, onOrderPlaced }) => {
           <button
             onClick={toggleRecording}
             className={`p-3 rounded-lg transition-colors ${isRecording
-              ? 'bg-red-500 text-white hover:bg-red-600'
+              ? 'bg-black dark:bg-white text-white dark:text-black hover:bg-black dark:bg-white'
               : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
               }`}
             title={isRecording ? "Stop recording" : "Start voice input"}
@@ -655,7 +655,7 @@ const CustomerChatbot = ({ retailerId, onOrderPlaced }) => {
           <button
             onClick={sendMessage}
             disabled={!inputMessage.trim() || isLoading}
-            className="bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="bg-black dark:bg-white text-white dark:text-black p-3 rounded-lg hover:bg-black dark:bg-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             <Send className="w-5 h-5" />
           </button>

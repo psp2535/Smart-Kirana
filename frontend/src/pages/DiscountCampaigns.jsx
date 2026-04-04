@@ -226,7 +226,7 @@ const DiscountCampaigns = () => {
             </div>
           ) : (
             <>
-              <div className="bg-black dark:bg-white text-white dark:text-black   border border-neutral-200 dark:border-neutral-700 dark:border-neutral-200 dark:border-neutral-700 rounded-lg p-4">
+              <div className="bg-black dark:bg-white text-white dark:text-black dark:text-black   border border-neutral-200 dark:border-neutral-700 dark:border-neutral-200 dark:border-neutral-700 rounded-lg p-4">
                 <div className="flex items-start gap-3">
                   <Zap className="h-6 w-6 text-black dark:text-white dark:text-white flex-shrink-0 mt-1" />
                   <div>
@@ -255,7 +255,7 @@ const DiscountCampaigns = () => {
                         <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase ${item.urgency === 'critical' ? 'bg-red-600 text-white' :
                           item.urgency === 'high' ? 'bg-orange-600 text-white' :
                             item.urgency === 'medium' ? 'bg-yellow-600 text-white' :
-                              'bg-black dark:bg-white text-white dark:text-black'
+                              'bg-black dark:bg-white text-white dark:text-black dark:text-black'
                           }`}>
                           {item.urgency} Priority
                         </span>
@@ -303,7 +303,7 @@ const DiscountCampaigns = () => {
                       <div className="flex gap-2">
                         <button
                           onClick={() => handleApplyDiscount(item, true)}
-                          className="flex-1 bg-black dark:bg-white text-white dark:text-black text-white px-4 py-2 rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200  transition-all flex items-center justify-center gap-2 font-semibold"
+                          className="flex-1 bg-black dark:bg-white text-white dark:text-black dark:text-black text-white px-4 py-2 rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200  transition-all flex items-center justify-center gap-2 font-semibold"
                         >
                           <Zap className="h-4 w-4" />
                           Apply {item.discount}% Discount
@@ -433,7 +433,7 @@ const DiscountCampaigns = () => {
         <div className="space-y-6">
           {/* Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div className="card bg-black dark:bg-white text-white dark:text-black  dark:to-blue-800/20">
+            <div className="card bg-black dark:bg-white text-white dark:text-black dark:text-black  dark:to-blue-800/20">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-black dark:text-white dark:text-blue-400">Total Campaigns</p>
@@ -443,7 +443,7 @@ const DiscountCampaigns = () => {
               </div>
             </div>
 
-            <div className="card bg-black dark:bg-white text-white dark:text-black  dark:to-green-800/20">
+            <div className="card bg-black dark:bg-white text-white dark:text-black dark:text-black  dark:to-green-800/20">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-green-600 dark:text-green-400">Total Revenue</p>
@@ -453,7 +453,7 @@ const DiscountCampaigns = () => {
               </div>
             </div>
 
-            <div className="card bg-black dark:bg-white text-white dark:text-black  dark:to-purple-800/20">
+            <div className="card bg-black dark:bg-white text-white dark:text-black dark:text-black  dark:to-purple-800/20">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-black dark:text-white dark:text-purple-400">Total Views</p>
@@ -463,7 +463,7 @@ const DiscountCampaigns = () => {
               </div>
             </div>
 
-            <div className="card bg-black dark:bg-white text-white dark:text-black  dark:to-orange-800/20">
+            <div className="card bg-black dark:bg-white text-white dark:text-black dark:text-black  dark:to-orange-800/20">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-orange-600 dark:text-orange-400">Total Sales</p>
@@ -595,7 +595,7 @@ const DiscountCampaigns = () => {
                 </button>
                 <button
                   onClick={() => handleApplyDiscount(selectedItem, false)}
-                  className="flex-1 px-6 py-3 bg-black dark:bg-white text-white dark:text-black text-white rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200  transition-all font-semibold"
+                  className="flex-1 px-6 py-3 bg-black dark:bg-white text-white dark:text-black dark:text-black text-white rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200  transition-all font-semibold"
                 >
                   Apply Custom Discount
                 </button>

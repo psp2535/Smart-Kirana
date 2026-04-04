@@ -132,7 +132,7 @@ const Customers = () => {
         element.style.padding = '20px';
         element.innerHTML = `
             <div style="text-align: center; margin-bottom: 20px;">
-                <h1 style="margin: 0; color: #4F46E5;">Customer Directory</h1>
+                <h1 style="margin: 0; color: #171717;">Customer Directory</h1>
                 <p style="margin: 5px 0; color: #666;">Generated on ${new Date().toLocaleDateString()}</p>
             </div>
             
@@ -146,7 +146,7 @@ const Customers = () => {
             
             <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
                 <thead>
-                    <tr style="background-color: #4F46E5; color: white;">
+                    <tr style="background-color: #171717; color: white;">
                         <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Name</th>
                         <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Phone</th>
                         <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Email</th>
@@ -226,8 +226,8 @@ const Customers = () => {
                             <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Customers</p>
                             <p className="text-2xl font-bold text-gray-900 dark:text-white">{customers.length}</p>
                         </div>
-                        <div className="p-2 bg-blue-100 rounded-lg">
-                            <Users className="h-6 w-6 text-blue-600" />
+                        <div className="p-2 bg-neutral-200 dark:bg-neutral-700 rounded-lg">
+                            <Users className="h-6 w-6 text-black dark:text-white" />
                         </div>
                     </div>
                 </div>
@@ -237,8 +237,8 @@ const Customers = () => {
                             <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Active Customers</p>
                             <p className="text-2xl font-bold text-gray-900 dark:text-white">{customers.length}</p>
                         </div>
-                        <div className="p-2 bg-green-100 rounded-lg">
-                            <Users className="h-6 w-6 text-green-600" />
+                        <div className="p-2 bg-neutral-200 dark:bg-neutral-700 rounded-lg">
+                            <Users className="h-6 w-6 text-black dark:text-white" />
                         </div>
                     </div>
                 </div>
@@ -250,8 +250,8 @@ const Customers = () => {
                                 {customers.filter(c => c.credit_balance > 0).length}
                             </p>
                         </div>
-                        <div className="p-2 bg-yellow-100 rounded-lg">
-                            <Users className="h-6 w-6 text-yellow-600" />
+                        <div className="p-2 bg-neutral-200 dark:bg-neutral-700 rounded-lg">
+                            <Users className="h-6 w-6 text-black dark:text-white" />
                         </div>
                     </div>
                 </div>
@@ -263,8 +263,8 @@ const Customers = () => {
                                 ₹{customers.reduce((sum, customer) => sum + (customer.credit_balance || 0), 0)}
                             </p>
                         </div>
-                        <div className="p-2 bg-red-100 rounded-lg">
-                            <Users className="h-6 w-6 text-red-600" />
+                        <div className="p-2 bg-neutral-200 dark:bg-neutral-700 rounded-lg">
+                            <Users className="h-6 w-6 text-black dark:text-white" />
                         </div>
                     </div>
                 </div>
@@ -292,7 +292,7 @@ const Customers = () => {
                         <Filter className="h-4 w-4" />
                         Filter
                         {creditFilter !== 'All' && (
-                            <span className="ml-1 px-2 py-0.5 text-xs bg-indigo-100 text-indigo-800 rounded-full">
+                            <span className="ml-1 px-2 py-0.5 text-xs bg-neutral-200 dark:bg-neutral-700 text-neutral-800 dark:text-neutral-200 rounded-full">
                                 Active
                             </span>
                         )}
@@ -315,7 +315,7 @@ const Customers = () => {
 
                 {loading ? (
                     <div className="text-center py-8">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600 mx-auto"></div>
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-black dark:border-white mx-auto"></div>
                         <p className="mt-2 text-gray-600">Loading customers...</p>
                     </div>
                 ) : customers.length === 0 ? (
@@ -378,11 +378,11 @@ const Customers = () => {
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm">
                                             {customer.credit_balance > 0 ? (
-                                                <span className="px-2 py-1 text-xs font-medium bg-yellow-100 text-yellow-800 rounded-full">
+                                                <span className="px-2 py-1 text-xs font-medium bg-neutral-200 dark:bg-neutral-700 text-neutral-800 dark:text-neutral-200 rounded-full">
                                                     ₹{customer.credit_balance}
                                                 </span>
                                             ) : (
-                                                <span className="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">
+                                                <span className="px-2 py-1 text-xs font-medium bg-neutral-200 dark:bg-neutral-700 text-neutral-800 dark:text-neutral-200 rounded-full">
                                                     No Credit
                                                 </span>
                                             )}
@@ -402,14 +402,14 @@ const Customers = () => {
                                                         });
                                                         setShowModal(true);
                                                     }}
-                                                    className="text-indigo-600 hover:text-indigo-900"
+                                                    className="text-black dark:text-white hover:text-black dark:text-white"
                                                     title="Edit Customer"
                                                 >
                                                     <Edit className="h-4 w-4" />
                                                 </button>
                                                 <button 
                                                     onClick={() => handleDelete(customer._id)}
-                                                    className="text-red-600 hover:text-red-900"
+                                                    className="text-black dark:text-white hover:text-black dark:text-white"
                                                     title="Delete Customer"
                                                 >
                                                     <Trash2 className="h-4 w-4" />
@@ -440,7 +440,7 @@ const Customers = () => {
                         <div className="mt-2 text-center">
                             <button
                                 onClick={() => setItemsToShow(filteredCustomers.length)}
-                                className="text-sm text-indigo-600 hover:text-indigo-800"
+                                className="text-sm text-black dark:text-white hover:text-neutral-800 dark:text-neutral-200"
                             >
                                 Show All {filteredCustomers.length} Items
                             </button>

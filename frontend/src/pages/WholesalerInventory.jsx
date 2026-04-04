@@ -312,7 +312,7 @@ const WholesalerInventory = () => {
                         </button>
                         <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Inventory Management</h1>
                     </div>
-                    <button onClick={() => setShowAddModal(true)} className="flex items-center space-x-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700">
+                    <button onClick={() => setShowAddModal(true)} className="flex items-center space-x-2 px-4 py-2 bg-black dark:bg-white text-white dark:text-black rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200">
                         <Plus className="h-5 w-5" /><span>Add Product</span>
                     </button>
                 </div>
@@ -331,9 +331,9 @@ const WholesalerInventory = () => {
                             const profitInfo = calculateProfit(product.pricePerUnit, product.costPrice);
 
                             return (
-                                <div key={product._id} className={`bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border-2 transition-all ${isEditing ? 'border-primary-500 ring-4 ring-primary-100 dark:ring-primary-900/50' : 'border-transparent hover:shadow-xl'}`}>
+                                <div key={product._id} className={`bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border-2 transition-all ${isEditing ? 'border-black dark:border-white ring-4 ring-primary-100 dark:ring-primary-900/50' : 'border-transparent hover:shadow-xl'}`}>
                                     {/* Card Header */}
-                                    <div className={`px-6 py-4 ${product.isActive ? 'bg-black dark:bg-white text-white dark:text-black' : 'bg-gray-400'}`}>
+                                    <div className={`px-6 py-4 ${product.isActive ? 'bg-black dark:bg-white text-white dark:text-black dark:text-black' : 'bg-gray-400'}`}>
                                         <div className="flex justify-between items-start">
                                             <div className="flex-1">
                                                 {isEditing ? (
@@ -398,7 +398,7 @@ const WholesalerInventory = () => {
 
                                         {/* Pricing Section */}
                                         <div className="grid grid-cols-2 gap-3">
-                                            <div className="bg-black dark:bg-white text-white dark:text-black   p-4 rounded-lg border border-green-200 dark:border-green-800">
+                                            <div className="bg-black dark:bg-white text-white dark:text-black dark:text-black   p-4 rounded-lg border border-green-200 dark:border-green-800">
                                                 <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">Selling Price</p>
                                                 {isEditing ? (
                                                     <input
@@ -415,7 +415,7 @@ const WholesalerInventory = () => {
                                             </div>
 
                                             {profitInfo && (
-                                                <div className="bg-black dark:bg-white text-white dark:text-black   p-4 rounded-lg border border-neutral-200 dark:border-neutral-700 dark:border-neutral-200 dark:border-neutral-700">
+                                                <div className="bg-black dark:bg-white text-white dark:text-black dark:text-black   p-4 rounded-lg border border-neutral-200 dark:border-neutral-700 dark:border-neutral-200 dark:border-neutral-700">
                                                     <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">Profit Margin</p>
                                                     <p className="text-2xl font-bold text-black dark:text-white dark:text-purple-400">{profitInfo.margin}%</p>
                                                     <p className="text-xs text-gray-500 mt-1">₹{profitInfo.profit} profit</p>
@@ -544,7 +544,7 @@ const WholesalerInventory = () => {
                                                         <button
                                                             type="button"
                                                             onClick={addEditBulkDiscount}
-                                                            className="text-xs text-primary-600 hover:text-primary-700 font-medium"
+                                                            className="text-xs text-black dark:text-white hover:text-black dark:text-white font-medium"
                                                         >
                                                             + Add Discount Tier
                                                         </button>
@@ -564,7 +564,7 @@ const WholesalerInventory = () => {
 
                                         {/* Analytics (if available) */}
                                         {product.totalOrders > 0 && !isEditing && (
-                                            <div className="bg-black dark:bg-white text-white dark:text-black   border border-neutral-200 dark:border-neutral-700 dark:border-neutral-200 dark:border-neutral-700 rounded-lg p-3">
+                                            <div className="bg-black dark:bg-white text-white dark:text-black dark:text-black   border border-neutral-200 dark:border-neutral-700 dark:border-neutral-200 dark:border-neutral-700 rounded-lg p-3">
                                                 <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">Performance</p>
                                                 <div className="grid grid-cols-2 gap-2 text-sm">
                                                     <div>
@@ -629,17 +629,17 @@ const WholesalerInventory = () => {
                             <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Add New Product</h3>
 
                             <div className="mb-6 flex space-x-4">
-                                <button onClick={() => setAddMethod('manual')} className={`flex-1 py-3 px-4 rounded-lg border-2 ${addMethod === 'manual' ? 'border-primary-600 bg-primary-50 dark:bg-primary-900/20' : 'border-gray-300 dark:border-gray-600'}`}>
+                                <button onClick={() => setAddMethod('manual')} className={`flex-1 py-3 px-4 rounded-lg border-2 ${addMethod === 'manual' ? 'border-black dark:border-white bg-neutral-100 dark:bg-neutral-800 dark:bg-primary-900/20' : 'border-gray-300 dark:border-gray-600'}`}>
                                     <Package className="h-6 w-6 mx-auto mb-2" /><span className="font-semibold">Manual Entry</span>
                                 </button>
-                                <button onClick={() => setAddMethod('image')} className={`flex-1 py-3 px-4 rounded-lg border-2 ${addMethod === 'image' ? 'border-primary-600 bg-primary-50 dark:bg-primary-900/20' : 'border-gray-300 dark:border-gray-600'}`}>
+                                <button onClick={() => setAddMethod('image')} className={`flex-1 py-3 px-4 rounded-lg border-2 ${addMethod === 'image' ? 'border-black dark:border-white bg-neutral-100 dark:bg-neutral-800 dark:bg-primary-900/20' : 'border-gray-300 dark:border-gray-600'}`}>
                                     <Camera className="h-6 w-6 mx-auto mb-2" /><span className="font-semibold">Upload Image</span>
                                 </button>
                             </div>
 
                             {addMethod === 'image' && (
                                 <div className="mb-6">
-                                    <label className="block w-full border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-8 text-center cursor-pointer hover:border-primary-600">
+                                    <label className="block w-full border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-8 text-center cursor-pointer hover:border-black dark:border-white">
                                         <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
                                         {imagePreview ? (
                                             <img src={imagePreview} alt="Preview" className="max-h-64 mx-auto rounded" />
@@ -652,31 +652,31 @@ const WholesalerInventory = () => {
 
                             <form onSubmit={handleAddProduct} className="space-y-4">
                                 <div className="grid grid-cols-2 gap-4">
-                                    <div className="col-span-2"><label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Product Name *</label><input type="text" required value={productForm.productName} onChange={(e) => setProductForm({ ...productForm, productName: e.target.value })} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" placeholder="e.g., Basmati Rice Premium" /></div>
+                                    <div className="col-span-2"><label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Product Name *</label><input type="text" required value={productForm.productName} onChange={(e) => setProductForm({ ...productForm, productName: e.target.value })} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black dark:border-white focus:ring-black dark:ring-white dark:bg-gray-700 dark:border-gray-600 dark:text-white" placeholder="e.g., Basmati Rice Premium" /></div>
 
-                                    <div><label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Category *</label><select required value={productForm.category} onChange={(e) => setProductForm({ ...productForm, category: e.target.value })} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"><option value="">Select Category</option><option value="Grains">Grains</option><option value="Pulses">Pulses</option><option value="Oils">Oils</option><option value="Spices">Spices</option><option value="Sweeteners">Sweeteners</option><option value="Beverages">Beverages</option><option value="Dairy">Dairy</option><option value="Snacks">Snacks</option><option value="Other">Other</option></select></div>
+                                    <div><label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Category *</label><select required value={productForm.category} onChange={(e) => setProductForm({ ...productForm, category: e.target.value })} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black dark:border-white focus:ring-black dark:ring-white dark:bg-gray-700 dark:border-gray-600 dark:text-white"><option value="">Select Category</option><option value="Grains">Grains</option><option value="Pulses">Pulses</option><option value="Oils">Oils</option><option value="Spices">Spices</option><option value="Sweeteners">Sweeteners</option><option value="Beverages">Beverages</option><option value="Dairy">Dairy</option><option value="Snacks">Snacks</option><option value="Other">Other</option></select></div>
 
-                                    <div><label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Unit *</label><select value={productForm.unit} onChange={(e) => setProductForm({ ...productForm, unit: e.target.value })} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"><option value="kg">Kilogram (kg)</option><option value="litre">Litre</option><option value="box">Box</option><option value="piece">Piece</option><option value="dozen">Dozen</option></select></div>
+                                    <div><label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Unit *</label><select value={productForm.unit} onChange={(e) => setProductForm({ ...productForm, unit: e.target.value })} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black dark:border-white focus:ring-black dark:ring-white dark:bg-gray-700 dark:border-gray-600 dark:text-white"><option value="kg">Kilogram (kg)</option><option value="litre">Litre</option><option value="box">Box</option><option value="piece">Piece</option><option value="dozen">Dozen</option></select></div>
 
-                                    <div><label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Cost Price (₹)</label><input type="number" step="0.01" value={productForm.costPrice} onChange={(e) => setProductForm({ ...productForm, costPrice: e.target.value })} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" placeholder="Your purchase cost" /></div>
+                                    <div><label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Cost Price (₹)</label><input type="number" step="0.01" value={productForm.costPrice} onChange={(e) => setProductForm({ ...productForm, costPrice: e.target.value })} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black dark:border-white focus:ring-black dark:ring-white dark:bg-gray-700 dark:border-gray-600 dark:text-white" placeholder="Your purchase cost" /></div>
 
-                                    <div><label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Selling Price (₹) *</label><input type="number" required step="0.01" value={productForm.sellingPrice} onChange={(e) => setProductForm({ ...productForm, sellingPrice: e.target.value })} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" placeholder="Price per unit" /></div>
+                                    <div><label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Selling Price (₹) *</label><input type="number" required step="0.01" value={productForm.sellingPrice} onChange={(e) => setProductForm({ ...productForm, sellingPrice: e.target.value })} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black dark:border-white focus:ring-black dark:ring-white dark:bg-gray-700 dark:border-gray-600 dark:text-white" placeholder="Price per unit" /></div>
 
-                                    <div><label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Min Order Qty *</label><input type="number" required step="0.01" value={productForm.minOrderQty} onChange={(e) => setProductForm({ ...productForm, minOrderQty: e.target.value })} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" placeholder="Minimum order quantity" /></div>
+                                    <div><label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Min Order Qty *</label><input type="number" required step="0.01" value={productForm.minOrderQty} onChange={(e) => setProductForm({ ...productForm, minOrderQty: e.target.value })} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black dark:border-white focus:ring-black dark:ring-white dark:bg-gray-700 dark:border-gray-600 dark:text-white" placeholder="Minimum order quantity" /></div>
 
-                                    <div><label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Available Qty *</label><input type="number" required step="0.01" value={productForm.availableQty} onChange={(e) => setProductForm({ ...productForm, availableQty: e.target.value })} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" placeholder="Stock quantity" /></div>
+                                    <div><label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Available Qty *</label><input type="number" required step="0.01" value={productForm.availableQty} onChange={(e) => setProductForm({ ...productForm, availableQty: e.target.value })} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black dark:border-white focus:ring-black dark:ring-white dark:bg-gray-700 dark:border-gray-600 dark:text-white" placeholder="Stock quantity" /></div>
 
-                                    <div className="col-span-2"><label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Expiry Date (Optional)</label><input type="date" value={productForm.expiryDate} onChange={(e) => setProductForm({ ...productForm, expiryDate: e.target.value })} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" /></div>
+                                    <div className="col-span-2"><label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Expiry Date (Optional)</label><input type="date" value={productForm.expiryDate} onChange={(e) => setProductForm({ ...productForm, expiryDate: e.target.value })} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black dark:border-white focus:ring-black dark:ring-white dark:bg-gray-700 dark:border-gray-600 dark:text-white" /></div>
                                 </div>
 
                                 {addMethod === 'manual' && !aiRecommendations && (
-                                    <button type="button" onClick={getAIRecommendations} disabled={isLoading} className="w-full flex items-center justify-center space-x-2 px-4 py-2 bg-black dark:bg-white text-white dark:text-black rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200 disabled:opacity-50">
+                                    <button type="button" onClick={getAIRecommendations} disabled={isLoading} className="w-full flex items-center justify-center space-x-2 px-4 py-2 bg-black dark:bg-white text-white dark:text-black dark:text-black rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200 disabled:opacity-50">
                                         <Sparkles className="h-5 w-5" /><span>{isLoading ? 'Getting AI Recommendations...' : 'Get AI Recommendations'}</span>
                                     </button>
                                 )}
 
                                 {aiRecommendations && (
-                                    <div className="bg-black dark:bg-white text-white dark:text-black   border-2 border-neutral-200 dark:border-neutral-700 dark:border-neutral-200 dark:border-neutral-700 rounded-lg p-5">
+                                    <div className="bg-black dark:bg-white text-white dark:text-black dark:text-black   border-2 border-neutral-200 dark:border-neutral-700 dark:border-neutral-200 dark:border-neutral-700 rounded-lg p-5">
                                         <h4 className="font-bold text-purple-900 dark:text-purple-200 mb-4 flex items-center text-lg"><Sparkles className="h-6 w-6 mr-2" />AI Business Recommendations</h4>
                                         <div className="grid grid-cols-2 gap-4 text-sm">
                                             <div className="bg-white dark:bg-gray-800 p-3 rounded-lg">
@@ -723,17 +723,17 @@ const WholesalerInventory = () => {
                                 <div><label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Bulk Discounts</label>
                                     {productForm.bulkDiscounts.map((discount, index) => (
                                         <div key={index} className="flex space-x-2 mb-2">
-                                            <input type="number" placeholder="Min Qty" value={discount.minQty} onChange={(e) => updateBulkDiscount(index, 'minQty', e.target.value)} className="flex-1 rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" />
-                                            <input type="number" placeholder="Price" value={discount.price} onChange={(e) => updateBulkDiscount(index, 'price', e.target.value)} className="flex-1 rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" />
+                                            <input type="number" placeholder="Min Qty" value={discount.minQty} onChange={(e) => updateBulkDiscount(index, 'minQty', e.target.value)} className="flex-1 rounded-md border-gray-300 shadow-sm focus:border-black dark:border-white focus:ring-black dark:ring-white dark:bg-gray-700 dark:border-gray-600 dark:text-white" />
+                                            <input type="number" placeholder="Price" value={discount.price} onChange={(e) => updateBulkDiscount(index, 'price', e.target.value)} className="flex-1 rounded-md border-gray-300 shadow-sm focus:border-black dark:border-white focus:ring-black dark:ring-white dark:bg-gray-700 dark:border-gray-600 dark:text-white" />
                                             {index > 0 && <button type="button" onClick={() => removeBulkDiscount(index)} className="p-2 text-red-600 hover:bg-red-50 rounded"><Trash2 className="h-5 w-5" /></button>}
                                         </div>
                                     ))}
-                                    <button type="button" onClick={addBulkDiscount} className="text-sm text-primary-600 hover:text-primary-700">+ Add Bulk Discount</button>
+                                    <button type="button" onClick={addBulkDiscount} className="text-sm text-black dark:text-white hover:text-black dark:text-white">+ Add Bulk Discount</button>
                                 </div>
 
                                 <div className="flex justify-end space-x-3 pt-4">
                                     <button type="button" onClick={() => { setShowAddModal(false); setAiRecommendations(null); setImagePreview(null); }} className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700">Cancel</button>
-                                    <button type="submit" disabled={isLoading} className="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 disabled:opacity-50">{isLoading ? 'Adding...' : 'Add Product'}</button>
+                                    <button type="submit" disabled={isLoading} className="px-4 py-2 bg-black dark:bg-white text-white dark:text-black rounded-md hover:bg-neutral-800 dark:hover:bg-neutral-200 disabled:opacity-50">{isLoading ? 'Adding...' : 'Add Product'}</button>
                                 </div>
                             </form>
                         </div>

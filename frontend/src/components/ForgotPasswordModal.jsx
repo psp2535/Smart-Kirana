@@ -151,7 +151,7 @@ const ForgotPasswordModal = ({ isOpen, onClose, userType = 'retailer' }) => {
                           value={phone}
                           onChange={(e) => setPhone(e.target.value)}
                           placeholder="Enter your 10-digit phone number"
-                          className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+                          className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-black dark:ring-white focus:border-transparent transition-all"
                           disabled={isLoading}
                           autoFocus
                           maxLength={10}
@@ -174,7 +174,7 @@ const ForgotPasswordModal = ({ isOpen, onClose, userType = 'retailer' }) => {
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
                           placeholder="your.email@example.com"
-                          className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+                          className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-black dark:ring-white focus:border-transparent transition-all"
                           disabled={isLoading}
                           autoFocus
                         />
@@ -231,7 +231,7 @@ const ForgotPasswordModal = ({ isOpen, onClose, userType = 'retailer' }) => {
                     : 'We\'ve sent a password reset link to:'}
                 </p>
                 {userType === 'customer' && (
-                  <p className="text-primary-600 font-semibold mb-6">{email}</p>
+                  <p className="text-black dark:text-white font-semibold mb-6">{email}</p>
                 )}
                 <p className="text-sm text-gray-500 dark:text-gray-400">
                   Please check your email inbox and follow the instructions to reset your password.
