@@ -17,8 +17,10 @@ connectDB();
 
 // Routes
 const authRoutes = require('./routes/authRoutes');
+const inventoryRoutes = require('./routes/inventoryRoutes');
 
 app.use('/api/auth', authRoutes);
+app.use('/api/inventory', inventoryRoutes);
 
 // Basic route
 app.get('/', (req, res) => {
