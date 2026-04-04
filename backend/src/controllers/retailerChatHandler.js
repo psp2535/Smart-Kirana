@@ -5,6 +5,8 @@ const User = require('../models/User');
 const CustomerRequest = require('../models/CustomerRequest');
 const OpenAI = require('openai');
 const { normalize, isValidQuantity } = require('../utils/quantityHelper');
+const healthScoreService = require('../services/healthScoreService');
+const festivalForecastService = require('../services/festivalForecastService');
 
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY
@@ -83,12 +85,14 @@ const getBusinessData = async (userId) => {
         startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay());
 
         // Fetch data with date-based queries for better performance
-        const [inventory, allSales, allExpenses, customerRequests, retailer] = await Promise.all([
+        const [inventory, allSales, allExpenses, customerRequests, retailer, healthScore, festivalForecast] = await Promise.all([
             Inventory.find({ user_id: userId }),
             Sale.find({ user_id: userId }).sort({ date: -1 }),
             Expense.find({ user_id: userId }).sort({ date: -1 }),
             CustomerRequest.find({ retailer_id: userId }).sort({ createdAt: -1 }).limit(5),
-            User.findById(userId)
+            User.findById(userId),
+            healthScoreService.calculateHealthScore(userId),
+            festivalForecastService.getFestivalDemandForecast(userId)
         ]);
 
         // Filter sales by date ranges using 'date' field (not createdAt)
@@ -143,6 +147,8 @@ const getBusinessData = async (userId) => {
             expenses: allExpenses.slice(0, 50), // Return recent expenses for context
             customerRequests,
             retailer,
+            healthScore,
+            festivalForecast,
             metrics: {
                 totalRevenue,
                 totalCogs,
@@ -448,6 +454,16 @@ ${businessData.expenses.slice(0, 5).map(expense =>
         `₹${expense.amount} - ${expense.description} (${expense.category})`
     ).join('\n')}
 
+🏨 BUSINESS HEALTH:
+- Health Score: ${businessData.healthScore.score}/100
+- Status: ${businessData.healthScore.status}
+- Tips: ${businessData.healthScore.tips.join(' | ')}
+
+🎉 UPCOMING FESTIVALS:
+- Next Festival: ${businessData.festivalForecast.festival_name || 'None'}
+- Demand: ${businessData.festivalForecast.demand_level || 'Normal'}
+- Stock Suggestions: ${businessData.festivalForecast.forecast_items?.slice(0, 3).map(i => i.item_name).join(', ') || 'None'}
+
 📋 PENDING ORDERS: ${businessData.metrics.pendingOrders}
 
 DETERMINE THE ACTION AND RESPOND WITH JSON:
@@ -470,6 +486,8 @@ FOR BUSINESS INSIGHTS/ANALYTICS (when user asks about sales, profit, inventory s
 
 CRITICAL FOR INSIGHTS:
 - If user asks about today's or yesterday's sales/profit, use the EXACT numbers from TODAY'S/YESTERDAY'S PERFORMANCE sections above.
+- PROACTIVELY MENTION HEALTH SCORE: When summarizing the business or giving an overview, always mention the Health Score (e.g., "Your Business Health is 85/100 (Excellent)!") and give AT LEAST ONE tip from the tips list.
+- FESTIVAL ALERTS: If a festival is imminent (months_away <= 1), proactively warn the user: "With ${businessData.festivalForecast.festival_name} coming up soon, I recommend stocking up on ${businessData.festivalForecast.forecast_items?.slice(0, 3).map(i => i.item_name).join(', ')}."
 - If today's revenue is 0, DO NOT just say "0 sales". Say "You haven't made any sales today yet. Your current top items in stock are [list 3 items with prices]." 
 - If asking about profit, show REAL numbers: "Today's profit is ₹X (Revenue ₹Y - Expenses ₹Z)".
 - If asking about inventory, list ACTUAL items with their EXACT stock levels.
@@ -531,11 +549,13 @@ Return ONLY valid JSON, no markdown or extra text.
  */
 const executeAction = async (userId, aiResponse, businessData, originalMessage, language = 'en') => {
     try {
-        // Check if message contains "make bill" or similar direct commands
-        const directBillCommands = ['make bill', 'create bill', 'bill for', 'make sale', 'create sale'];
-        const isDirectBillCommand = directBillCommands.some(cmd =>
-            originalMessage.toLowerCase().includes(cmd)
-        );
+        // Check if message contains direct billing commands for auto-confirmation
+        const directBillCommands = ['bill', 'बिल', 'బిల్లు', 'బిల్', 'make bill', 'create bill', 'bill for', 'make sale', 'create sale'];
+        const isDirectBillCommand = directBillCommands.some(cmd => {
+            const lowerMessage = originalMessage.toLowerCase();
+            // Match "bill [item]" or "make bill [item]"
+            return lowerMessage.startsWith(cmd + ' ') || lowerMessage.includes(' ' + cmd + ' ');
+        });
 
         switch (aiResponse.action) {
             case 'create_sale':
