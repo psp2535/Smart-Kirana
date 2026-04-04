@@ -20,7 +20,7 @@ class FestivalForecastService {
    */
   loadFestivalData() {
     try {
-      const csvPath = path.join(__dirname, '../../biznova_festival_dataset_150.csv');
+      const csvPath = path.join(__dirname, '../../smartkirana_festival_dataset_150.csv');
       const csvContent = fs.readFileSync(csvPath, 'utf-8');
       
       const lines = csvContent.trim().split('\n');
