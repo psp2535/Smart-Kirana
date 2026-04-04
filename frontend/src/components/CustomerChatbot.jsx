@@ -63,7 +63,7 @@ const CustomerChatbot = ({ retailerId, onOrderPlaced }) => {
 
   const getWelcomeMessage = () => {
     const messages = {
-      'en': "👋 Hello! I'm BizNova, your AI shopping assistant. I analyze our store inventory to suggest the best items for your dishes.\n\n🎯 Smart Inventory Matching:\n• Say 'chicken curry for 4 people' - I'll find suitable items from our inventory\n• Say 'remove tomatoes' to remove items\n• I match your requests to actual store items\n• You get exactly what's available in our store\n\nWhat would you like to order today?",
+      'en': "👋 Hello! I'm Smart Kirana, your AI shopping assistant. I analyze our store inventory to suggest the best items for your dishes.\n\n🎯 Smart Inventory Matching:\n• Say 'chicken curry for 4 people' - I'll find suitable items from our inventory\n• Say 'remove tomatoes' to remove items\n• I match your requests to actual store items\n• You get exactly what's available in our store\n\nWhat would you like to order today?",
       'hi': "👋 नमस्ते! मैं बिज़नोवा हूं, आपका AI शॉपिंग सहायक। मैं हमारे स्टोर की इन्वेंटरी का विश्लेषण करके आपके व्यंजनों के लिए सबसे अच्छे आइटम सुझाता हूं।\n\n🎯 स्मार्ट इन्वेंटरी मैचिंग:\n• '4 लोगों के लिए चिकन करी' कहें\n• 'टमाटर हटाएं' कहें आइटम हटाने के लिए\n• मैं आपके अनुरोधों को वास्तविक स्टोर आइटम से मिलाता हूं\n\nआप आज क्या ऑर्डर करना चाहेंगे?",
       'te': "👋 హలో! నేను బిజ్‌నోవా, మీ AI షాపింగ్ అసిస్టెంట్। నేను మా స్టోర్ ఇన్వెంటరీని విశ్లేషించి మీ వంటకాలకు అనుకూలమైన వస్తువులను సూచిస్తాను।\n\n🎯 స్మార్ట్ ఇన్వెంటరీ మ్యాచింగ్:\n• '4 మందికి చికెన్ కర్రీ' అని చెప్పండి\n• 'టమాటోలు తీసివేయండి' అని చెప్పండి\n• నేను మీ అభ్యర్థనలను వాస్తవ స్టోర్ వస్తువులతో సరిపోల్చుతాను\n\nమీరు ఈరోజు ఏమి ఆర్డర్ చేయాలనుకుంటున్నారు?",
       'ta': "👋 வணக்கம்! நான் பிஸ்நோவா, உங்கள் AI ஷாப்பிங் உதவியாளர். நான் எங்கள் கடையின் இன்வென்டரியை பகுப்பாய்வு செய்து உங்கள் உணவுகளுக்கு ஏற்ற பொருட்களை பரிந்துரைக்கிறேன்।\n\n🎯 ஸ்மார்ட் இன்வென்டரி மேட்சிங்:\n• '4 பேருக்கு சிக்கன் கறி' என்று சொல்லுங்கள்\n• 'தக்காளியை நீக்கு' என்று சொல்லுங்கள்\n• நான் உங்கள் கோரிக்கைகளை உண்மையான கடை பொருட்களுடன் பொருத்துகிறேன்\n\nஇன்று நீங்கள் என்ன ஆர்டர் செய்ய விரும்புகிறீர்கள்?",
@@ -396,7 +396,7 @@ const CustomerChatbot = ({ retailerId, onOrderPlaced }) => {
         <div className="flex items-center space-x-3">
           <Bot className="w-8 h-8" />
           <div>
-            <h3 className="font-semibold">BizNova Assistant</h3>
+            <h3 className="font-semibold">Smart Kirana Assistant</h3>
             <p className="text-xs opacity-90">AI Shopping Helper</p>
           </div>
         </div>

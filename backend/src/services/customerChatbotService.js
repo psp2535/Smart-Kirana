@@ -20,7 +20,7 @@ const pendingOrders = new Map();
  */
 class CustomerChatbotService {
   constructor() {
-    this.systemPrompt = `You are BizNova, an AI shopping assistant for Indian kirana stores.
+    this.systemPrompt = `You are Smart Kirana, an AI shopping assistant for Indian kirana stores.
     
 Your purpose is to help customers order groceries and ingredients for cooking.
 
@@ -413,7 +413,7 @@ CRITICAL:
     };
 
     // Ultra-strict system prompt for TOP 3 items only - FRESH CONTEXT EACH TIME
-    const strictPrompt = `You are BizNova, an AI shopping assistant. This is a FRESH REQUEST - ignore any previous conversations.
+    const strictPrompt = `You are Smart Kirana, an AI shopping assistant. This is a FRESH REQUEST - ignore any previous conversations.
 
 ULTRA-STRICT RULES FOR THIS SPECIFIC REQUEST:
 1. MAXIMUM 3 ITEMS ONLY - Never suggest more than 3 items

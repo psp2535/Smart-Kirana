@@ -9,7 +9,7 @@ const Message = require('../models/Message');
 
 /**
  * Sample Data Seeder
- * Creates sample data for testing the BizNova API
+ * Creates sample data for testing the Smart Kirana API
  * Run with: node src/seeders/sampleData.js
  */
 
@@ -173,7 +173,7 @@ async function seedDatabase() {
     console.log('🌱 Starting database seeding...');
 
     // Connect to MongoDB
-    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/biznova');
+    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/Smart Kirana');
     console.log('✅ Connected to MongoDB');
 
     // Clear existing data

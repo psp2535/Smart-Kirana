@@ -230,7 +230,7 @@ const AIInsights = () => {
 
             // Get feature name
             const featureName = tabs.find(t => t.id === type)?.name || 'AI Insights';
-            const fileName = `Biznova_${featureName.replace(/\s+/g, '_')}_${new Date().toLocaleDateString('en-IN').replace(/\//g, '-')}.pdf`;
+            const fileName = `Smart Kirana_${featureName.replace(/\s+/g, '_')}_${new Date().toLocaleDateString('en-IN').replace(/\//g, '-')}.pdf`;
 
             // PDF options
             const opt = {
@@ -745,7 +745,7 @@ const AIInsights = () => {
                             {tabs.find(t => t.id === type)?.name}
                         </h1>
                         <p style={{ fontSize: '16px', color: '#6B7280', marginBottom: '5px' }}>
-                            Powered by OpenAI API - Biznova
+                            Powered by OpenAI API - Smart Kirana
                         </p>
                         <p style={{ fontSize: '12px', color: '#9CA3AF' }}>
                             Generated on: {new Date(insight.metadata?.generatedAt).toLocaleString('en-IN')}

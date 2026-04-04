@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
 /**
- * User Model - Core user schema for BizNova business owners
+ * User Model - Core user schema for Smart Kirana business owners
  * Fields: name, phone, password, shop_name, language, upi_id
  * Used for authentication and business profile management
  * Future: Integration with AI services and WhatsApp communication

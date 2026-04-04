@@ -17,7 +17,7 @@ const getApiUrl = () => {
   
   // Production - Update this with your actual backend URL
   // For Render.com, it's usually: https://your-backend-service.onrender.com
-  return 'https://biznova1-bkd.onrender.com'; // Update this!
+  return 'https://Smart Kirana1-bkd.onrender.com'; // Update this!
 };
 
 // Create axios instance with base configuration
