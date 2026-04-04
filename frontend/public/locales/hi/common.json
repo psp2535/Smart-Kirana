@@ -1,0 +1,357 @@
+{
+  "common": {
+    "loading": "लोड हो रहा है...",
+    "search": "खोजें",
+    "filter": "फ़िल्टर",
+    "export": "PDF निर्यात करें",
+    "download": "डाउनलोड",
+    "edit": "संपादित करें",
+    "delete": "हटाएं",
+    "save": "सहेजें",
+    "cancel": "रद्द करें",
+    "submit": "जमा करें",
+    "add": "जोड़ें",
+    "update": "अपडेट करें",
+    "view": "देखें",
+    "close": "बंद करें",
+    "confirm": "पुष्टि करें",
+    "actions": "क्रियाएं",
+    "yes": "हां",
+    "no": "नहीं",
+    "apply": "फ़िल्टर लागू करें",
+    "clear": "फ़िल्टर साफ़ करें",
+    "active": "सक्रिय",
+    "signOut": "साइन आउट",
+    "rememberMe": "मुझे याद रखें",
+    "forgotPassword": "पासवर्ड भूल गए?",
+    "welcomeBack": "वापस स्वागत है!"
+  },
+  "nav": {
+    "dashboard": "डैशबोर्ड",
+    "sales": "बिक्री",
+    "expenses": "खर्चे",
+    "inventory": "इन्वेंटरी",
+    "customers": "ग्राहक",
+    "customerRequests": "ग्राहक अनुरोध",
+    "aiInsights": "AI अंतर्दृष्टि",
+    "analytics": "विश्लेषण",
+    "appName": "बिज़नोवा"
+  },
+  "auth": {
+    "login": {
+      "title": "बिज़नोवा में आपका स्वागत है",
+      "subtitle": "अपने खाते में साइन इन करें",
+      "retailer": "रिटेलर",
+      "customer": "ग्राहक",
+      "phoneLabel": "फ़ोन नंबर",
+      "phonePlaceholder": "अपना फ़ोन नंबर दर्ज करें",
+      "emailLabel": "ईमेल पता",
+      "emailPlaceholder": "अपना ईमेल दर्ज करें",
+      "passwordLabel": "पासवर्ड",
+      "passwordPlaceholder": "अपना पासवर्ड दर्ज करें",
+      "signInButton": "साइन इन",
+      "signingIn": "साइन इन हो रहा है...",
+      "noAccount": "खाता नहीं है?",
+      "signUpLink": "यहाँ साइन अप करें",
+      "success": "बिज़नोवा में वापस स्वागत है!"
+    },
+    "register": {
+      "title": "बिज़नोवा में शामिल हों",
+      "subtitle": "अपना खाता बनाएं",
+      "fullNameLabel": "पूरा नाम *",
+      "fullNamePlaceholder": "अपना पूरा नाम दर्ज करें",
+      "phoneLabel": "फ़ोन नंबर *",
+      "phonePlaceholder": "अपना फ़ोन नंबर दर्ज करें",
+      "emailLabel": "ईमेल पता *",
+      "emailPlaceholder": "अपना ईमेल दर्ज करें",
+      "shopNameLabel": "दुकान/व्यवसाय का नाम *",
+      "shopNamePlaceholder": "आपकी दुकान/व्यवसाय का नाम",
+      "languageLabel": "पसंदीदा भाषा",
+      "upiLabel": "UPI ID *",
+      "upiPlaceholder": "yourname@paytm",
+      "passwordLabel": "पासवर्ड *",
+      "passwordPlaceholder": "पासवर्ड बनाएं",
+      "confirmPasswordLabel": "पासवर्ड की पुष्टि करें *",
+      "confirmPasswordPlaceholder": "अपने पासवर्ड की पुष्टि करें",
+      "createAccountButton": "खाता बनाएं",
+      "creatingAccount": "खाता बनाया जा रहा है...",
+      "haveAccount": "पहले से खाता है?",
+      "signInLink": "यहाँ साइन इन करें",
+      "success": "खाता सफलतापूर्वक बनाया गया! बिज़नोवा में आपका स्वागत है"
+    }
+  },
+  "dashboard": {
+    "title": "डैशबोर्ड",
+    "subtitle": "वापस स्वागत है! यहां बताया गया है कि आज आपके व्यवसाय के साथ क्या हो रहा है।",
+    "searchPlaceholder": "लेनदेन खोजें...",
+    "stats": {
+      "netProfit": "शुद्ध लाभ",
+      "totalRevenue": "कुल राजस्व",
+      "inventoryValue": "इन्वेंटरी मूल्य",
+      "activeCustomers": "सक्रिय ग्राहक",
+      "margin": "{{value}}% मार्जिन",
+      "sales": "{{count}} बिक्री",
+      "items": "{{count}} आइटम",
+      "growing": "बढ़ रहा है"
+    },
+    "digest": {
+      "title": "दैनिक सारांश",
+      "performance": "📊 आज का प्रदर्शन",
+      "performanceText": "आपका शुद्ध लाभ ₹{{profit}} है {{margin}}% मार्जिन के साथ।",
+      "performanceGood": " शानदार काम!",
+      "performanceBad": " खर्चों की समीक्षा करने पर विचार करें।",
+      "stockAlert": "⚠️ स्टॉक अलर्ट",
+      "stockAlertText": "{{count}} आइटम कम हो रहे हैं। जल्द ही पुनः स्टॉक करने पर विचार करें।",
+      "salesUpdate": "✅ बिक्री अपडेट",
+      "salesUpdateText": "आपने {{count}} बिक्री की है जिससे ₹{{revenue}} राजस्व उत्पन्न हुआ है।",
+      "noData": "AI अंतर्दृष्टि देखने के लिए कुछ बिक्री और खर्च जोड़ें!"
+    },
+    "quickActions": {
+      "title": "त्वरित क्रियाएं",
+      "recordSale": "बिक्री रिकॉर्ड करें",
+      "addExpense": "खर्च जोड़ें",
+      "updateInventory": "इन्वेंटरी अपडेट करें",
+      "addCustomer": "ग्राहक जोड़ें"
+    }
+  },
+  "sales": {
+    "title": "बिक्री प्रबंधन",
+    "subtitle": "अपने बिक्री लेनदेन को ट्रैक और प्रबंधित करें",
+    "newSale": "नई बिक्री",
+    "recentSales": "हाल की बिक्री",
+    "table": {
+      "date": "तारीख",
+      "customer": "ग्राहक",
+      "items": "आइटम",
+      "revenue": "राजस्व",
+      "payment": "भुगतान"
+    }
+  },
+  "expenses": {
+    "title": "खर्च प्रबंधन",
+    "subtitle": "अपने व्यावसायिक खर्चों को ट्रैक और प्रबंधित करें",
+    "addExpense": "खर्च जोड़ें",
+    "recentExpenses": "हाल के खर्चे"
+  },
+  "inventory": {
+    "title": "इन्वेंटरी प्रबंधन",
+    "subtitle": "अपने इन्वेंटरी आइटम को ट्रैक और प्रबंधित करें",
+    "addItem": "आइटम जोड़ें",
+    "totalItems": "कुल आइटम",
+    "lowStockItems": "कम स्टॉक आइटम"
+  },
+  "customers": {
+    "title": "ग्राहक प्रबंधन",
+    "subtitle": "अपने ग्राहक डेटाबेस और संबंधों को प्रबंधित करें",
+    "addCustomer": "ग्राहक जोड़ें",
+    "totalCustomers": "कुल ग्राहक"
+  },
+  "analytics": {
+    "title": "विश्लेषण डैशबोर्ड",
+    "subtitle": "व्यापक व्यावसायिक अंतर्दृष्टि और प्रदर्शन मेट्रिक्स"
+  },
+  "ai": {
+    "title": "AI व्यावसायिक अंतर्दृष्टि",
+    "subtitle": "बुद्धिमान व्यावसायिक विश्लेषण के लिए OpenAI द्वारा संचालित",
+    "tabs": {
+      "demand": {
+        "name": "मांग पूर्वानुमान",
+        "description": "बिक्री रुझानों के आधार पर स्टॉक आवश्यकताओं की भविष्यवाणी करें"
+      },
+      "revenue": {
+        "name": "राजस्व अनुकूलन",
+        "description": "मूल्य निर्धारण रणनीतियों के साथ लाभ को अधिकतम करें"
+      },
+      "expense": {
+        "name": "व्यय पूर्वानुमान",
+        "description": "मौसमी विश्लेषण के साथ भविष्य की लागतों की भविष्यवाणी करें"
+      }
+    },
+    "generateButton": "AI अंतर्दृष्टि उत्पन्न करें",
+    "analyzing": "AI आपके व्यावसायिक डेटा का विश्लेषण कर रहा है...",
+    "analyzingTime": "इसमें 10-30 सेकंड लग सकते हैं",
+    "error": "अंतर्दृष्टि उत्पन्न करने में त्रुटि",
+    "tryAgain": "पुनः प्रयास करें",
+    "generated": "उत्पन्न",
+    "metadata": {
+      "salesAnalyzed": "बिक्री का विश्लेषण",
+      "inventoryItems": "इन्वेंटरी आइटम",
+      "expensesAnalyzed": "खर्चों का विश्लेषण",
+      "period": "अवधि",
+      "days": "दिन",
+      "totalRevenue": "कुल राजस्व",
+      "avgOrderValue": "औसत ऑर्डर मूल्य",
+      "totalExpenses": "कुल खर्चे",
+      "currentSeason": "वर्तमान सीजन"
+    }
+  },
+  "customerDashboard": {
+    "customer": "ग्राहक",
+    "logout": "लॉगआउट",
+    "tabs": {
+      "home": "होम",
+      "browseStores": "दुकानें ब्राउज़ करें",
+      "myOrders": "मेरे ऑर्डर"
+    },
+    "welcome": {
+      "title": "वापस स्वागत है, {{name}}!",
+      "subtitle": "आस-पास की दुकानें खोजें, हॉट डील्स पाएं, और अपने ऑर्डर को एक ही जगह पर प्रबंधित करें।"
+    },
+    "features": {
+      "nearbyShops": {
+        "title": "आस-पास की दुकानें",
+        "description": "5-50 किमी त्रिज्या के भीतर अपने पास के रिटेलर खोजें। दिशा-निर्देश और संपर्क विवरण प्राप्त करें।",
+        "badge": "GPS सक्षम"
+      },
+      "myOrders": {
+        "title": "मेरे ऑर्डर",
+        "description": "अपने ऑर्डर ट्रैक करें, स्थिति अपडेट देखें, और अपने खरीद इतिहास को प्रबंधित करें।",
+        "activeOrders": "{{count}} सक्रिय ऑर्डर",
+        "activeOrders_plural": "{{count}} सक्रिय ऑर्डर"
+      },
+      "hotDeals": {
+        "title": "हॉट डील्स 🔥",
+        "description": "समाप्त होने वाली वस्तुओं पर 75% तक बचाएं! आस-पास के रिटेलर से छूट ब्राउज़ करें।",
+        "badge": "सीमित समय के ऑफर"
+      }
+    },
+    "stats": {
+      "totalOrders": "कुल ऑर्डर",
+      "pendingOrders": "लंबित ऑर्डर",
+      "completed": "पूर्ण"
+    },
+    "recentOrders": {
+      "title": "हाल के ऑर्डर",
+      "items": "{{count}} आइटम",
+      "items_plural": "{{count}} आइटम",
+      "viewAll": "सभी ऑर्डर देखें"
+    },
+    "browseStores": {
+      "title": "उपलब्ध दुकानें",
+      "searchPlaceholder": "दुकानें खोजें...",
+      "noStores": "कोई दुकान नहीं मिली"
+    },
+    "orderForm": {
+      "title": "{{shopName}} से ऑर्डर करें",
+      "selectStore": "एक दुकान चुनें",
+      "scanList": "शॉपिंग लिस्ट स्कैन करें",
+      "viewInventory": "उपलब्ध आइटम देखें ({{count}})",
+      "hideInventory": "छुपाएं",
+      "checkingStock": "स्टॉक जांच रहे हैं...",
+      "inventoryTitle": "उपलब्ध इन्वेंटरी",
+      "noInventory": "कोई इन्वेंटरी उपलब्ध नहीं",
+      "outOfStock": "स्टॉक में नहीं",
+      "lowStock": "कम स्टॉक",
+      "inStock": "स्टॉक में",
+      "items": "आइटम",
+      "itemNamePlaceholder": "आइटम का नाम (टाइप करें या चुनें)",
+      "qtyPlaceholder": "मात्रा",
+      "max": "अधिकतम",
+      "addItem": "आइटम जोड़ें",
+      "available": "उपलब्ध",
+      "unavailable": "अनुपलब्ध",
+      "notInShop": "दुकान में नहीं",
+      "stock": "स्टॉक",
+      "only": "केवल",
+      "notAvailable": "इस दुकान में उपलब्ध नहीं",
+      "orderSummary": "ऑर्डर सारांश",
+      "cannotProceed": "आगे नहीं बढ़ सकते: कुछ आइटम अनुपलब्ध या अपर्याप्त हैं",
+      "notes": "अतिरिक्त नोट्स (वैकल्पिक)",
+      "notesPlaceholder": "कोई विशेष अनुरोध या निर्देश...",
+      "sendRequest": "अनुरोध भेजें",
+      "sending": "भेज रहे हैं...",
+      "cancel": "रद्द करें",
+      "selectRetailer": "अनुरोध भेजने के लिए एक रिटेलर चुनें"
+    },
+    "myOrdersTab": {
+      "title": "मेरे ऑर्डर",
+      "items": "आइटम",
+      "note": "नोट",
+      "subtotal": "उप-योग",
+      "tax": "कर",
+      "total": "कुल",
+      "confirmPayment": "भुगतान की पुष्टि करें",
+      "paymentConfirmed": "भुगतान की पुष्टि हो गई",
+      "method": "विधि",
+      "waitingForRetailer": "⏳ रिटेलर द्वारा आपके ऑर्डर को पूरा करने की प्रतीक्षा में...",
+      "noOrders": "अभी तक कोई ऑर्डर नहीं",
+      "noOrdersSubtitle": "अपना पहला ऑर्डर देने के लिए दुकानें ब्राउज़ करें"
+    },
+    "status": {
+      "pending": "लंबित",
+      "processing": "प्रसंस्करण",
+      "billed": "बिल किया गया - भुगतान की पुष्टि करें",
+      "payment_confirmed": "भुगतान की पुष्टि हो गई",
+      "completed": "पूर्ण",
+      "cancelled": "रद्द"
+    },
+    "billScanner": {
+      "title": "शॉपिंग लिस्ट स्कैन करें",
+      "subtitle": "छवि अपलोड करें → AI आइटम निकालता है → समीक्षा करें → ऑर्डर में जोड़ें",
+      "uploadTitle": "शॉपिंग लिस्ट या हस्तलिखित नोट अपलोड करें",
+      "uploadSubtitle": "PNG, JPG, GIF 10MB तक",
+      "selectImage": "छवि चुनें",
+      "removeImage": "छवि हटाएं",
+      "whatWeExtract": "📋 हम क्या निकालते हैं:",
+      "extractItem1": "• आपकी सूची से आइटम के नाम",
+      "extractItem2": "• आवश्यक मात्रा",
+      "extractItem3": "• ऑर्डर करने से पहले आप समीक्षा और संपादन कर सकते हैं",
+      "scanList": "सूची स्कैन करें",
+      "scanning": "स्कैन कर रहे हैं...",
+      "extracted": "✅ आपकी सूची से {{count}} आइटम निकाले गए",
+      "reviewSubtitle": "अपने ऑर्डर में जोड़ने से पहले आइटम की समीक्षा और संपादन करें",
+      "itemName": "आइटम का नाम",
+      "quantity": "मात्रा",
+      "actions": "क्रियाएं",
+      "remove": "हटाएं",
+      "back": "वापस",
+      "addToOrder": "ऑर्डर में जोड़ें",
+      "adding": "जोड़ रहे हैं..."
+    },
+    "paymentModal": {
+      "title": "भुगतान की पुष्टि करें",
+      "orderFrom": "{{shopName}} से ऑर्डर",
+      "orderTotal": "ऑर्डर कुल:",
+      "paymentMethod": "भुगतान विधि",
+      "required": "*",
+      "cash": "नकद",
+      "card": "कार्ड",
+      "upi": "UPI",
+      "bankTransfer": "बैंक ट्रांसफर",
+      "credit": "क्रेडिट (बाद में भुगतान करें)",
+      "retailerUpiId": "रिटेलर UPI ID:",
+      "copy": "कॉपी करें",
+      "sendToUpi": "इस UPI ID पर ₹{{amount}} भेजें",
+      "noUpiWarning": "⚠️ रिटेलर ने UPI ID सेट नहीं की है। कृपया दूसरी भुगतान विधि का उपयोग करें या रिटेलर से संपर्क करें।",
+      "paymentNote": "यह पुष्टि करता है कि आप अपना ऑर्डर प्राप्त करते समय चयनित विधि का उपयोग करके भुगतान करेंगे।",
+      "confirming": "पुष्टि कर रहे हैं...",
+      "confirm": "भुगतान की पुष्टि करें"
+    },
+    "toast": {
+      "noRetailersFound": "आपकी खोज से मेल खाने वाले कोई रिटेलर नहीं मिले।",
+      "failedToLoadRetailers": "रिटेलर लोड करने में विफल",
+      "errorLoadingRetailers": "रिटेलर लोड करने में त्रुटि",
+      "ordersCompleted": "{{count}} ऑर्डर पूर्ण! 🎉",
+      "ordersBilled": "{{count}} ऑर्डर बिल किए गए!",
+      "selectRetailer": "कृपया एक रिटेलर चुनें",
+      "addOneItem": "कृपया कम से कम एक आइटम जोड़ें",
+      "waitForStockCheck": "कृपया स्टॉक जांच की प्रतीक्षा करें या \"{{itemName}}\" हटाएं",
+      "itemUnavailable": "\"{{itemName}}\" अनुपलब्ध है। {{message}}",
+      "requestSent": "अनुरोध सफलतापूर्वक भेजा गया!",
+      "outOfStock": "स्टॉक में नहीं: {{items}}",
+      "insufficientStock": "अपर्याप्त स्टॉक: {{items}}",
+      "requestFailed": "अनुरोध भेजने में विफल",
+      "errorOccurred": "एक त्रुटि हुई। कृपया पुनः प्रयास करें।",
+      "selectImageFirst": "कृपया पहले एक छवि चुनें",
+      "selectRetailerFirst": "कृपया पहले एक रिटेलर चुनें",
+      "noItemsToConfirm": "पुष्टि करने के लिए कोई आइटम नहीं",
+      "itemsAdded": "{{count}} आइटम आपके ऑर्डर में जोड़े गए!",
+      "cannotConfirm": "इस ऑर्डर की पुष्टि नहीं की जा सकती। वर्तमान स्थिति: {{status}}",
+      "alreadyConfirmed": "इस ऑर्डर के लिए भुगतान की पहले ही पुष्टि हो चुकी है",
+      "selectPaymentMethod": "कृपया एक भुगतान विधि चुनें",
+      "paymentConfirmedSuccess": "✅ भुगतान की पुष्टि हो गई! रिटेलर द्वारा ऑर्डर पूरा करने की प्रतीक्षा में।",
+      "upiIdCopied": "UPI ID कॉपी की गई!",
+      "networkError": "नेटवर्क त्रुटि: {{message}}"
+    }
+  }
+}

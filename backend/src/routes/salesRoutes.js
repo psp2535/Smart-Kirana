@@ -1,13 +1,24 @@
+/**
+ * Sales Routes - API endpoints for sales management
+ * Protected routes with JWT authentication and validation
+ */
+
 const express = require('express');
 const router = express.Router();
-const { getSales, createSale, getTodaySales, deleteSale } = require('../controllers/salesController');
-const { protect } = require('../middleware/auth');
+const salesController = require('../controllers/salesController');
+const { authenticateToken } = require('../middleware/auth');
+const { validateSale } = require('../middleware/validation');
 
-router.use(protect);
+// All sales routes require authentication
+router.use(authenticateToken);
 
-router.get('/', getSales);
-router.post('/', createSale);
-router.get('/today', getTodaySales);
-router.delete('/:id', deleteSale);
+// Sales routes
+router.get('/', salesController.getAllSales);
+router.get('/analytics', salesController.getSalesAnalytics);
+router.get('/today/summary', salesController.getTodaysSales);
+router.get('/:id', salesController.getSalesById);
+router.post('/', validateSale, salesController.createSales);
+router.put('/:id', validateSale, salesController.updateSales);
+router.delete('/:id', salesController.deleteSales);
 
 module.exports = router;
