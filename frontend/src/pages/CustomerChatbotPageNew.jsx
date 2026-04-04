@@ -92,7 +92,7 @@ const CustomerChatbotPage = () => {
                 </button>
               )}
               <div>
-                <h1 className="text-xl font-semibold text-gray-900">BizNova Shopping</h1>
+                <h1 className="text-xl font-semibold text-gray-900">Smart Kirana Shopping</h1>
                 <p className="text-sm text-gray-500">
                   {selectedRetailer 
                     ? `Ordering from: ${selectedRetailer.business_name || selectedRetailer.name}`

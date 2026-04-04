@@ -1,5 +1,5 @@
 /**
- * BizNova Backend Server
+ * Smart Kirana Backend Server
  * Express.js server with MongoDB connection and API routes
  * Ready for Phase 2-6 development
  */
@@ -48,7 +48,7 @@ const allowedOrigins = [
   process.env.FRONTEND_URL,
   'http://localhost:3000',
   'http://localhost:3001',
-  'https://biznova.onrender.com',
+  'https://Smart Kirana.onrender.com',
   'https://aiforall-8d15.onrender.com',
   // Add your new frontend URL here
 ];
@@ -81,7 +81,7 @@ app.use((req, res, next) => {
 app.get('/health', (req, res) => {
   res.status(200).json({
     success: true,
-    message: 'BizNova Backend Server is running',
+    message: 'Smart Kirana Backend Server is running',
     timestamp: new Date().toISOString(),
     version: '1.0.0',
     environment: process.env.NODE_ENV || 'development'
@@ -116,7 +116,7 @@ app.use('/api/campaigns', campaignRoutes); // Discount campaigns and hot deals
 app.get('/', (req, res) => {
   res.status(200).json({
     success: true,
-    message: 'Welcome to BizNova API',
+    message: 'Welcome to Smart Kirana API',
     version: '1.0.0',
     endpoints: {
       health: '/health',
@@ -159,10 +159,9 @@ app.use((error, req, res, next) => {
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log('🚀 BizNova Backend Server Started');
+  console.log('🚀 Smart Kirana Backend Server Started');
   console.log(`📡 Server running on port ${PORT}`);
   console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
-  console.log(`📊 Database: ${process.env.MONGODB_URI || 'mongodb://localhost:27017/biznova'}`);
+  console.log(`📊 Database: ${process.env.MONGODB_URI || 'mongodb://localhost:27017/smartkirana'}`);
   console.log('✅ Ready for Phase 2-6 development');
   console.log('🔗 API Documentation: http://localhost:' + PORT);
-});

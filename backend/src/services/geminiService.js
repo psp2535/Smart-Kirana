@@ -197,7 +197,7 @@ Format with specific numbers, percentages, and actionable advice.
    */
   async chat(message, businessContext) {
     const prompt = `
-You are an AI business assistant for Biznova, a business management platform.
+You are an AI business assistant for Smart Kirana, a business management platform.
 
 BUSINESS CONTEXT:
 ${JSON.stringify(businessContext, null, 2)}

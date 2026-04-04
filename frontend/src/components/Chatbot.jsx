@@ -359,7 +359,7 @@ const Chatbot = ({ retailerId, retailerName, isCustomer = false }) => {
 
                 <div class="footer">
                     <div>Thank you for your business!</div>
-                    <div style="margin-top: 5px;">Powered by Biznova</div>
+                    <div style="margin-top: 5px;">Powered by Smart Kirana</div>
                 </div>
 
                 <script>

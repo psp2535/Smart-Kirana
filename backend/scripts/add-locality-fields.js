@@ -16,7 +16,7 @@ const addLocalityFields = async () => {
         console.log('🔄 Starting locality and GPS fields migration...');
 
         // Connect to MongoDB
-        await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/biznova');
+        await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/Smart Kirana');
         console.log('✅ Connected to MongoDB');
 
         // Update Users (Retailers) - Add locality and GPS fields if they don't exist

@@ -8,16 +8,16 @@ const DataSyncService = require('../services/dataSyncService');
 
 /**
  * @route   POST /api/chatbot/customer/chat
-C:\Users\satwi\OneDrive\Desktop\finalbiznova\Biznova>git init   
-Reinitialized existing Git repository in C:/Users/satwi/OneDrive/Desktop/finalbiznova/Biznova/.git/
+C:\Users\satwi\OneDrive\Desktop\finalSmart Kirana\Smart Kirana>git init   
+Reinitialized existing Git repository in C:/Users/satwi/OneDrive/Desktop/finalSmart Kirana/Smart Kirana/.git/
 
-C:\Users\satwi\OneDrive\Desktop\finalbiznova\Biznova>git commit -m "first commit"
+C:\Users\satwi\OneDrive\Desktop\finalSmart Kirana\Smart Kirana>git commit -m "first commit"
 On branch master
 nothing to commit, working tree clean
 
-C:\Users\satwi\OneDrive\Desktop\finalbiznova\Biznova>git add .
+C:\Users\satwi\OneDrive\Desktop\finalSmart Kirana\Smart Kirana>git add .
 
-C:\Users\satwi\OneDrive\Desktop\finalbiznova\Biznova>
+C:\Users\satwi\OneDrive\Desktop\finalSmart Kirana\Smart Kirana>
  * @desc    Process customer chat message
  * @access  Private (Customer)
  */

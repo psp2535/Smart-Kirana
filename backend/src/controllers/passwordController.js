@@ -94,7 +94,7 @@ const forgotPasswordRetailer = asyncHandler(async (req, res) => {
         <table role="presentation" style="width: 600px; background-color: #ffffff; border-radius: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
           <tr>
             <td style="padding: 40px; text-align: center; background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); border-radius: 16px 16px 0 0;">
-              <h1 style="margin: 0; color: #ffffff; font-size: 32px;">🔐 Biznova</h1>
+              <h1 style="margin: 0; color: #ffffff; font-size: 32px;">🔐 Smart Kirana</h1>
               <p style="margin: 10px 0 0 0; color: #dbeafe; font-size: 16px;">Password Reset Request</p>
             </td>
           </tr>
@@ -102,7 +102,7 @@ const forgotPasswordRetailer = asyncHandler(async (req, res) => {
             <td style="padding: 40px;">
               <h2 style="margin: 0 0 20px 0; color: #1f2937;">Hello, ${user.name}!</h2>
               <p style="margin: 0 0 16px 0; color: #4b5563; line-height: 1.6;">
-                We received a request to reset your password for your Biznova retailer account (Phone: ${phone}).
+                We received a request to reset your password for your Smart Kirana retailer account (Phone: ${phone}).
               </p>
               <p style="margin: 0 0 16px 0; color: #4b5563; line-height: 1.6;">
                 Click the button below to create a new password:
@@ -126,7 +126,7 @@ const forgotPasswordRetailer = asyncHandler(async (req, res) => {
           </tr>
           <tr>
             <td style="padding: 30px; background-color: #f9fafb; border-radius: 0 0 16px 16px; text-align: center;">
-              <p style="margin: 0; color: #9ca3af; font-size: 12px;">© ${new Date().getFullYear()} Biznova. All rights reserved.</p>
+              <p style="margin: 0; color: #9ca3af; font-size: 12px;">© ${new Date().getFullYear()} Smart Kirana. All rights reserved.</p>
             </td>
           </tr>
         </table>
@@ -157,9 +157,9 @@ const forgotPasswordRetailer = asyncHandler(async (req, res) => {
     // Production mode: Send actual email
     const transporter = createTransporter();
     await transporter.sendMail({
-      from: `"Biznova" <${process.env.EMAIL_USER}>`,
+      from: `"Smart Kirana" <${process.env.EMAIL_USER}>`,
       to: user.email,
-      subject: 'Biznova Password Reset Request',
+      subject: 'Smart Kirana Password Reset Request',
       html: emailTemplate
     });
 
@@ -239,7 +239,7 @@ const forgotPasswordCustomer = asyncHandler(async (req, res) => {
         <table role="presentation" style="width: 600px; background-color: #ffffff; border-radius: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
           <tr>
             <td style="padding: 40px; text-align: center; background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); border-radius: 16px 16px 0 0;">
-              <h1 style="margin: 0; color: #ffffff; font-size: 32px;">🔐 Biznova</h1>
+              <h1 style="margin: 0; color: #ffffff; font-size: 32px;">🔐 Smart Kirana</h1>
               <p style="margin: 10px 0 0 0; color: #dbeafe; font-size: 16px;">Password Reset Request</p>
             </td>
           </tr>
@@ -247,7 +247,7 @@ const forgotPasswordCustomer = asyncHandler(async (req, res) => {
             <td style="padding: 40px;">
               <h2 style="margin: 0 0 20px 0; color: #1f2937;">Hello, ${customer.name}!</h2>
               <p style="margin: 0 0 16px 0; color: #4b5563; line-height: 1.6;">
-                We received a request to reset your password for your Biznova customer account.
+                We received a request to reset your password for your Smart Kirana customer account.
               </p>
               <p style="margin: 0 0 16px 0; color: #4b5563; line-height: 1.6;">
                 Click the button below to create a new password:
@@ -271,7 +271,7 @@ const forgotPasswordCustomer = asyncHandler(async (req, res) => {
           </tr>
           <tr>
             <td style="padding: 30px; background-color: #f9fafb; border-radius: 0 0 16px 16px; text-align: center;">
-              <p style="margin: 0; color: #9ca3af; font-size: 12px;">© ${new Date().getFullYear()} Biznova. All rights reserved.</p>
+              <p style="margin: 0; color: #9ca3af; font-size: 12px;">© ${new Date().getFullYear()} Smart Kirana. All rights reserved.</p>
             </td>
           </tr>
         </table>
@@ -302,9 +302,9 @@ const forgotPasswordCustomer = asyncHandler(async (req, res) => {
     // Production mode: Send actual email
     const transporter = createTransporter();
     await transporter.sendMail({
-      from: `"Biznova" <${process.env.EMAIL_USER}>`,
+      from: `"Smart Kirana" <${process.env.EMAIL_USER}>`,
       to: email,
-      subject: 'Biznova Password Reset Request',
+      subject: 'Smart Kirana Password Reset Request',
       html: emailTemplate
     });
 

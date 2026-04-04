@@ -74,7 +74,7 @@ const PublicRoute = ({ children }) => {
 
 /**
  * Main App Component
- * Handles routing and layout for the BizNova application
+ * Handles routing and layout for the Smart Kirana application
  * Ready for Phase 2-6 development
  */
 function App() {
