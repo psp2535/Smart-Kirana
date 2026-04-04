@@ -138,7 +138,7 @@ const getBusinessData = async (userId) => {
         const outOfStockItems = inventory.filter(item => item.stock_qty <= 0);
 
         return {
-            inventory,
+            inventory: inventory.slice(0, 100), // Increase visibility to 100 items for better accuracy
             sales: allSales.slice(0, 50), // Return recent sales for context
             expenses: allExpenses.slice(0, 50), // Return recent expenses for context
             customerRequests,
@@ -469,15 +469,16 @@ FOR BUSINESS INSIGHTS/ANALYTICS (when user asks about sales, profit, inventory s
 {"action": "insights", "type": "sales|inventory|expenses|profit|overview", "response": "MUST be in ${languageName} with specific numbers from business data above. Be conversational and helpful, not generic. Use ₹ symbol."}
 
 CRITICAL FOR INSIGHTS:
-- If user asks about today's or yesterday's sales/profit, use the EXACT numbers from TODAY'S/YESTERDAY'S PERFORMANCE sections above
-- If user asks about today's sales and todayRevenue is 0, mention ACTUAL inventory items they can sell
-- If asking about profit, show REAL numbers from metrics above with comparison to yesterday if relevant
-- If asking about inventory, list ACTUAL items with stock levels
-- Be specific, helpful, and actionable - NOT generic
-- Use conversation history to provide contextual responses
-- ALWAYS use ₹ symbol, NEVER $
-- DO NOT use asterisks (*) for bold or emphasis - use plain text only
-- DO NOT use markdown formatting in responses - just plain text with emojis
+- If user asks about today's or yesterday's sales/profit, use the EXACT numbers from TODAY'S/YESTERDAY'S PERFORMANCE sections above.
+- If today's revenue is 0, DO NOT just say "0 sales". Say "You haven't made any sales today yet. Your current top items in stock are [list 3 items with prices]." 
+- If asking about profit, show REAL numbers: "Today's profit is ₹X (Revenue ₹Y - Expenses ₹Z)".
+- If asking about inventory, list ACTUAL items with their EXACT stock levels.
+- ALWAYS compare with yesterday if relevant: "This is [better/worse] than yesterday's profit of ₹A".
+- Be specific, helpful, and actionable - NOT generic.
+- Use conversation history to provide contextual responses.
+- ALWAYS use ₹ symbol, NEVER $.
+- DO NOT use asterisks (*) for bold or emphasis - use plain text only.
+- DO NOT use markdown formatting in responses - just plain text with emojis.
 
 FOR MISSING INFORMATION:
 {"action": "clarify", "missing": ["field1", "field2"], "response": "ask_for_specific_missing_information_in_${languageName}"}
@@ -486,13 +487,14 @@ FOR UNCLEAR REQUESTS:
 {"action": "help", "response": "helpful_guidance_in_${languageName}_about_what_i_can_do"}
 
 IMPORTANT RULES:
-1. Use EXACT item names from inventory for sales/updates
-2. For insights, provide SPECIFIC numbers from the business data above - NOT generic responses
-3. If information is missing, ask for clarification in ${languageName}
-4. For sales, validate stock availability
-5. Suggest improvements based on ACTUAL current metrics
-6. ALWAYS use ₹ (Rupee), NEVER $ (Dollar)
-7. Be conversational and helpful, not robotic
+1. Use EXACT item names from inventory for sales/updates.
+2. For insights, provide SPECIFIC numbers from the business data above - NEVER give generic or "perfect" sounding answers if the data shows 0.
+3. If information is missing, ask for clarification in ${languageName}.
+4. For sales, validate stock availability.
+5. Suggest improvements based on ACTUAL current metrics.
+6. ALWAYS use ₹ (Rupee), NEVER $ (Dollar).
+7. Be conversational and helpful, not robotic.
+8. If the user asks in ${languageName}, the entire "response" MUST be in ${languageName}.
 
 Return ONLY valid JSON, no markdown or extra text.
 `;

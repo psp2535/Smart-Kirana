@@ -77,20 +77,6 @@ const handleCustomerChat = async (userId, retailerId, message, language) => {
             return await handleOrderConfirmation(userId, retailerId, message, language);
         }
 
-        // Use OpenAI to understand customer intent and extract items
-        const completion = await openai.chat.completions.create({
-          model: 'gpt-4o-mini',
-          messages: [{
-            role: 'user',
-            content: `${prompt}\n\nCustomer message: "${message}"`
-          }],
-          temperature: 0.3,
-          max_tokens: 500,
-          response_format: { type: "json_object" }
-        });
-
-        console.log('📦 Available Inventory:', inventory.map(item => `${item.item_name}: ${item.stock_qty}`).join(', '));
-
         const intentPrompt = `
 Analyze this customer message: "${message}"
 
@@ -98,23 +84,15 @@ Available inventory (ONLY these items exist):
 ${inventory.map(item => `${item.item_name}: ${item.stock_qty} units at ₹${item.price_per_unit}/unit`).join('\n')}
 
 CRITICAL RULES:
-1. ONLY use items that EXACTLY match the inventory list above
-2. If a dish requires ingredients NOT in inventory, mark those items as available: false
-3. Do NOT make up or assume items exist
-4. Match item names EXACTLY as they appear in inventory
+1. ONLY use items that EXACTLY match the inventory list above.
+2. If a dish requires ingredients NOT in inventory, mark those items as available: false.
+3. Do NOT make up or assume items exist.
+4. Match item names EXACTLY as they appear in inventory.
+5. If the request is a dish (e.g. "chicken curry"), list its 3-5 most essential ingredients and check if they are in inventory.
 
 Task: Extract what the customer wants to buy.
 
-If it's a DISH (like "chicken curry", "biryani"):
-- List the typical ingredients needed
-- ONLY mark as available: true if the EXACT item exists in inventory above
-- If ingredient not in inventory, set available: false
-
-If it's DIRECT ITEMS (like "2 kg rice"):
-- Extract item names and quantities
-- ONLY match to items that EXACTLY exist in inventory
-
-Return ONLY a valid JSON array (no markdown, no explanation):
+Return ONLY a valid JSON array:
 [
   {
     "item_name": "exact name from inventory or ingredient name",
@@ -128,6 +106,20 @@ Return ONLY a valid JSON array (no markdown, no explanation):
 
 If message is unclear or not a shopping request, return: []
 `;
+
+        const completion = await openai.chat.completions.create({
+          model: 'gpt-4o-mini',
+          messages: [{
+            role: 'system',
+            content: "You are a precise inventory matching assistant for a retail store. You only speak in JSON."
+          }, {
+            role: 'user',
+            content: intentPrompt
+          }],
+          temperature: 0.2,
+          max_tokens: 800,
+          response_format: { type: "json_object" }
+        });
 
         const aiResponse = completion.choices[0].message.content.trim();
         console.log('🤖 AI Raw Response:', aiResponse);
