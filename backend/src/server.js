@@ -15,6 +15,11 @@ app.use(express.urlencoded({ extended: true }));
 // Connect to MongoDB
 connectDB();
 
+// Routes
+const authRoutes = require('./routes/authRoutes');
+
+app.use('/api/auth', authRoutes);
+
 // Basic route
 app.get('/', (req, res) => {
   res.json({ message: 'Smart Kirana API is running' });
