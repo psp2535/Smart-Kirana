@@ -135,3 +135,59 @@ Smart-Kirana/
 ## 🤝 Contributing & Team
 
 Developed with ❤️ by the **Smart Kirana Team**. This project is part of a mission to digitize and empower small retailers globally.
+
+
+---
+
+## 🌐 Deployment
+
+### Quick Deploy (Free Hosting)
+
+Deploy Smart Kirana to production in minutes using free tier services:
+
+**Backend:** Render.com (Free)  
+**Frontend:** Vercel (Free)  
+**Database:** MongoDB Atlas (Free)
+
+#### Quick Steps:
+
+1. **Deploy Backend to Render**
+   - Connect GitHub repo
+   - Set environment variables (MongoDB URI, JWT Secret, etc.)
+   - Deploy from `backend` folder
+
+2. **Deploy Frontend to Vercel**
+   - Import GitHub repo
+   - Set `REACT_APP_API_URL` to your Render backend URL
+   - Deploy from `frontend` folder
+
+3. **Setup MongoDB Atlas**
+   - Create free cluster
+   - Whitelist IP: `0.0.0.0/0`
+   - Get connection string
+
+📖 **Detailed Guide:** See [DEPLOYMENT.md](./DEPLOYMENT.md) for step-by-step instructions.
+
+🔍 **Pre-deployment Check:**
+```bash
+node deploy-check.js
+```
+
+---
+
+## 📄 License
+
+MIT License - See [LICENSE](LICENSE) file for details.
+
+---
+
+## 🙏 Acknowledgments
+
+- Google Gemini AI for powering intelligent features
+- MongoDB Atlas for reliable database hosting
+- Vercel & Render for seamless deployment
+- Open source community for amazing tools and libraries
+
+---
+
+**Built for hackathons. Ready for production. 🚀**
