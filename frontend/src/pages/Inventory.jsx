@@ -35,8 +35,10 @@ const Inventory = () => {
         description: '',
         category: 'Other',
         min_stock_level: 5,
-        unit: 'piece', // NEW: Default to piece for backward compatibility
-        expiry_date: null
+        unit: 'piece',
+        expiry_date: null,
+        expected_usage_days: '',
+        barcode: ''
     });
 
     useEffect(() => {
@@ -114,7 +116,9 @@ const Inventory = () => {
                 category: 'Other',
                 min_stock_level: 5,
                 unit: 'piece',
-                expiry_date: null
+                expiry_date: null,
+                expected_usage_days: '',
+                barcode: ''
             });
             fetchInventory();
         } catch (error) {
@@ -793,7 +797,9 @@ const Inventory = () => {
                                                             category: item.category || '',
                                                             min_stock_level: item.min_stock_level || 0,
                                                             unit: item.unit || 'piece',
-                                                            expiry_date: item.expiry_date ? new Date(item.expiry_date).toISOString().split('T')[0] : null
+                                                            expiry_date: item.expiry_date ? new Date(item.expiry_date).toISOString().split('T')[0] : null,
+                                                            expected_usage_days: item.expected_usage_days || '',
+                                                            barcode: item.barcode || ''
                                                         });
                                                         setShowModal(true);
                                                     }}
@@ -1258,7 +1264,9 @@ const Inventory = () => {
                                             category: '',
                                             min_stock_level: 0,
                                             unit: 'piece',
-                                            expiry_date: null
+                                            expiry_date: null,
+                                            expected_usage_days: '',
+                                            barcode: ''
                                         });
                                     }}
                                     className="text-gray-400 hover:text-gray-600"
@@ -1477,17 +1485,51 @@ const Inventory = () => {
                                     />
                                 </div>
 
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700">Expiry Date (Optional)</label>
+                                        <input
+                                            type="date"
+                                            value={formData.expiry_date || ''}
+                                            onChange={(e) => setFormData({ ...formData, expiry_date: e.target.value })}
+                                            className="input-field"
+                                            min={new Date().toISOString().split('T')[0]}
+                                        />
+                                        <p className="text-xs text-gray-500 mt-1">
+                                            AI will suggest discounts before expiry.
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700">Lifecycle (Days)</label>
+                                        <input
+                                            type="number"
+                                            value={formData.expected_usage_days}
+                                            onChange={(e) => setFormData({ ...formData, expected_usage_days: e.target.value })}
+                                            className="input-field"
+                                            min="0"
+                                            placeholder="e.g. 15 for a soap"
+                                        />
+                                        <p className="text-xs text-gray-500 mt-1">
+                                            AI instantly suggests refills.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {/* Barcode */}
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700">Expiry Date (Optional)</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-white flex items-center gap-1.5">
+                                        Barcode
+                                        <span className="text-[10px] font-normal text-neutral-400 bg-neutral-100 dark:bg-neutral-800 px-1.5 py-0.5 rounded-full">Optional · For camera scanner</span>
+                                    </label>
                                     <input
-                                        type="date"
-                                        value={formData.expiry_date || ''}
-                                        onChange={(e) => setFormData({ ...formData, expiry_date: e.target.value })}
-                                        className="input-field"
-                                        min={new Date().toISOString().split('T')[0]}
+                                        type="text"
+                                        value={formData.barcode || ''}
+                                        onChange={(e) => setFormData({ ...formData, barcode: e.target.value })}
+                                        className="input-field font-mono"
+                                        placeholder="e.g. 8901030865428"
                                     />
                                     <p className="text-xs text-gray-500 mt-1">
-                                        Set expiry date for perishable items. AI will suggest discounts for items expiring soon.
+                                        Scan or type the barcode number from the product packaging. Used by the POS camera scanner to auto-add items to cart.
                                     </p>
                                 </div>
 

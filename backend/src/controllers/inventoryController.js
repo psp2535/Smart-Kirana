@@ -110,8 +110,10 @@ const inventoryController = {
         min_stock_level, 
         category, 
         description,
-        unit, // NEW: Support for kg, litre, piece
-        expiry_date
+        unit,
+        expiry_date,
+        expected_usage_days,
+        barcode
       } = req.body;
 
       // Validate quantity
@@ -188,7 +190,9 @@ const inventoryController = {
         category: category || 'Other',
         description: description || '',
         unit: unit || 'piece', // Default to piece for backward compatibility
-        expiry_date: expiry_date || null
+        expiry_date: expiry_date || null,
+        expected_usage_days: expected_usage_days || null,
+        barcode: barcode || null
       });
 
       await item.save();
@@ -237,8 +241,10 @@ const inventoryController = {
         min_stock_level, 
         category, 
         description,
-        unit, // NEW: Support for kg, litre, piece
-        expiry_date
+        unit,
+        expiry_date,
+        expected_usage_days,
+        barcode
       } = req.body;
 
       // Validate quantity if provided
@@ -256,6 +262,8 @@ const inventoryController = {
 
       // Handle backward compatibility and validation
       let updateData = { item_name, min_stock_level, category, description, unit, expiry_date };
+      if (expected_usage_days !== undefined) updateData.expected_usage_days = expected_usage_days || null;
+      if (barcode !== undefined) updateData.barcode = barcode || null;
       
       // Normalize stock quantity if provided
       if (stock_qty !== undefined && stock_qty !== null && stock_qty !== '') {

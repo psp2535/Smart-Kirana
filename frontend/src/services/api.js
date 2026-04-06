@@ -223,6 +223,12 @@ export const customersAPI = {
         return response.data;
     },
 
+    // Get customer AI insights by phone
+    getInsights: async (phone) => {
+        const response = await api.get('/customers/insights', { params: { phone } });
+        return response.data;
+    },
+
     // Create new customer
     createCustomer: async (customerData) => {
         const response = await api.post('/customers', customerData);
@@ -490,6 +496,15 @@ export const wholesalerAPI = {
     // Apply discount to product
     applyDiscount: async (discountData) => {
         const response = await api.post('/wholesalers/apply-discount', discountData);
+        return response.data;
+    }
+};
+
+// Vision API calls
+export const visionAPI = {
+    // Identify product from image
+    identifyProduct: async (visionData) => {
+        const response = await api.post('/vision/identify', visionData);
         return response.data;
     }
 };

@@ -1,97 +1,100 @@
-# Smart Kirana - AI-Powered Business Management
+# 🚀 Smart Kirana - AI-Powered Retail Operating System
 
-> Smart retail management with AI automation for small businesses
+> **Empowering small retailers with the intelligence of Google Gemini.**  
+> Smart Kirana is a comprehensive, AI-driven platform designed to modernize inventory, sales, and customer engagement for small businesses.
+
+---
 
 ## 🎯 Overview
 
-Smart Kirana is an AI-powered platform designed for small retailers to manage inventory, sales, and customer operations efficiently. Built with modern web technologies to provide a seamless experience.
+Smart Kirana transforms traditional retail into a data-driven business. By leveraging **Google Gemini AI**, the platform automates manual tasks like bill scanning, provides deep business insights, and offers personalized experiences for customers and wholesalers alike.
 
-## ✨ Features
+## ✨ Key Features
 
-- 🔐 User Authentication (JWT-based)
-- 📦 Inventory Management (Add, Update, Delete items)
-- 💰 Sales Tracking with auto inventory updates
-- 📊 Real-time Dashboard with business metrics
-- 🔔 Low stock alerts
-- 📱 Responsive design for mobile and desktop
+### 🤖 AI Capabilities (Powered by Google Gemini)
+- **Smart Bill Scanner**: Instant inventory and sales entry via vision-based scanning.
+- **Retailer AI Copilot**: A conversational assistant for managing tasks, checking stock, and getting business advice.
+- **Customer AI Assistant**: Personalized product discovery and query resolution for shoppers.
+- **AI Business Insights**: Automated analysis of sales trends, profit margins, and inventory forecasting.
+- **Conversational Actions**: Execute complex business operations using natural language.
+
+### 🏢 Retailer Management
+- **Dashboard**: Real-time metrics including total sales, profits, and low-stock alerts.
+- **Inventory Control**: Comprehensive tracking with automated updates and historical logs.
+- **Sales & POS**: Integrated point-of-sale with QR/Barcode scanning (ZXing).
+- **Expense Tracking**: Detailed categorization and spending analysis.
+- **Campaign Manager**: Create and manage AI-driven discount campaigns and "Hot Deals."
+
+### 🛍️ Customer Experience
+- **Personalized Dashboards**: Shoppers can track purchases, discover deals, and find nearby shops.
+- **Interactive Discovery**: AI-powered search and recommendation engine.
+- **Loyalty & Deals**: Real-time notifications for store-specific offers and campaigns.
+
+### 🤝 Wholesaler Ecosystem
+- **Wholesaler Discovery**: Help retailers find and connect with suppliers.
+- **Seamless Ordering**: Integrated order management and inventory synchronization.
+- **Supplier Analytics**: AI-driven inventory and order predictions for wholesalers.
+
+---
 
 ## 🛠️ Tech Stack
 
+### AI Engine
+- **Google Gemini 2.5 Flash**: Core vision and natural language processing engine.
+- **OpenAI**: Secondary/Fallback engine for specialized tasks.
+
 ### Frontend
-- React 18
-- Tailwind CSS
-- React Router
-- Axios
-- Lucide Icons
+- **React 18**: Component-based UI architecture.
+- **Tailwind CSS**: Modern, responsive styling.
+- **Recharts**: Rich data visualization and analytics charts.
+- **i18next**: Multi-language support (i18n).
+- **Lucide React**: Premium icon set.
+- **ZXing**: Vision-based QR and Barcode scanning.
 
 ### Backend
-- Node.js + Express
-- MongoDB + Mongoose
-- JWT Authentication
-- bcrypt for password hashing
+- **Node.js + Express**: Robust and scalable API foundation.
+- **MongoDB + Mongoose**: Flexible NoSQL data modeling.
+- **JWT + bcrypt**: Secure authentication and data protection.
+- **Multer & Nodemailer**: Handle media uploads and communication.
+
+---
 
 ## 🚀 Getting Started
 
 ### Prerequisites
 - Node.js 18+
-- MongoDB (local or Atlas)
+- MongoDB (Local instance or Atlas)
+- Google AI (Gemini) API Key
 
 ### Installation
 
-1. Clone the repository
-```bash
-git clone https://github.com/psp2535/Smart-Kirana.git
-cd Smart-Kirana
-```
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/psp2535/Smart-Kirana.git
+   cd Smart-Kirana
+   ```
 
-2. Install dependencies
-```bash
-# Install root dependencies
-npm install
+2. Install all dependencies:
+   ```bash
+   # From root
+   npm install
+   # Backend dependencies
+   cd backend && npm install
+   # Frontend dependencies
+   cd ../frontend && npm install
+   ```
 
-# Install backend dependencies
-cd backend
-npm install
+3. Configure Environment Variables:
+   - Create `.env` in the `backend/` directory with: `MONGODB_URI`, `GEMINI_API_KEY`, `PORT`, `JWT_SECRET`.
+   - Create `.env` in the `frontend/` directory with: `REACT_APP_API_URL`.
 
-# Install frontend dependencies
-cd ../frontend
-npm install
-```
+4. Start Development Servers:
+   ```bash
+   # From root
+   npm run dev
+   ```
 
-3. Configure environment variables
-
-Backend (.env):
-```env
-MONGODB_URI=mongodb://localhost:27017/smartkirana
-PORT=5000
-JWT_SECRET=your_secret_key_here
-NODE_ENV=development
-```
-
-Frontend (.env):
-```env
-REACT_APP_API_URL=http://localhost:5000
-```
-
-4. Start the application
-
-```bash
-# From root directory - runs both frontend and backend
-npm run dev
-
-# Or run separately:
-# Terminal 1 - Backend
-cd backend
-npm run dev
-
-# Terminal 2 - Frontend
-cd frontend
-npm start
-```
-
-5. Access the application
-- Frontend: http://localhost:3000
-- Backend API: http://localhost:5000
+---
 
 ## 📁 Project Structure
 
@@ -99,53 +102,36 @@ npm start
 Smart-Kirana/
 ├── backend/
 │   ├── src/
-│   │   ├── config/         # Database configuration
-│   │   ├── controllers/    # Request handlers
-│   │   ├── middleware/     # Auth middleware
-│   │   ├── models/         # MongoDB models
-│   │   ├── routes/         # API routes
-│   │   └── server.js       # Express app
-│   └── package.json
+│   │   ├── controllers/    # Request handlers (AI, BillScan, Chatbot, etc.)
+│   │   ├── services/       # Core business logic (Gemini integration, etc.)
+│   │   ├── models/         # MongoDB schemas (User, Product, Sale, Expense)
+│   │   ├── routes/         # API endpoints (ai, auth, inventory, sales)
+│   │   └── server.js       # Main server entry point
 ├── frontend/
-│   ├── public/
 │   ├── src/
-│   │   ├── components/     # Reusable components
-│   │   ├── contexts/       # React contexts
-│   │   ├── pages/          # Page components
-│   │   ├── services/       # API services
-│   │   └── App.jsx
-│   └── package.json
+│   │   ├── components/     # UI components (AI Chatbots, Charts, POS)
+│   │   ├── pages/          # Full-page views (Dashboard, Insights, WholesalerHub)
+│   │   ├── services/       # Frontend API communication
+│   │   └── contexts/       # Global state management (Auth, Theme)
 └── package.json
 ```
 
-## 🔑 API Endpoints
+---
 
-### Authentication
-- POST `/api/auth/register` - Register new user
-- POST `/api/auth/login` - Login user
-- GET `/api/auth/profile` - Get user profile
+## 🔑 Core API Endpoints
 
-### Inventory
-- GET `/api/inventory` - Get all items
-- POST `/api/inventory` - Add new item
-- PUT `/api/inventory/:id` - Update item
-- DELETE `/api/inventory/:id` - Delete item
-- GET `/api/inventory/low-stock` - Get low stock items
+### 🤖 AI & Vision
+- `POST /api/vision/scan` - Process bill images via Gemini.
+- `POST /api/chatbot/query` - Interact with the Retailer AI assistant.
+- `GET /api/ai-insights` - Retrieve AI-generated business analytics.
 
-### Sales
-- GET `/api/sales` - Get all sales
-- POST `/api/sales` - Create new sale
-- GET `/api/sales/today` - Get today's sales
-- DELETE `/api/sales/:id` - Delete sale
+### 📦 Commerce
+- `GET /api/inventory` - Manage products and stock levels.
+- `POST /api/sales` - Record transactions and update inventory.
+- `GET /api/wholesalers` - Discover and interact with wholesalers.
 
-## 🤝 Contributing
+---
 
-This project was developed for a hackathon. Contributions are welcome!
+## 🤝 Contributing & Team
 
-## 📄 License
-
-MIT License
-
-## 👥 Team
-
-Developed with ❤️ by Smart Kirana Team
+Developed with ❤️ by the **Smart Kirana Team**. This project is part of a mission to digitize and empower small retailers globally.

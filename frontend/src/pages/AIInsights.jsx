@@ -18,6 +18,7 @@ import {
 import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { aiInsightsAPI, chatbotAPI } from '../services/api';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import html2pdf from 'html2pdf.js';
 import { useTranslation } from 'react-i18next';
 
@@ -124,28 +125,40 @@ const AIInsights = () => {
             id: 'demand',
             name: t('ai.tabs.demand.name'),
             icon: TrendingUp,
-            color: 'neutral',
+            gradient: 'from-violet-500 to-indigo-600',
+            lightBg: 'bg-violet-50 dark:bg-violet-900/20',
+            accent: 'text-violet-600 dark:text-violet-400',
+            border: 'border-violet-200 dark:border-violet-800/40',
             description: t('ai.tabs.demand.description')
         },
         {
             id: 'revenue',
             name: t('ai.tabs.revenue.name'),
             icon: DollarSign,
-            color: 'neutral',
+            gradient: 'from-emerald-500 to-teal-600',
+            lightBg: 'bg-emerald-50 dark:bg-emerald-900/20',
+            accent: 'text-emerald-600 dark:text-emerald-400',
+            border: 'border-emerald-200 dark:border-emerald-800/40',
             description: t('ai.tabs.revenue.description')
         },
         {
             id: 'expense',
             name: t('ai.tabs.expense.name'),
-            icon: Calendar,
-            color: 'neutral',
+            icon: TrendingDown,
+            gradient: 'from-orange-500 to-rose-600',
+            lightBg: 'bg-orange-50 dark:bg-orange-900/20',
+            accent: 'text-orange-600 dark:text-orange-400',
+            border: 'border-orange-200 dark:border-orange-800/40',
             description: t('ai.tabs.expense.description')
         },
         {
             id: 'festival',
             name: 'Festival Planning',
             icon: PartyPopper,
-            color: 'neutral',
+            gradient: 'from-pink-500 to-fuchsia-600',
+            lightBg: 'bg-pink-50 dark:bg-pink-900/20',
+            accent: 'text-pink-600 dark:text-pink-400',
+            border: 'border-pink-200 dark:border-pink-800/40',
             description: 'AI-powered festival demand forecasting for better inventory planning'
         }
     ];
@@ -635,11 +648,19 @@ const AIInsights = () => {
                         </h3>
                         <div className="prose prose-sm max-w-none">
                             <ReactMarkdown
+                                remarkPlugins={[remarkGfm]}
                                 components={{
                                     p: ({ node, ...props }) => <p className="text-black dark:text-white mb-2" {...props} />,
                                     ul: ({ node, ...props }) => <ul className="list-disc list-inside space-y-1 text-black dark:text-white" {...props} />,
+                                    ol: ({ node, ...props }) => <ol className="list-decimal list-inside space-y-1 text-black dark:text-white" {...props} />,
                                     li: ({ node, ...props }) => <li className="text-black dark:text-white" {...props} />,
                                     strong: ({ node, ...props }) => <strong className="font-semibold text-black dark:text-white" {...props} />,
+                                    table: ({ node, ...props }) => <div className="overflow-x-auto my-4"><table className="min-w-full border-collapse rounded-xl overflow-hidden text-sm" {...props} /></div>,
+                                    thead: ({ node, ...props }) => <thead className="bg-neutral-900 dark:bg-neutral-700 text-white" {...props} />,
+                                    tbody: ({ node, ...props }) => <tbody className="divide-y divide-neutral-100 dark:divide-neutral-800" {...props} />,
+                                    tr: ({ node, ...props }) => <tr className="even:bg-neutral-50 dark:even:bg-neutral-800/40 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors" {...props} />,
+                                    th: ({ node, ...props }) => <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider" {...props} />,
+                                    td: ({ node, ...props }) => <td className="px-4 py-3 text-gray-700 dark:text-neutral-300" {...props} />,
                                 }}
                             >
                                 {festivalData.message}
@@ -727,110 +748,152 @@ const AIInsights = () => {
                     </div>
                 </div>
 
-                <div className="bg-white border border-gray-200 rounded-lg p-6">
-                    <div className="flex items-center justify-between mb-6">
-                        <div className="flex items-center">
-                            <Brain className="h-6 w-6 text-black dark:text-white mr-2" />
-                            <h3 className="text-lg font-bold text-gray-900 dark:text-white">AI Analysis & Insights</h3>
-                        </div>
-                        <div className="flex items-center space-x-3">
-                            {contentRef && (
-                                <button
-                                    onClick={() => exportToPDF(type)}
-                                    disabled={exportingPDF}
-                                    className="text-sm bg-black dark:bg-white text-white dark:text-black px-3 py-1.5 rounded-lg hover:opacity-80 flex items-center disabled:opacity-50 transition-all"
-                                >
-                                    {exportingPDF ? <Loader2 className="h-4 w-4 mr-1 animate-spin" /> : <Download className="h-4 w-4 mr-1" />}
-                                    {exportingPDF ? 'Exporting...' : 'Export PDF'}
-                                </button>
-                            )}
-                            <button
-                                onClick={() => generateInsight(type)}
-                                className="text-sm font-semibold text-black dark:text-white hover:opacity-70 flex items-center transition-all bg-neutral-100 dark:bg-neutral-800 px-3 py-1.5 rounded-lg border border-neutral-200 dark:border-neutral-700"
+                {type === 'festival' ? renderFestivalForecast() : (
+                    <>
+                        {renderMetadata(insight.metadata)}
+                        <div className="prose prose-sm max-w-none">
+                            <ReactMarkdown
+                                remarkPlugins={[remarkGfm]}
+                                components={{
+                                    h1: ({ node, ...props }) => <h1 className="text-2xl font-bold text-gray-900 dark:text-white mt-6 mb-3" {...props} />,
+                                    h2: ({ node, ...props }) => <h2 className="text-xl font-bold text-gray-900 dark:text-white mt-6 mb-3 p-3 bg-neutral-100 dark:bg-neutral-800 rounded-lg border-l-4 border-black dark:border-white" {...props} />,
+                                    h3: ({ node, ...props }) => <h3 className="text-lg font-bold text-gray-900 dark:text-white mt-4 mb-2" {...props} />,
+                                    p: ({ node, ...props }) => <p className="text-gray-700 dark:text-neutral-300 mb-3" {...props} />,
+                                    ul: ({ node, ...props }) => <ul className="list-disc list-inside space-y-1 mb-4" {...props} />,
+                                    ol: ({ node, ...props }) => <ol className="list-decimal list-inside space-y-1 mb-4" {...props} />,
+                                    li: ({ node, ...props }) => <li className="text-gray-700 dark:text-neutral-300" {...props} />,
+                                    strong: ({ node, ...props }) => <strong className="font-bold text-black dark:text-white bg-neutral-100 dark:bg-neutral-800 px-1 rounded" {...props} />,
+                                    table: ({ node, ...props }) => <div className="overflow-x-auto my-4"><table className="min-w-full border-collapse rounded-xl overflow-hidden text-sm" {...props} /></div>,
+                                    thead: ({ node, ...props }) => <thead className="bg-neutral-900 dark:bg-neutral-700 text-white" {...props} />,
+                                    tbody: ({ node, ...props }) => <tbody className="divide-y divide-neutral-100 dark:divide-neutral-800" {...props} />,
+                                    tr: ({ node, ...props }) => <tr className="even:bg-neutral-50 dark:even:bg-neutral-800/40 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors" {...props} />,
+                                    th: ({ node, ...props }) => <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider" {...props} />,
+                                    td: ({ node, ...props }) => <td className="px-4 py-3 text-gray-700 dark:text-neutral-300" {...props} />,
+                                    blockquote: ({ node, ...props }) => <blockquote className="border-l-4 border-neutral-300 dark:border-neutral-700 pl-4 italic text-gray-600 dark:text-neutral-400 my-3" {...props} />,
+                                    code: ({ node, inline, ...props }) => inline
+                                        ? <code className="bg-neutral-100 dark:bg-neutral-800 px-1.5 py-0.5 rounded text-xs font-mono" {...props} />
+                                        : <code className="block bg-neutral-100 dark:bg-neutral-900 p-4 rounded-lg text-xs font-mono overflow-x-auto" {...props} />,
+                                }}
                             >
-                                <RefreshCw className="h-4 w-4 mr-1" />
-                                Regenerate
-                            </button>
+                                {insight.analysis}
+                            </ReactMarkdown>
                         </div>
-                    </div>
-
-                    {type === 'festival' ? renderFestivalForecast() : (
-                        <>
-                            {renderMetadata(insight.metadata)}
-                            
-                            <div className="prose prose-sm max-w-none">
-                                <ReactMarkdown
-                                    components={{
-                                        h1: ({ node, ...props }) => <h1 className="text-2xl font-bold text-gray-900 dark:text-white mt-6 mb-3" {...props} />,
-                                        h2: ({ node, ...props }) => <h2 className="text-xl font-bold text-gray-900 dark:text-white mt-6 mb-3 p-3 bg-neutral-100 dark:bg-neutral-800 rounded-lg border-l-4 border-black dark:border-white" {...props} />,
-                                        h3: ({ node, ...props }) => <h3 className="text-lg font-bold text-gray-900 dark:text-white mt-4 mb-2" {...props} />,
-                                        p: ({ node, ...props }) => <p className="text-gray-700 dark:text-neutral-300 mb-3" {...props} />,
-                                        ul: ({ node, ...props }) => <ul className="list-disc list-inside space-y-1 mb-4" {...props} />,
-                                        li: ({ node, ...props }) => <li className="text-gray-700 dark:text-neutral-300" {...props} />,
-                                        strong: ({ node, ...props }) => <strong className="font-bold text-black dark:text-white bg-neutral-100 dark:bg-neutral-800 px-1 rounded" {...props} />,
-                                    }}
-                                >
-                                    {insight.analysis}
-                                </ReactMarkdown>
-                            </div>
-                        </>
-                    )}
-                </div>
+                    </>
+                )}
             </div>
         );
     };
 
+    const activeTabConfig = tabs.find(t => t.id === activeTab);
+
     return (
         <div className="space-y-6">
-            {/* Header */}
-            <div className="flex items-center justify-between">
+            {/* Page Header */}
+            <div className="flex items-start justify-between">
                 <div>
-                    <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center">
-                        <Brain className="h-8 w-8 mr-3 text-black dark:text-white" />
+                    <h1 className="text-3xl font-black tracking-tight text-gray-900 dark:text-white flex items-center gap-3">
+                        <div className="p-2 rounded-2xl bg-black dark:bg-white">
+                            <Brain className="h-7 w-7 text-white dark:text-black" />
+                        </div>
                         {t('ai.title')}
                     </h1>
-                    <p className="text-gray-600 mt-1">
-                        {t('ai.subtitle')}
-                    </p>
+                    <p className="text-sm text-neutral-500 mt-2 font-medium">{t('ai.subtitle')}</p>
+                </div>
+                <div className="hidden md:flex items-center gap-2 text-xs font-bold text-neutral-400 uppercase tracking-widest">
+                    <span className="flex h-2 w-2 relative">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                    </span>
+                    AI Engine Live
                 </div>
             </div>
 
-            {/* Feature Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Feature Selector Cards — 2 columns on mobile, 4 on desktop */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                 {tabs.map((tab) => {
                     const Icon = tab.icon;
+                    const isActive = activeTab === tab.id;
+                    const isReady = !!insights[tab.id];
                     return (
-                        <div
+                        <button
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id)}
-                            className={`card cursor-pointer transition-all ${activeTab === tab.id
-                                ? `ring-2 ring-${tab.color}-500 border-${tab.color}-200 bg-${tab.color}-50`
-                                : 'hover:shadow-md'
-                                }`}
+                            className={`text-left rounded-[1.5rem] p-5 transition-all border-2 focus:outline-none group ${
+                                isActive
+                                    ? `${tab.lightBg} ${tab.border} shadow-lg scale-[1.02]`
+                                    : 'bg-white dark:bg-neutral-900 border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700 hover:shadow-md'
+                            }`}
                         >
-                            <div className="flex items-start">
-                                <div className={`p-3 bg-${tab.color}-100 rounded-lg`}>
-                                    <Icon className={`h-6 w-6 text-${tab.color}-600`} />
-                                </div>
-                                <div className="ml-4 flex-1">
-                                    <h3 className="font-semibold text-gray-900 dark:text-white">{tab.name}</h3>
-                                    <p className="text-sm text-gray-600 mt-1">{tab.description}</p>
-                                    {insights[tab.id] && (
-                                        <div className="mt-2 flex items-center text-xs text-black dark:text-white">
-                                            <CheckCircle className="h-3 w-3 mr-1" />
-                                            {t('ai.generated')}
-                                        </div>
-                                    )}
-                                </div>
+                            {/* Icon badge */}
+                            <div className={`inline-flex p-2.5 rounded-xl mb-3 bg-gradient-to-br ${tab.gradient}`}>
+                                <Icon className="h-5 w-5 text-white" />
                             </div>
-                        </div>
+                            <p className="text-sm font-bold text-gray-900 dark:text-white leading-tight">{tab.name}</p>
+                            <p className="text-[10px] text-neutral-500 mt-0.5 leading-snug line-clamp-2">{tab.description}</p>
+                            {/* Status badge */}
+                            <div className="mt-3">
+                                {isReady ? (
+                                    <span className={`inline-flex items-center gap-1 text-[9px] font-extrabold uppercase tracking-widest px-2 py-0.5 rounded-full ${tab.lightBg} ${tab.accent}`}>
+                                        <CheckCircle className="h-2.5 w-2.5" /> Ready
+                                    </span>
+                                ) : loading[tab.id] ? (
+                                    <span className="inline-flex items-center gap-1 text-[9px] font-extrabold uppercase tracking-widest px-2 py-0.5 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-500">
+                                        <Loader2 className="h-2.5 w-2.5 animate-spin" /> Analyzing...
+                                    </span>
+                                ) : (
+                                    <span className="inline-flex items-center gap-1 text-[9px] font-extrabold uppercase tracking-widest px-2 py-0.5 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-400">
+                                        <Sparkles className="h-2.5 w-2.5" /> Tap to generate
+                                    </span>
+                                )}
+                            </div>
+                        </button>
                     );
                 })}
             </div>
 
-            {/* Main Content Area */}
-            <div className="card min-h-[500px]">
-                {renderInsightContent(activeTab)}
+            {/* Main Content Panel */}
+            <div className="bg-white dark:bg-neutral-900 rounded-[2rem] border border-neutral-200 dark:border-neutral-800 shadow-sm overflow-hidden">
+                {/* Gradient Panel Header */}
+                {activeTabConfig && (
+                    <div className={`bg-gradient-to-r ${activeTabConfig.gradient} p-6`}>
+                        <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                                <div className="p-2.5 rounded-xl bg-white/20">
+                                    {React.createElement(activeTabConfig.icon, { className: 'h-6 w-6 text-white' })}
+                                </div>
+                                <div>
+                                    <h2 className="text-xl font-black text-white">{activeTabConfig.name}</h2>
+                                    <p className="text-[11px] text-white/70 font-medium mt-0.5">{activeTabConfig.description}</p>
+                                </div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                {insights[activeTab] && (
+                                    <button
+                                        onClick={() => exportToPDF(activeTab)}
+                                        disabled={exportingPDF || activeTab === 'festival'}
+                                        className="text-xs bg-white/20 hover:bg-white/30 text-white px-3 py-1.5 rounded-xl flex items-center gap-1.5 font-semibold transition-all disabled:opacity-40"
+                                    >
+                                        {exportingPDF ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Download className="h-3.5 w-3.5" />}
+                                        Export PDF
+                                    </button>
+                                )}
+                                <button
+                                    onClick={() => generateInsight(activeTab)}
+                                    disabled={loading[activeTab]}
+                                    className="text-xs bg-white/20 hover:bg-white/30 text-white px-3 py-1.5 rounded-xl flex items-center gap-1.5 font-semibold transition-all disabled:opacity-40"
+                                >
+                                    {loading[activeTab] ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <RefreshCw className="h-3.5 w-3.5" />}
+                                    {insights[activeTab] ? 'Regenerate' : 'Generate'}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* Content Body */}
+                <div className="p-6 min-h-[400px]">
+                    {renderInsightContent(activeTab)}
+                </div>
             </div>
         </div>
     );

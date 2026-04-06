@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Plus, Search, Filter, Download, Edit, Trash2, Eye, CheckCircle, AlertCircle, X } from 'lucide-react';
-import { salesAPI, inventoryAPI } from '../services/api';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Plus, Search, Filter, Download, Edit, Trash2, Eye, CheckCircle, AlertCircle, X, UserCheck, Star, RefreshCw, Zap, Cpu, Volume2, PlusCircle, Camera } from 'lucide-react';
+import CameraScanner from '../components/CameraScanner';
+import { salesAPI, inventoryAPI, customersAPI } from '../services/api';
 import toast, { Toaster } from 'react-hot-toast';
 import html2pdf from 'html2pdf.js';
 import { useTranslation } from 'react-i18next';
@@ -25,6 +26,11 @@ const Sales = () => {
         salesCount: 0,
         totalItems: 0
     });
+    const [customerInsights, setCustomerInsights] = useState(null);
+    const [isInsightsLoading, setIsInsightsLoading] = useState(false);
+    const [showInsightsPanel, setShowInsightsPanel] = useState(false);
+    const [enableVoice, setEnableVoice] = useState(true);
+    const [showScanner, setShowScanner] = useState(false);
     const [formData, setFormData] = useState({
         items: [{ item_name: '', quantity: 1, price_per_unit: 0 }],
         payment_method: 'Cash',
@@ -192,6 +198,91 @@ const Sales = () => {
         const item = inventory.find(inv => inv.item_name === itemName);
         return item ? item.stock_qty : 0;
     };
+
+    const fetchCustomerInsights = async (phone) => {
+        if (!phone || phone.length < 10) {
+            setCustomerInsights(null);
+            setShowInsightsPanel(false);
+            return;
+        }
+        try {
+            setIsInsightsLoading(true);
+            setShowInsightsPanel(true);
+            const response = await customersAPI.getInsights(phone);
+            if (response.success && response.data) {
+                setCustomerInsights(response.data);
+                if (enableVoice && response.data.memory_score > 30 && response.data.name !== 'New Customer') {
+                    try {
+                        const categories = response.data.bought_often.slice(0,2).map(i => i.item_name).join(' and ');
+                        const msg = new SpeechSynthesisUtterance(`Customer recognized: ${response.data.name}.`);
+                        window.speechSynthesis.speak(msg);
+                    } catch(err) {}
+                }
+            } else {
+                setCustomerInsights({ name: 'New Customer', phone: phone, memory_score: 0, bought_often: [], due_for_refill: [], try_this: [], combos: [] });
+            }
+        } catch (error) {
+            setCustomerInsights({ name: 'New Customer', phone: phone, memory_score: 0, bought_often: [], due_for_refill: [], try_this: [], combos: [] });
+        } finally {
+            setIsInsightsLoading(false);
+        }
+    };
+
+    const handlePhoneChange = (e) => {
+        const val = e.target.value;
+        setFormData({ ...formData, customer_phone: val });
+        if (val.length >= 10) {
+             fetchCustomerInsights(val);
+        } else {
+             setCustomerInsights(null);
+             setShowInsightsPanel(false);
+        }
+    };
+
+    const addItemFromInsight = (insightItem) => {
+        const newItem = {
+            item_name: insightItem.item_name,
+            quantity: 1, 
+            price_per_unit: insightItem.price || 0
+        };
+        let currentItems = [...formData.items];
+        if (currentItems.length === 1 && !currentItems[0].item_name) {
+            setFormData({ ...formData, items: [newItem] });
+            return;
+        }
+        const existingIndex = currentItems.findIndex(i => i.item_name === insightItem.item_name);
+        if (existingIndex >= 0) {
+            currentItems[existingIndex].quantity += 1;
+            setFormData({ ...formData, items: currentItems });
+        } else {
+            setFormData({ ...formData, items: [...currentItems, newItem] });
+        }
+    };
+
+    // Handle item scanned via camera — add to current bill
+    const handleScanItem = useCallback((inventoryItem) => {
+        const newItem = {
+            item_name: inventoryItem.item_name,
+            quantity: 1,
+            price_per_unit: inventoryItem.price_per_unit || inventoryItem.selling_price || 0,
+        };
+        setFormData(prev => {
+            const currentItems = [...prev.items];
+            // Replace empty first row if it's blank
+            if (currentItems.length === 1 && !currentItems[0].item_name) {
+                return { ...prev, items: [newItem] };
+            }
+            // Increment qty if already in cart
+            const idx = currentItems.findIndex(i => i.item_name === inventoryItem.item_name);
+            if (idx >= 0) {
+                currentItems[idx] = { ...currentItems[idx], quantity: currentItems[idx].quantity + 1 };
+                return { ...prev, items: currentItems };
+            }
+            return { ...prev, items: [...currentItems, newItem] };
+        });
+        // Make sure sale modal is open
+        setShowModal(true);
+    }, []);
 
     const calculateTotal = () => {
         return formData.items.reduce((total, item) => {
@@ -712,30 +803,56 @@ const Sales = () => {
             )}
             </div>
 
+            {/* Camera Scanner Modal */}
+            {showScanner && (
+                <CameraScanner
+                    inventory={inventory}
+                    onItemScanned={handleScanItem}
+                    onClose={() => setShowScanner(false)}
+                />
+            )}
+
             {/* Sale Modal */}
             {showModal && (
                 <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-                    <div className="relative top-20 mx-auto p-5 border border-gray-200 dark:border-gray-700 w-11/12 md:w-3/4 lg:w-1/2 shadow-lg rounded-md bg-white dark:bg-gray-800">
-                        <div className="mt-3">
+                    <div className={`relative top-5 mx-auto p-5 border border-gray-200 dark:border-gray-700 shadow-lg rounded-md bg-white dark:bg-gray-800 transition-all duration-300 max-h-[95vh] overflow-y-auto ${showInsightsPanel ? 'w-11/12 lg:w-[95%] xl:w-[90%]' : 'w-11/12 md:w-3/4 lg:w-1/2'}`}>
+                        <div className="mt-3 flex flex-col lg:flex-row gap-8">
+                            <div className="flex-1 min-w-0">
                             <div className="flex justify-between items-center mb-4">
                                 <h3 className="text-lg font-medium text-gray-900 dark:text-white">
                                     {editingSale ? 'Edit Sale' : 'New Sale'}
                                 </h3>
-                                <button
-                                    onClick={() => {
-                                        setShowModal(false);
-                                        setEditingSale(null);
-                                        setFormData({
-                                            items: [{ item_name: '', quantity: 1, price_per_unit: 0 }],
-                                            payment_method: 'Cash',
-                                            customer_phone: '',
-                                            customer_name: ''
-                                        });
-                                    }}
-                                    className="text-gray-400 hover:text-gray-600"
-                                >
-                                    ×
-                                </button>
+                                <div className="flex items-center gap-2">
+                                    {/* Camera Scanner button */}
+                                    {!editingSale && (
+                                        <button
+                                            type="button"
+                                            onClick={() => setShowScanner(true)}
+                                            className="flex items-center gap-1.5 px-3 py-1.5 bg-violet-600 hover:bg-violet-700 text-white rounded-xl text-xs font-bold transition-all"
+                                            title="Scan barcode to add item"
+                                        >
+                                            <Camera className="h-3.5 w-3.5" />
+                                            Scan
+                                        </button>
+                                    )}
+                                    <button
+                                        onClick={() => {
+                                            setShowModal(false);
+                                            setEditingSale(null);
+                                            setCustomerInsights(null);
+                                            setShowInsightsPanel(false);
+                                            setFormData({
+                                                items: [{ item_name: '', quantity: 1, price_per_unit: 0 }],
+                                                payment_method: 'Cash',
+                                                customer_phone: '',
+                                                customer_name: ''
+                                            });
+                                        }}
+                                        className="text-gray-400 hover:text-gray-600"
+                                    >
+                                        ×
+                                    </button>
+                                </div>
                             </div>
 
                             <form onSubmit={handleSubmit} className="space-y-4">
@@ -756,7 +873,7 @@ const Sales = () => {
                                         <input
                                             type="tel"
                                             value={formData.customer_phone}
-                                            onChange={(e) => setFormData({ ...formData, customer_phone: e.target.value })}
+                                            onChange={handlePhoneChange}
                                             className="input-field"
                                             placeholder="Phone number"
                                         />
@@ -885,6 +1002,8 @@ const Sales = () => {
                                         onClick={() => {
                                             setShowModal(false);
                                             setEditingSale(null);
+                                            setCustomerInsights(null);
+                                            setShowInsightsPanel(false);
                                         }}
                                         className="btn-secondary"
                                     >
@@ -896,8 +1015,150 @@ const Sales = () => {
                                 </div>
                             </form>
                         </div>
+                        {/* Right Panel - Customer Intelligence */}
+                        {showInsightsPanel && (
+                            <div className="lg:w-[45%] xl:w-[40%] border-t lg:border-t-0 lg:border-l border-gray-200 dark:border-gray-700 pt-6 lg:pt-0 lg:pl-8 flex flex-col relative animate-fade-in">
+                                <div className="sticky top-0 bg-white dark:bg-gray-800 z-10 pb-4 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center">
+                                    <h3 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                                        <Cpu className="h-5 w-5 text-indigo-500" />
+                                        Customer Intelligence
+                                    </h3>
+                                    <button type="button" onClick={() => setEnableVoice(!enableVoice)} className={`p-2 rounded-full transition-colors ${enableVoice ? 'bg-indigo-100 text-indigo-600 dark:bg-indigo-900/50 dark:text-indigo-400' : 'bg-gray-100 text-gray-500 dark:bg-gray-700'}`}>
+                                        <Volume2 className="h-4 w-4" />
+                                    </button>
+                                </div>
+                                
+                                {isInsightsLoading ? (
+                                    <div className="flex flex-col items-center justify-center p-12 h-full text-gray-500">
+                                        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-indigo-600 mb-4"></div>
+                                        <p>Running Neural Heuristics...</p>
+                                    </div>
+                                ) : customerInsights && (
+                                    <div className="space-y-6 mt-4 overflow-y-auto pb-8 pr-2 custom-scrollbar">
+                                        <div className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl p-5 text-white shadow-md relative overflow-hidden">
+                                            <div className="absolute top-0 right-0 p-4 opacity-20"><UserCheck className="h-24 w-24" /></div>
+                                            <div className="relative z-10">
+                                                <h4 className="text-xl font-bold mb-1">{customerInsights.name}</h4>
+                                                <p className="text-indigo-100 text-sm mb-4">{customerInsights.phone}</p>
+                                                
+                                                <div className="flex justify-between items-end">
+                                                    <div>
+                                                        <p className="text-xs text-indigo-200 uppercase tracking-wider">Total Spend</p>
+                                                        <p className="text-2xl font-bold">₹{customerInsights.total_spend?.toLocaleString()}</p>
+                                                    </div>
+                                                    <div className="text-right">
+                                                        <p className="text-xs text-indigo-200 uppercase tracking-wider mb-1">Memory Score</p>
+                                                        <div className="flex items-center justify-end gap-2">
+                                                            <div className="w-16 bg-white/20 rounded-full h-2">
+                                                                <div className="bg-green-400 h-2 rounded-full" style={{width: `${customerInsights.memory_score}%`}}></div>
+                                                            </div>
+                                                            <span className="font-bold">{customerInsights.memory_score}/100</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div className="space-y-5">
+                                            {customerInsights.due_for_refill?.length > 0 && (
+                                                <div className="bg-red-50 dark:bg-red-900/10 rounded-lg p-4 border border-red-100 dark:border-red-900/30">
+                                                    <h5 className="text-sm font-bold text-red-800 dark:text-red-400 uppercase tracking-wider mb-3 flex items-center gap-2">
+                                                        <RefreshCw className="h-4 w-4" /> Due for Refill
+                                                    </h5>
+                                                    <div className="space-y-2">
+                                                        {customerInsights.due_for_refill.map((item, idx) => (
+                                                            <div key={idx} className="flex justify-between items-center bg-white dark:bg-gray-800 p-2.5 rounded-md shadow-sm border border-gray-100 dark:border-gray-700">
+                                                                <div className="flex-1 min-w-0 pr-2">
+                                                                    <p className="text-sm font-medium text-gray-900 dark:text-white truncate">{item.item_name}</p>
+                                                                    <p className="text-xs text-red-600 dark:text-red-400">{item.days_overdue} days overdue • ₹{item.price}</p>
+                                                                </div>
+                                                                <button type="button" onClick={() => addItemFromInsight(item)} className="p-1.5 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-md hover:bg-indigo-100 transition-colors">
+                                                                    <PlusCircle className="h-5 w-5" />
+                                                                </button>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            )}
+                                            
+                                            {customerInsights.bought_often?.length > 0 && (
+                                                <div className="bg-blue-50 dark:bg-blue-900/10 rounded-lg p-4 border border-blue-100 dark:border-blue-900/30">
+                                                    <h5 className="text-sm font-bold text-blue-800 dark:text-blue-400 uppercase tracking-wider mb-3 flex items-center gap-2">
+                                                        <Zap className="h-4 w-4" /> Bought Often
+                                                    </h5>
+                                                    <div className="space-y-2">
+                                                        {customerInsights.bought_often.map((item, idx) => (
+                                                            <div key={idx} className="flex justify-between items-center bg-white dark:bg-gray-800 p-2.5 rounded-md shadow-sm border border-gray-100 dark:border-gray-700">
+                                                                <div className="flex-1 min-w-0 pr-2">
+                                                                    <p className="text-sm font-medium text-gray-900 dark:text-white truncate">{item.item_name}</p>
+                                                                    <p className="text-xs text-gray-500 dark:text-gray-400">{item.frequency} times • ₹{item.price}</p>
+                                                                </div>
+                                                                <button type="button" onClick={() => addItemFromInsight(item)} className="p-1.5 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-md hover:bg-indigo-100 transition-colors">
+                                                                    <PlusCircle className="h-5 w-5" />
+                                                                </button>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                                {customerInsights.combos?.length > 0 && (
+                                                    <div className="bg-amber-50 dark:bg-amber-900/10 rounded-lg p-3 border border-amber-100 dark:border-amber-900/30">
+                                                        <h5 className="text-xs font-bold text-amber-800 dark:text-amber-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                                                            <Zap className="h-3.5 w-3.5" /> Freq. Combo
+                                                        </h5>
+                                                        <div className="space-y-2">
+                                                            {customerInsights.combos.map((item, idx) => (
+                                                                <div key={idx} className="flex justify-between items-center">
+                                                                    <div className="flex-1 min-w-0">
+                                                                        <p className="text-xs font-medium text-gray-900 dark:text-white truncate">{item.item_name}</p>
+                                                                        <div className="flex gap-2 items-center">
+                                                                            <p className="text-[10px] text-gray-500">₹{item.price}</p>
+                                                                            {item.bought_with && <p className="text-[9px] text-amber-600 bg-amber-100 dark:bg-amber-900/50 px-1 rounded truncate max-w-[120px]">w/ {item.bought_with}</p>}
+                                                                        </div>
+                                                                    </div>
+                                                                    <button type="button" onClick={() => addItemFromInsight(item)} className="text-indigo-600 hover:text-indigo-800">
+                                                                        <PlusCircle className="h-4 w-4" />
+                                                                    </button>
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                )}
+
+                                                {customerInsights.try_this?.length > 0 && (
+                                                    <div className="bg-emerald-50 dark:bg-emerald-900/10 rounded-lg p-3 border border-emerald-100 dark:border-emerald-900/30">
+                                                        <h5 className="text-xs font-bold text-emerald-800 dark:text-emerald-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                                                            <Star className="h-3.5 w-3.5" /> Premium Picks
+                                                        </h5>
+                                                        <div className="space-y-2">
+                                                            {customerInsights.try_this.map((item, idx) => (
+                                                                <div key={idx} className="flex justify-between items-center">
+                                                                    <div className="flex-1 min-w-0">
+                                                                        <p className="text-xs font-medium text-gray-900 dark:text-white truncate">{item.item_name}</p>
+                                                                        <div className="flex gap-2 items-center">
+                                                                            <p className="text-[10px] text-gray-500">₹{item.price}</p>
+                                                                            {item.reason && <p className="text-[9px] text-emerald-600 bg-emerald-100 dark:bg-emerald-900/50 px-1 rounded truncate max-w-[120px]">{item.reason}</p>}
+                                                                        </div>
+                                                                    </div>
+                                                                    <button type="button" onClick={() => addItemFromInsight(item)} className="text-indigo-600 hover:text-indigo-800">
+                                                                        <PlusCircle className="h-4 w-4" />
+                                                                    </button>
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        )}
                     </div>
                 </div>
+            </div>
             )}
 
             {/* Filter Modal */}
