@@ -28,14 +28,14 @@ const CustomerDashboard = () => {
   const [checkingStock, setCheckingStock] = useState(false);
   const [showInventory, setShowInventory] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(localStorage.getItem('darkMode') === 'true');
-  
+
   // Bill Scanner States
   const [showBillScanModal, setShowBillScanModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [parsedBillItems, setParsedBillItems] = useState(null);
   const [uploadingImage, setUploadingImage] = useState(false);
-  
+
   // Payment Confirmation States
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [selectedRequestForPayment, setSelectedRequestForPayment] = useState(null);
@@ -58,14 +58,14 @@ const CustomerDashboard = () => {
 
     fetchRetailers();
     fetchMyRequests();
-    
+
     // Auto-refresh requests every 10 seconds when on My Orders tab
     const interval = setInterval(() => {
       if (activeTab === 'my-requests') {
         fetchMyRequests();
       }
     }, 10000);
-    
+
     return () => clearInterval(interval);
   }, [token, navigate, activeTab]);
 
@@ -110,29 +110,29 @@ const CustomerDashboard = () => {
 
       if (result.success) {
         const newRequests = result.data.requests;
-        
+
         // Check if there are new completed orders
         if (requests.length > 0) {
-          const newCompletedOrders = newRequests.filter(newReq => 
-            newReq.status === 'completed' && 
+          const newCompletedOrders = newRequests.filter(newReq =>
+            newReq.status === 'completed' &&
             !requests.find(oldReq => oldReq._id === newReq._id && oldReq.status === 'completed')
           );
-          
+
           if (newCompletedOrders.length > 0) {
             toast.success(t('customerDashboard.toast.ordersCompleted', { count: newCompletedOrders.length }));
           }
-          
+
           // Check for billed orders
-          const newBilledOrders = newRequests.filter(newReq => 
-            newReq.status === 'billed' && 
+          const newBilledOrders = newRequests.filter(newReq =>
+            newReq.status === 'billed' &&
             !requests.find(oldReq => oldReq._id === newReq._id && oldReq.status === 'billed')
           );
-          
+
           if (newBilledOrders.length > 0) {
             toast.success(t('customerDashboard.toast.ordersBilled', { count: newBilledOrders.length }));
           }
         }
-        
+
         setRequests(newRequests);
       }
     } catch (error) {
@@ -222,7 +222,7 @@ const CustomerDashboard = () => {
 
   const handleItemChange = async (index, field, value) => {
     const newItems = [...messageForm.items];
-    
+
     if (field === 'quantity') {
       // Allow fractional quantities
       const qty = value === '' ? '' : parseFloat(value);
@@ -230,7 +230,7 @@ const CustomerDashboard = () => {
     } else {
       newItems[index][field] = value;
     }
-    
+
     setMessageForm({ ...messageForm, items: newItems });
 
     // Check availability after change (debounced)
@@ -391,7 +391,7 @@ const CustomerDashboard = () => {
       if (result.success) {
         setParsedBillItems(result.data.items);
         toast.success(result.message, { duration: 3000 });
-        
+
         if (result.data.needsReview) {
           toast.warning('Low confidence - Please review items carefully', { duration: 4000 });
         }
@@ -508,7 +508,7 @@ const CustomerDashboard = () => {
         } else {
           toast.success(t('customerDashboard.toast.paymentConfirmedSuccess'));
         }
-        
+
         setShowPaymentModal(false);
         setSelectedRequestForPayment(null);
         setPaymentMethod('Cash');
@@ -535,7 +535,7 @@ const CustomerDashboard = () => {
   return (
     <div className={`min-h-screen ${isDarkMode ? 'bg-gray-950' : 'bg-gray-50'}`}>
       {/* Toast Notifications */}
-      <Toaster 
+      <Toaster
         position="top-right"
         toastOptions={{
           duration: 10000,
@@ -558,7 +558,7 @@ const CustomerDashboard = () => {
           },
         }}
       />
-      
+
       {/* Floating AI Chatbot */}
       <FloatingChatbot />
 
@@ -569,7 +569,7 @@ const CustomerDashboard = () => {
             {/* Left: User Info */}
             <div className="flex items-center space-x-3">
               <div className="relative group">
-                <div 
+                <div
                   className="w-10 h-10 bg-neutral-800 dark:bg-neutral-700 rounded-xl flex items-center justify-center text-white font-bold shadow-lg cursor-pointer"
                   title={user.name || 'Customer'}
                 >
@@ -710,11 +710,10 @@ const CustomerDashboard = () => {
               {/* Nearby Shops Card */}
               <div
                 onClick={() => navigate('/customer/nearby-shops')}
-                className={`group cursor-pointer rounded-xl p-6 transition-all hover:scale-105 ${
-                  isDarkMode 
-                    ? 'bg-neutral-900 border border-neutral-800 hover:bg-neutral-800' 
+                className={`group cursor-pointer rounded-xl p-6 transition-all hover:scale-105 ${isDarkMode
+                    ? 'bg-neutral-900 border border-neutral-800 hover:bg-neutral-800'
                     : 'bg-neutral-800 hover:bg-neutral-900'
-                } shadow-lg hover:shadow-2xl`}
+                  } shadow-lg hover:shadow-2xl`}
               >
                 <div className="flex items-center justify-between mb-4">
                   <div className="p-3 bg-neutral-700 rounded-xl">
@@ -738,11 +737,10 @@ const CustomerDashboard = () => {
               {/* My Orders Card */}
               <div
                 onClick={() => setActiveTab('my-requests')}
-                className={`group cursor-pointer rounded-xl p-6 transition-all hover:scale-105 ${
-                  isDarkMode 
-                    ? 'bg-neutral-900 border border-neutral-800 hover:bg-neutral-800' 
+                className={`group cursor-pointer rounded-xl p-6 transition-all hover:scale-105 ${isDarkMode
+                    ? 'bg-neutral-900 border border-neutral-800 hover:bg-neutral-800'
                     : 'bg-neutral-700 hover:bg-neutral-800'
-                } shadow-lg hover:shadow-2xl`}
+                  } shadow-lg hover:shadow-2xl`}
               >
                 <div className="flex items-center justify-between mb-4">
                   <div className="p-3 bg-neutral-700 rounded-xl">
@@ -833,11 +831,10 @@ const CustomerDashboard = () => {
                 </div>
                 <button
                   onClick={() => setActiveTab('my-requests')}
-                  className={`mt-4 w-full py-2 rounded-lg text-sm font-medium transition-colors ${
-                    isDarkMode 
-                      ? 'bg-white text-black hover:bg-neutral-200' 
+                  className={`mt-4 w-full py-2 rounded-lg text-sm font-medium transition-colors ${isDarkMode
+                      ? 'bg-white text-black hover:bg-neutral-200'
                       : 'bg-black text-white hover:bg-neutral-800'
-                  }`}
+                    }`}
                 >
                   {t('customerDashboard.recentOrders.viewAll')}
                 </button>
@@ -1199,8 +1196,8 @@ const CustomerDashboard = () => {
                 <div
                   key={request._id}
                   className={`rounded-lg p-4 border transition-all ${isDarkMode
-                      ? 'bg-neutral-800 border-neutral-700 hover:border-neutral-600'
-                      : 'bg-neutral-50 border-neutral-200 hover:border-neutral-300'
+                    ? 'bg-neutral-800 border-neutral-700 hover:border-neutral-600'
+                    : 'bg-neutral-50 border-neutral-200 hover:border-neutral-300'
                     }`}
                 >
                   <div className="flex justify-between items-start mb-3">
@@ -1347,9 +1344,9 @@ const CustomerDashboard = () => {
                 <div className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${isDarkMode ? 'border-gray-700 hover:border-black dark:border-white' : 'border-gray-300 hover:border-black dark:border-white'}`}>
                   {imagePreview ? (
                     <div className="space-y-4">
-                      <img 
-                        src={imagePreview} 
-                        alt="Shopping List Preview" 
+                      <img
+                        src={imagePreview}
+                        alt="Shopping List Preview"
                         className="max-h-96 mx-auto rounded-lg shadow-md"
                       />
                       <button
@@ -1566,7 +1563,7 @@ const CustomerDashboard = () => {
                 <option value="Bank Transfer">{t('customerDashboard.paymentModal.bankTransfer')}</option>
                 <option value="Credit">{t('customerDashboard.paymentModal.credit')}</option>
               </select>
-              
+
               {/* Show UPI ID when UPI is selected */}
               {paymentMethod === 'UPI' && selectedRequestForPayment.retailer_id?.upi_id && (
                 <div className={`mt-3 p-3 rounded-lg ${isDarkMode ? 'bg-neutral-900 dark:bg-neutral-100/30 border border-blue-700' : 'bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700'}`}>
@@ -1593,7 +1590,7 @@ const CustomerDashboard = () => {
                   </p>
                 </div>
               )}
-              
+
               {paymentMethod === 'UPI' && !selectedRequestForPayment.retailer_id?.upi_id && (
                 <div className={`mt-3 p-3 rounded-lg ${isDarkMode ? 'bg-neutral-900 dark:bg-neutral-100/30 border border-yellow-700' : 'bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700'}`}>
                   <p className={`text-xs ${isDarkMode ? 'text-yellow-300' : 'text-neutral-800 dark:text-neutral-200'}`}>
@@ -1601,7 +1598,7 @@ const CustomerDashboard = () => {
                   </p>
                 </div>
               )}
-              
+
               <p className={`mt-2 text-xs ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
                 {t('customerDashboard.paymentModal.paymentNote')}
               </p>
@@ -1641,12 +1638,12 @@ const CustomerDashboard = () => {
           </div>
         </div>
       )}
-            {/* New Unified Chatbot */}
-            <FloatingChatbot 
-                isCustomerMode={true} 
-            />
-        </div>
-    );
+      {/* New Unified Chatbot */}
+      <FloatingChatbot
+        isCustomerMode={true}
+      />
+    </div>
+  );
 };
 
 export default CustomerDashboard;

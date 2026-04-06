@@ -166,11 +166,10 @@ const NearbyShops = () => {
                   key={radius}
                   onClick={() => handleRadiusChange(radius)}
                   disabled={loading}
-                  className={`py-3 px-4 rounded-lg font-medium transition-all ${
-                    selectedRadius === radius
+                  className={`py-3 px-4 rounded-lg font-medium transition-all ${selectedRadius === radius
                       ? 'bg-black dark:bg-white text-white dark:text-black shadow-md'
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                  } disabled:opacity-50 disabled:cursor-not-allowed`}
+                    } disabled:opacity-50 disabled:cursor-not-allowed`}
                 >
                   {radius} km
                 </button>

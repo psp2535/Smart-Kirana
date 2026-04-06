@@ -36,6 +36,7 @@ const nearbyShopsRoutes = require('./routes/nearbyShopsRoutes');
 const wholesalerRoutes = require('./routes/wholesalerRoutes');
 const seedRoutes = require('./routes/seedRoutes');
 const campaignRoutes = require('./routes/campaignRoutes');
+const visionRoutes   = require('./routes/visionRoutes');
 
 // Initialize Express app
 const app = express();
@@ -111,6 +112,7 @@ app.use('/api/nearby-shops', nearbyShopsRoutes); // Find nearby shops by locatio
 app.use('/api/wholesalers', wholesalerRoutes); // Wholesaler discovery and ordering
 app.use('/api/seed', seedRoutes); // Development seed data
 app.use('/api/campaigns', campaignRoutes); // Discount campaigns and hot deals
+app.use('/api/vision',    visionRoutes);    // AI Vision product scanner
 
 // Root endpoint
 app.get('/', (req, res) => {

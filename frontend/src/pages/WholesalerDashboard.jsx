@@ -34,7 +34,7 @@ const WholesalerDashboard = () => {
             const token = localStorage.getItem('token');
             let API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
             if (API_BASE_URL.endsWith('/api')) API_BASE_URL = API_BASE_URL.replace(/\/api$/, '');
-            
+
             const API_URL = `${API_BASE_URL}/api`;
 
             // Fetch orders
@@ -124,16 +124,16 @@ const WholesalerDashboard = () => {
                             <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Wholesaler Dashboard</h1>
                         </div>
                         <div className="flex items-center space-x-4">
-                            <button 
-                                onClick={toggleTheme} 
+                            <button
+                                onClick={toggleTheme}
                                 className="p-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors"
                                 title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
                             >
                                 {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
                             </button>
-                            
+
                             <div className="relative">
-                                <button 
+                                <button
                                     onClick={() => setShowNotifications(!showNotifications)}
                                     className="p-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors relative"
                                 >
@@ -142,7 +142,7 @@ const WholesalerDashboard = () => {
                                         <span className="absolute top-0 right-0 h-2.5 w-2.5 bg-red-500 rounded-full border-2 border-white dark:border-gray-800"></span>
                                     )}
                                 </button>
-                                
+
                                 {showNotifications && (
                                     <div className="absolute right-0 mt-2 w-80 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 z-50 overflow-hidden">
                                         <div className="px-4 py-3 border-b border-gray-100 dark:border-gray-700 font-bold text-sm text-gray-900 dark:text-white">
@@ -258,9 +258,9 @@ const WholesalerDashboard = () => {
                                     { name: 'Profit', value: stats.netProfit, fill: theme === 'dark' ? '#a3a3a3' : '#a3a3a3' }
                                 ]}>
                                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={theme === 'dark' ? '#333' : '#E5E7EB'} />
-                                    <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill: theme === 'dark' ? '#aaa' : '#666', fontSize: 12}} />
+                                    <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: theme === 'dark' ? '#aaa' : '#666', fontSize: 12 }} />
                                     <YAxis hide />
-                                    <Tooltip 
+                                    <Tooltip
                                         contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)', backgroundColor: theme === 'dark' ? '#171717' : '#fff', color: theme === 'dark' ? '#fff' : '#000' }}
                                         itemStyle={{ color: theme === 'dark' ? '#fff' : '#000' }}
                                         formatter={(value) => `₹${value.toLocaleString()}`}

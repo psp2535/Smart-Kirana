@@ -72,12 +72,18 @@ const inventorySchema = new mongoose.Schema({
       'Snacks',
       'Dairy',
       'Grains & Pulses',
+      'Grains & Oils',
+      'Veg & Fruits',
       'Spices & Masalas',
+      'Spices',
       'Home & Garden',
       'Sports',
       'Beauty & Health',
       'Personal Care',
       'Household Supplies',
+      'Household',
+      'Cleaning',
+      'Kitchen Essentials',
       'Automotive',
       'Office Supplies',
       'Other'
@@ -92,6 +98,17 @@ const inventorySchema = new mongoose.Schema({
   },
   expiry_date: {
     type: Date,
+    default: null
+  },
+  expected_usage_days: {
+    type: Number,
+    min: [0, 'Expected usage days cannot be negative'],
+    default: null
+  },
+  barcode: {
+    type: String,
+    trim: true,
+    maxlength: [50, 'Barcode cannot exceed 50 characters'],
     default: null
   },
   // Discount & Campaign fields

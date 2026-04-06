@@ -15,6 +15,7 @@ router.use(authenticateToken);
 // Customers routes
 router.get('/', customersController.getAllCustomers);
 router.get('/analytics', customersController.getCustomerAnalytics);
+router.get('/insights', customersController.getCustomerInsights);
 router.get('/:id', customersController.getCustomerById);
 router.post('/', validateCustomer, customersController.createCustomer);
 router.put('/:id', validateCustomer, customersController.updateCustomer);
