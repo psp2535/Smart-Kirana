@@ -1,193 +1,173 @@
-# 🚀 Smart Kirana - AI-Powered Retail Operating System
+# BizNova (Smart Kirana) – AI-Integrated Retail Platform
 
-> **Empowering small retailers with the intelligence of Google Gemini.**  
-> Smart Kirana is a comprehensive, AI-driven platform designed to modernize inventory, sales, and customer engagement for small businesses.
+A full-stack MERN platform that helps small kirana (grocery) shop owners run their business: inventory, sales, expenses, profit reports, and an AI assistant that answers questions from the shop's own data.
 
----
+**Live demo:** https://smart-kirana-beta.vercel.app
+**Backend API:** https://smart-kirana-backend-7qlq.onrender.com/health
 
-## 🎯 Overview
-
-Smart Kirana transforms traditional retail into a data-driven business. By leveraging **Google Gemini AI**, the platform automates manual tasks like bill scanning, provides deep business insights, and offers personalized experiences for customers and wholesalers alike.
-
-## ✨ Key Features
-
-### 🤖 AI Capabilities (Powered by Google Gemini)
-- **Smart Bill Scanner**: Instant inventory and sales entry via vision-based scanning.
-- **Retailer AI Copilot**: A conversational assistant for managing tasks, checking stock, and getting business advice.
-- **Customer AI Assistant**: Personalized product discovery and query resolution for shoppers.
-- **AI Business Insights**: Automated analysis of sales trends, profit margins, and inventory forecasting.
-- **Conversational Actions**: Execute complex business operations using natural language.
-
-### 🏢 Retailer Management
-- **Dashboard**: Real-time metrics including total sales, profits, and low-stock alerts.
-- **Inventory Control**: Comprehensive tracking with automated updates and historical logs.
-- **Sales & POS**: Integrated point-of-sale with QR/Barcode scanning (ZXing).
-- **Expense Tracking**: Detailed categorization and spending analysis.
-- **Campaign Manager**: Create and manage AI-driven discount campaigns and "Hot Deals."
-
-### 🛍️ Customer Experience
-- **Personalized Dashboards**: Shoppers can track purchases, discover deals, and find nearby shops.
-- **Interactive Discovery**: AI-powered search and recommendation engine.
-- **Loyalty & Deals**: Real-time notifications for store-specific offers and campaigns.
-
-### 🤝 Wholesaler Ecosystem
-- **Wholesaler Discovery**: Help retailers find and connect with suppliers.
-- **Seamless Ordering**: Integrated order management and inventory synchronization.
-- **Supplier Analytics**: AI-driven inventory and order predictions for wholesalers.
+> The backend runs on Render's free tier, so the first request after a period of inactivity can take 30–60 seconds while it wakes up.
 
 ---
 
-## 🛠️ Tech Stack
+## Features
 
-### AI Engine
-- **Google Gemini 2.5 Flash**: Core vision and natural language processing engine.
-- **OpenAI**: Secondary/Fallback engine for specialized tasks.
+### For retailers
+- **Dashboard** – today's sales, profit, low-stock alerts and charts
+- **Inventory, sales and expenses** – full tracking with automatic stock deduction on every sale
+- **Profit analytics** – daily trends, top products, sales by category and month-over-month comparison
+- **AI business assistant** – ask "what were my sales today?" or "which items are running low?" and get answers based on your real data
+- **AI bill scanner** – upload a photo of a purchase bill; items are read by Gemini Vision and added to inventory
+- **Voice and text commands** – "add 10 kg rice" or "sold 2 milk packets" in English, Hindi or Telugu, with a confirmation step before anything is written to the database
+- **Business Health Score (0–100)** – rates the shop on profit margin, stock health, sales consistency and inventory efficiency, with tips to improve
+- **Festival demand alerts** – finds the next upcoming festival and flags items to restock based on past sales and current stock
+- **Smart discounts** – suggests discounts for items that are close to expiry or selling slowly, and publishes them as "Hot Deals"
 
-### Frontend
-- **React 18**: Component-based UI architecture.
-- **Tailwind CSS**: Modern, responsive styling.
-- **Recharts**: Rich data visualization and analytics charts.
-- **i18next**: Multi-language support (i18n).
-- **Lucide React**: Premium icon set.
-- **ZXing**: Vision-based QR and Barcode scanning.
+### For customers
+- Find nearby shops by location
+- Browse deals and place orders through a shop's AI chat assistant
 
-### Backend
-- **Node.js + Express**: Robust and scalable API foundation.
-- **MongoDB + Mongoose**: Flexible NoSQL data modeling.
-- **JWT + bcrypt**: Secure authentication and data protection.
-- **Multer & Nodemailer**: Handle media uploads and communication.
+### For wholesalers
+- List products and receive orders from retailers
+- Track orders through Requested → Accepted → Packed → Dispatched → Delivered, with payment status
 
 ---
 
-## 🚀 Getting Started
+## Tech Stack
+
+| Layer | Technologies |
+| --- | --- |
+| Frontend | React 18, Tailwind CSS, Recharts, i18next (EN / HI / TE), ZXing barcode scanning |
+| Backend | Node.js, Express.js, JWT, bcrypt, express-rate-limit, express-validator, Multer, Nodemailer |
+| Database | MongoDB Atlas with Mongoose (13 collections, compound and geospatial indexes) |
+| AI | Google Gemini 2.5 Flash (assistant, insights, vision); OpenAI gpt-4o-mini (conversational commands) |
+| Hosting | Vercel (frontend), Render (backend), MongoDB Atlas (database) |
+
+---
+
+## How It Works
+
+```
+React (Vercel)  ──HTTPS + JWT──▶  Express API (Render)  ──▶  MongoDB Atlas
+                                        │
+                                        └──▶  Gemini / OpenAI APIs
+```
+
+- **Authentication:** users log in with phone number and password. The backend issues a JWT, and middleware checks the user's role (retailer, customer or wholesaler) on protected routes. Login and password-reset routes are rate-limited.
+- **AI assistant:** when a retailer asks a question, the backend loads their inventory, sales, expenses, health score and festival forecast in parallel (`Promise.all`), builds a prompt from that data, and sends it to Gemini.
+- **Safe AI actions:** for commands that change data, the AI first returns a structured action. The app shows a confirmation ("Add 10 kg rice?") and only writes to the database after the user says yes.
+- **Reports:** sales and profit reports use MongoDB aggregation pipelines, backed by compound indexes such as `{ user_id: 1, date: -1 }`.
+
+---
+
+## Getting Started
 
 ### Prerequisites
 - Node.js 18+
-- MongoDB (Local instance or Atlas)
-- Google AI (Gemini) API Key
+- MongoDB (local or Atlas)
+- Google Gemini API key
 
 ### Installation
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/psp2535/Smart-Kirana.git
-   cd Smart-Kirana
-   ```
+```bash
+git clone https://github.com/psp2535/Smart-Kirana.git
+cd Smart-Kirana
+npm run install-all
+```
 
-2. Install all dependencies:
-   ```bash
-   # From root
-   npm install
-   # Backend dependencies
-   cd backend && npm install
-   # Frontend dependencies
-   cd ../frontend && npm install
-   ```
+### Environment variables
 
-3. Configure Environment Variables:
-   - Create `.env` in the `backend/` directory with: `MONGODB_URI`, `GEMINI_API_KEY`, `PORT`, `JWT_SECRET`.
-   - Create `.env` in the `frontend/` directory with: `REACT_APP_API_URL`.
+Copy the example files and fill in your values:
 
-4. Start Development Servers:
-   ```bash
-   # From root
-   npm run dev
-   ```
+```bash
+cp backend/.env.example backend/.env
+cp frontend/.env.example frontend/.env
+```
+
+**backend/.env** (required)
+
+| Variable | Description |
+| --- | --- |
+| `MONGODB_URI` | MongoDB connection string |
+| `JWT_SECRET` | Any long random string |
+| `GEMINI_API_KEY` | Google Gemini API key |
+| `FRONTEND_URL` | Frontend URL allowed by CORS, e.g. `http://localhost:3000` |
+
+Optional: `OPENAI_API_KEY` (conversational commands), `EMAIL_*` (password-reset emails). See `backend/.env.example` for the full list.
+
+**frontend/.env**
+
+| Variable | Description |
+| --- | --- |
+| `REACT_APP_API_URL` | Backend URL without `/api`, e.g. `http://localhost:5000` |
+
+### Run locally
+
+```bash
+npm run dev
+```
+
+Frontend runs on http://localhost:3000 and backend on http://localhost:5000.
 
 ---
 
-## 📁 Project Structure
+## Key API Endpoints
+
+| Method | Endpoint | Description |
+| --- | --- | --- |
+| POST | `/api/auth/register`, `/api/auth/login` | Retailer sign-up and login |
+| GET / POST | `/api/inventory` | List and add products |
+| POST | `/api/inventory/parse-bill` | Read items from a bill photo (Gemini Vision) |
+| GET / POST | `/api/sales` | List and record sales (updates stock) |
+| GET | `/api/profit-analytics/top-products` | Best-selling products |
+| GET | `/api/profit-analytics/time-series` | Sales vs. expenses over time |
+| POST | `/api/chatbot/chat` | Retailer AI assistant |
+| POST | `/api/conversational/parse` → `/execute` | Voice/text command with confirmation |
+| GET | `/api/campaigns/recommendations` | Smart discount suggestions |
+| GET | `/api/wholesalers/nearby` | Find nearby wholesalers (`$near` geo-query) |
+| POST | `/api/wholesalers/orders` | Place an order with a wholesaler |
+| GET | `/health` | Health check |
+
+---
+
+## Project Structure
 
 ```
 Smart-Kirana/
 ├── backend/
 │   ├── src/
-│   │   ├── controllers/    # Request handlers (AI, BillScan, Chatbot, etc.)
-│   │   ├── services/       # Core business logic (Gemini integration, etc.)
-│   │   ├── models/         # MongoDB schemas (User, Product, Sale, Expense)
-│   │   ├── routes/         # API endpoints (ai, auth, inventory, sales)
-│   │   └── server.js       # Main server entry point
+│   │   ├── config/        # MongoDB connection
+│   │   ├── controllers/   # Request handlers (sales, inventory, AI, bill scan, ...)
+│   │   ├── middleware/    # JWT auth, rate limiting, validation
+│   │   ├── models/        # Mongoose schemas
+│   │   ├── routes/        # API routes
+│   │   ├── services/      # Gemini, health score, festival forecast, discounts
+│   │   └── server.js      # App entry point
+│   └── smartkirana_festival_dataset_150.csv
 ├── frontend/
-│   ├── src/
-│   │   ├── components/     # UI components (AI Chatbots, Charts, POS)
-│   │   ├── pages/          # Full-page views (Dashboard, Insights, WholesalerHub)
-│   │   ├── services/       # Frontend API communication
-│   │   └── contexts/       # Global state management (Auth, Theme)
-└── package.json
+│   ├── public/locales/    # Translations (en, hi, te)
+│   └── src/
+│       ├── components/    # Chatbots, charts, POS, notifications
+│       ├── pages/         # Retailer, customer and wholesaler dashboards
+│       ├── services/      # API client
+│       └── contexts/      # Auth and theme state
+├── render.yaml            # Render backend config
+└── DEPLOYMENT.md          # Deployment guide
 ```
 
 ---
 
-## 🔑 Core API Endpoints
+## Deployment
 
-### 🤖 AI & Vision
-- `POST /api/vision/scan` - Process bill images via Gemini.
-- `POST /api/chatbot/query` - Interact with the Retailer AI assistant.
-- `GET /api/ai-insights` - Retrieve AI-generated business analytics.
+- **Backend:** Render, configured by `render.yaml`. Set the secret environment variables in the Render dashboard.
+- **Frontend:** Vercel, with Root Directory set to `frontend`. Set `REACT_APP_API_URL` to the Render backend URL.
+- **Database:** MongoDB Atlas. Allow network access from `0.0.0.0/0`, since Render's IP addresses change.
 
-### 📦 Commerce
-- `GET /api/inventory` - Manage products and stock levels.
-- `POST /api/sales` - Record transactions and update inventory.
-- `GET /api/wholesalers` - Discover and interact with wholesalers.
+After deploying the frontend, set `FRONTEND_URL` on Render to the Vercel URL so CORS allows it.
+
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for the detailed guide.
 
 ---
 
-## 🤝 Contributing & Team
+## License
 
-Developed with ❤️ by the **Smart Kirana Team**. This project is part of a mission to digitize and empower small retailers globally.
-
-
----
-
-## 🌐 Deployment
-
-### Quick Deploy (Free Hosting)
-
-Deploy Smart Kirana to production in minutes using free tier services:
-
-**Backend:** Render.com (Free)  
-**Frontend:** Vercel (Free)  
-**Database:** MongoDB Atlas (Free)
-
-#### Quick Steps:
-
-1. **Deploy Backend to Render**
-   - Connect GitHub repo
-   - Set environment variables (MongoDB URI, JWT Secret, etc.)
-   - Deploy from `backend` folder
-
-2. **Deploy Frontend to Vercel**
-   - Import GitHub repo
-   - Set `REACT_APP_API_URL` to your Render backend URL
-   - Deploy from `frontend` folder
-
-3. **Setup MongoDB Atlas**
-   - Create free cluster
-   - Whitelist IP: `0.0.0.0/0`
-   - Get connection string
-
-📖 **Detailed Guide:** See [DEPLOYMENT.md](./DEPLOYMENT.md) for step-by-step instructions.
-
-🔍 **Pre-deployment Check:**
-```bash
-node deploy-check.js
-```
-
----
-
-## 📄 License
-
-MIT License - See [LICENSE](LICENSE) file for details.
-
----
-
-## 🙏 Acknowledgments
-
-- Google Gemini AI for powering intelligent features
-- MongoDB Atlas for reliable database hosting
-- Vercel & Render for seamless deployment
-- Open source community for amazing tools and libraries
-
----
-
-**Built for hackathons. Ready for production. 🚀**
+MIT
