@@ -11,7 +11,7 @@ A full-stack MERN platform that helps small kirana (grocery) shop owners run the
 
 ## Features
 
-### For retailers
+### For retailers(shop owners)
 - **Dashboard** – today's sales, profit, low-stock alerts and charts
 - **Inventory, sales and expenses** – full tracking with automatic stock deduction on every sale
 - **Profit analytics** – daily trends, top products, sales by category and month-over-month comparison
