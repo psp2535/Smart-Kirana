@@ -1,9 +1,15 @@
 # BizNova (Smart Kirana) – AI-Integrated Retail Platform
 
+[![Live Demo](https://img.shields.io/badge/Live_Demo-Vercel-black?logo=vercel)](https://smart-kirana-beta.vercel.app)
+![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-Express-339933?logo=nodedotjs&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248?logo=mongodb&logoColor=white)
+![Gemini](https://img.shields.io/badge/Gemini-2.5_Flash-8E75B2?logo=googlegemini&logoColor=white)
+
 A full-stack MERN platform that helps small kirana (grocery) shop owners run their business: inventory, sales, expenses, profit reports, and an AI assistant that answers questions from the shop's own data.
 
-**Live demo:** https://smart-kirana-beta.vercel.app
-**Backend API:** https://smart-kirana-backend-7qlq.onrender.com/health
+- **Live demo:** https://smart-kirana-beta.vercel.app
+- **Backend API:** https://smart-kirana-backend-7qlq.onrender.com/health
 
 > The backend runs on Render's free tier, so the first request after a period of inactivity can take 30–60 seconds while it wakes up.
 
