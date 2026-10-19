@@ -182,4 +182,4 @@ Built by a team of three:
 
 ## License
 
-MIT
+mit
